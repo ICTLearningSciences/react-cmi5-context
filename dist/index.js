@@ -1,649 +1,10354 @@
-(function(e, a) { for(var i in a) e[i] = a[i]; }(exports, /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ "./node_modules/base64-js/index.js":
-/*!*****************************************!*\
-  !*** ./node_modules/base64-js/index.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
-eval("\n\nexports.byteLength = byteLength\nexports.toByteArray = toByteArray\nexports.fromByteArray = fromByteArray\n\nvar lookup = []\nvar revLookup = []\nvar Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array\n\nvar code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'\nfor (var i = 0, len = code.length; i < len; ++i) {\n  lookup[i] = code[i]\n  revLookup[code.charCodeAt(i)] = i\n}\n\n// Support decoding URL-safe base64 strings, as Node.js does.\n// See: https://en.wikipedia.org/wiki/Base64#URL_applications\nrevLookup['-'.charCodeAt(0)] = 62\nrevLookup['_'.charCodeAt(0)] = 63\n\nfunction getLens (b64) {\n  var len = b64.length\n\n  if (len % 4 > 0) {\n    throw new Error('Invalid string. Length must be a multiple of 4')\n  }\n\n  // Trim off extra bytes after placeholder bytes are found\n  // See: https://github.com/beatgammit/base64-js/issues/42\n  var validLen = b64.indexOf('=')\n  if (validLen === -1) validLen = len\n\n  var placeHoldersLen = validLen === len\n    ? 0\n    : 4 - (validLen % 4)\n\n  return [validLen, placeHoldersLen]\n}\n\n// base64 is 4/3 + up to two characters of the original data\nfunction byteLength (b64) {\n  var lens = getLens(b64)\n  var validLen = lens[0]\n  var placeHoldersLen = lens[1]\n  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen\n}\n\nfunction _byteLength (b64, validLen, placeHoldersLen) {\n  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen\n}\n\nfunction toByteArray (b64) {\n  var tmp\n  var lens = getLens(b64)\n  var validLen = lens[0]\n  var placeHoldersLen = lens[1]\n\n  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))\n\n  var curByte = 0\n\n  // if there are placeholders, only get up to the last complete 4 chars\n  var len = placeHoldersLen > 0\n    ? validLen - 4\n    : validLen\n\n  var i\n  for (i = 0; i < len; i += 4) {\n    tmp =\n      (revLookup[b64.charCodeAt(i)] << 18) |\n      (revLookup[b64.charCodeAt(i + 1)] << 12) |\n      (revLookup[b64.charCodeAt(i + 2)] << 6) |\n      revLookup[b64.charCodeAt(i + 3)]\n    arr[curByte++] = (tmp >> 16) & 0xFF\n    arr[curByte++] = (tmp >> 8) & 0xFF\n    arr[curByte++] = tmp & 0xFF\n  }\n\n  if (placeHoldersLen === 2) {\n    tmp =\n      (revLookup[b64.charCodeAt(i)] << 2) |\n      (revLookup[b64.charCodeAt(i + 1)] >> 4)\n    arr[curByte++] = tmp & 0xFF\n  }\n\n  if (placeHoldersLen === 1) {\n    tmp =\n      (revLookup[b64.charCodeAt(i)] << 10) |\n      (revLookup[b64.charCodeAt(i + 1)] << 4) |\n      (revLookup[b64.charCodeAt(i + 2)] >> 2)\n    arr[curByte++] = (tmp >> 8) & 0xFF\n    arr[curByte++] = tmp & 0xFF\n  }\n\n  return arr\n}\n\nfunction tripletToBase64 (num) {\n  return lookup[num >> 18 & 0x3F] +\n    lookup[num >> 12 & 0x3F] +\n    lookup[num >> 6 & 0x3F] +\n    lookup[num & 0x3F]\n}\n\nfunction encodeChunk (uint8, start, end) {\n  var tmp\n  var output = []\n  for (var i = start; i < end; i += 3) {\n    tmp =\n      ((uint8[i] << 16) & 0xFF0000) +\n      ((uint8[i + 1] << 8) & 0xFF00) +\n      (uint8[i + 2] & 0xFF)\n    output.push(tripletToBase64(tmp))\n  }\n  return output.join('')\n}\n\nfunction fromByteArray (uint8) {\n  var tmp\n  var len = uint8.length\n  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes\n  var parts = []\n  var maxChunkLength = 16383 // must be multiple of 3\n\n  // go through the array every three bytes, we'll deal with trailing stuff later\n  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {\n    parts.push(encodeChunk(\n      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)\n    ))\n  }\n\n  // pad the end with zeros, but make sure to not forget the extra bytes\n  if (extraBytes === 1) {\n    tmp = uint8[len - 1]\n    parts.push(\n      lookup[tmp >> 2] +\n      lookup[(tmp << 4) & 0x3F] +\n      '=='\n    )\n  } else if (extraBytes === 2) {\n    tmp = (uint8[len - 2] << 8) + uint8[len - 1]\n    parts.push(\n      lookup[tmp >> 10] +\n      lookup[(tmp >> 4) & 0x3F] +\n      lookup[(tmp << 2) & 0x3F] +\n      '='\n    )\n  }\n\n  return parts.join('')\n}\n\n\n//# sourceURL=webpack:///./node_modules/base64-js/index.js?");
 
-/***/ }),
-
-/***/ "./node_modules/buffer/index.js":
-/*!**************************************!*\
-  !*** ./node_modules/buffer/index.js ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("/* WEBPACK VAR INJECTION */(function(global) {/*!\n * The buffer module from node.js, for the browser.\n *\n * @author   Feross Aboukhadijeh <http://feross.org>\n * @license  MIT\n */\n/* eslint-disable no-proto */\n\n\n\nvar base64 = __webpack_require__(/*! base64-js */ \"./node_modules/base64-js/index.js\")\nvar ieee754 = __webpack_require__(/*! ieee754 */ \"./node_modules/ieee754/index.js\")\nvar isArray = __webpack_require__(/*! isarray */ \"./node_modules/isarray/index.js\")\n\nexports.Buffer = Buffer\nexports.SlowBuffer = SlowBuffer\nexports.INSPECT_MAX_BYTES = 50\n\n/**\n * If `Buffer.TYPED_ARRAY_SUPPORT`:\n *   === true    Use Uint8Array implementation (fastest)\n *   === false   Use Object implementation (most compatible, even IE6)\n *\n * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,\n * Opera 11.6+, iOS 4.2+.\n *\n * Due to various browser bugs, sometimes the Object implementation will be used even\n * when the browser supports typed arrays.\n *\n * Note:\n *\n *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,\n *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.\n *\n *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.\n *\n *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of\n *     incorrect length in some situations.\n\n * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they\n * get the Object implementation, which is slower but behaves correctly.\n */\nBuffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined\n  ? global.TYPED_ARRAY_SUPPORT\n  : typedArraySupport()\n\n/*\n * Export kMaxLength after typed array support is determined.\n */\nexports.kMaxLength = kMaxLength()\n\nfunction typedArraySupport () {\n  try {\n    var arr = new Uint8Array(1)\n    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}\n    return arr.foo() === 42 && // typed array instances can be augmented\n        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`\n        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`\n  } catch (e) {\n    return false\n  }\n}\n\nfunction kMaxLength () {\n  return Buffer.TYPED_ARRAY_SUPPORT\n    ? 0x7fffffff\n    : 0x3fffffff\n}\n\nfunction createBuffer (that, length) {\n  if (kMaxLength() < length) {\n    throw new RangeError('Invalid typed array length')\n  }\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    // Return an augmented `Uint8Array` instance, for best performance\n    that = new Uint8Array(length)\n    that.__proto__ = Buffer.prototype\n  } else {\n    // Fallback: Return an object instance of the Buffer class\n    if (that === null) {\n      that = new Buffer(length)\n    }\n    that.length = length\n  }\n\n  return that\n}\n\n/**\n * The Buffer constructor returns instances of `Uint8Array` that have their\n * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of\n * `Uint8Array`, so the returned instances will have all the node `Buffer` methods\n * and the `Uint8Array` methods. Square bracket notation works as expected -- it\n * returns a single octet.\n *\n * The `Uint8Array` prototype remains unmodified.\n */\n\nfunction Buffer (arg, encodingOrOffset, length) {\n  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {\n    return new Buffer(arg, encodingOrOffset, length)\n  }\n\n  // Common case.\n  if (typeof arg === 'number') {\n    if (typeof encodingOrOffset === 'string') {\n      throw new Error(\n        'If encoding is specified then the first argument must be a string'\n      )\n    }\n    return allocUnsafe(this, arg)\n  }\n  return from(this, arg, encodingOrOffset, length)\n}\n\nBuffer.poolSize = 8192 // not used by this implementation\n\n// TODO: Legacy, not needed anymore. Remove in next major version.\nBuffer._augment = function (arr) {\n  arr.__proto__ = Buffer.prototype\n  return arr\n}\n\nfunction from (that, value, encodingOrOffset, length) {\n  if (typeof value === 'number') {\n    throw new TypeError('\"value\" argument must not be a number')\n  }\n\n  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {\n    return fromArrayBuffer(that, value, encodingOrOffset, length)\n  }\n\n  if (typeof value === 'string') {\n    return fromString(that, value, encodingOrOffset)\n  }\n\n  return fromObject(that, value)\n}\n\n/**\n * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError\n * if value is a number.\n * Buffer.from(str[, encoding])\n * Buffer.from(array)\n * Buffer.from(buffer)\n * Buffer.from(arrayBuffer[, byteOffset[, length]])\n **/\nBuffer.from = function (value, encodingOrOffset, length) {\n  return from(null, value, encodingOrOffset, length)\n}\n\nif (Buffer.TYPED_ARRAY_SUPPORT) {\n  Buffer.prototype.__proto__ = Uint8Array.prototype\n  Buffer.__proto__ = Uint8Array\n  if (typeof Symbol !== 'undefined' && Symbol.species &&\n      Buffer[Symbol.species] === Buffer) {\n    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97\n    Object.defineProperty(Buffer, Symbol.species, {\n      value: null,\n      configurable: true\n    })\n  }\n}\n\nfunction assertSize (size) {\n  if (typeof size !== 'number') {\n    throw new TypeError('\"size\" argument must be a number')\n  } else if (size < 0) {\n    throw new RangeError('\"size\" argument must not be negative')\n  }\n}\n\nfunction alloc (that, size, fill, encoding) {\n  assertSize(size)\n  if (size <= 0) {\n    return createBuffer(that, size)\n  }\n  if (fill !== undefined) {\n    // Only pay attention to encoding if it's a string. This\n    // prevents accidentally sending in a number that would\n    // be interpretted as a start offset.\n    return typeof encoding === 'string'\n      ? createBuffer(that, size).fill(fill, encoding)\n      : createBuffer(that, size).fill(fill)\n  }\n  return createBuffer(that, size)\n}\n\n/**\n * Creates a new filled Buffer instance.\n * alloc(size[, fill[, encoding]])\n **/\nBuffer.alloc = function (size, fill, encoding) {\n  return alloc(null, size, fill, encoding)\n}\n\nfunction allocUnsafe (that, size) {\n  assertSize(size)\n  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)\n  if (!Buffer.TYPED_ARRAY_SUPPORT) {\n    for (var i = 0; i < size; ++i) {\n      that[i] = 0\n    }\n  }\n  return that\n}\n\n/**\n * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.\n * */\nBuffer.allocUnsafe = function (size) {\n  return allocUnsafe(null, size)\n}\n/**\n * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.\n */\nBuffer.allocUnsafeSlow = function (size) {\n  return allocUnsafe(null, size)\n}\n\nfunction fromString (that, string, encoding) {\n  if (typeof encoding !== 'string' || encoding === '') {\n    encoding = 'utf8'\n  }\n\n  if (!Buffer.isEncoding(encoding)) {\n    throw new TypeError('\"encoding\" must be a valid string encoding')\n  }\n\n  var length = byteLength(string, encoding) | 0\n  that = createBuffer(that, length)\n\n  var actual = that.write(string, encoding)\n\n  if (actual !== length) {\n    // Writing a hex string, for example, that contains invalid characters will\n    // cause everything after the first invalid character to be ignored. (e.g.\n    // 'abxxcd' will be treated as 'ab')\n    that = that.slice(0, actual)\n  }\n\n  return that\n}\n\nfunction fromArrayLike (that, array) {\n  var length = array.length < 0 ? 0 : checked(array.length) | 0\n  that = createBuffer(that, length)\n  for (var i = 0; i < length; i += 1) {\n    that[i] = array[i] & 255\n  }\n  return that\n}\n\nfunction fromArrayBuffer (that, array, byteOffset, length) {\n  array.byteLength // this throws if `array` is not a valid ArrayBuffer\n\n  if (byteOffset < 0 || array.byteLength < byteOffset) {\n    throw new RangeError('\\'offset\\' is out of bounds')\n  }\n\n  if (array.byteLength < byteOffset + (length || 0)) {\n    throw new RangeError('\\'length\\' is out of bounds')\n  }\n\n  if (byteOffset === undefined && length === undefined) {\n    array = new Uint8Array(array)\n  } else if (length === undefined) {\n    array = new Uint8Array(array, byteOffset)\n  } else {\n    array = new Uint8Array(array, byteOffset, length)\n  }\n\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    // Return an augmented `Uint8Array` instance, for best performance\n    that = array\n    that.__proto__ = Buffer.prototype\n  } else {\n    // Fallback: Return an object instance of the Buffer class\n    that = fromArrayLike(that, array)\n  }\n  return that\n}\n\nfunction fromObject (that, obj) {\n  if (Buffer.isBuffer(obj)) {\n    var len = checked(obj.length) | 0\n    that = createBuffer(that, len)\n\n    if (that.length === 0) {\n      return that\n    }\n\n    obj.copy(that, 0, 0, len)\n    return that\n  }\n\n  if (obj) {\n    if ((typeof ArrayBuffer !== 'undefined' &&\n        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {\n      if (typeof obj.length !== 'number' || isnan(obj.length)) {\n        return createBuffer(that, 0)\n      }\n      return fromArrayLike(that, obj)\n    }\n\n    if (obj.type === 'Buffer' && isArray(obj.data)) {\n      return fromArrayLike(that, obj.data)\n    }\n  }\n\n  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')\n}\n\nfunction checked (length) {\n  // Note: cannot use `length < kMaxLength()` here because that fails when\n  // length is NaN (which is otherwise coerced to zero.)\n  if (length >= kMaxLength()) {\n    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +\n                         'size: 0x' + kMaxLength().toString(16) + ' bytes')\n  }\n  return length | 0\n}\n\nfunction SlowBuffer (length) {\n  if (+length != length) { // eslint-disable-line eqeqeq\n    length = 0\n  }\n  return Buffer.alloc(+length)\n}\n\nBuffer.isBuffer = function isBuffer (b) {\n  return !!(b != null && b._isBuffer)\n}\n\nBuffer.compare = function compare (a, b) {\n  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {\n    throw new TypeError('Arguments must be Buffers')\n  }\n\n  if (a === b) return 0\n\n  var x = a.length\n  var y = b.length\n\n  for (var i = 0, len = Math.min(x, y); i < len; ++i) {\n    if (a[i] !== b[i]) {\n      x = a[i]\n      y = b[i]\n      break\n    }\n  }\n\n  if (x < y) return -1\n  if (y < x) return 1\n  return 0\n}\n\nBuffer.isEncoding = function isEncoding (encoding) {\n  switch (String(encoding).toLowerCase()) {\n    case 'hex':\n    case 'utf8':\n    case 'utf-8':\n    case 'ascii':\n    case 'latin1':\n    case 'binary':\n    case 'base64':\n    case 'ucs2':\n    case 'ucs-2':\n    case 'utf16le':\n    case 'utf-16le':\n      return true\n    default:\n      return false\n  }\n}\n\nBuffer.concat = function concat (list, length) {\n  if (!isArray(list)) {\n    throw new TypeError('\"list\" argument must be an Array of Buffers')\n  }\n\n  if (list.length === 0) {\n    return Buffer.alloc(0)\n  }\n\n  var i\n  if (length === undefined) {\n    length = 0\n    for (i = 0; i < list.length; ++i) {\n      length += list[i].length\n    }\n  }\n\n  var buffer = Buffer.allocUnsafe(length)\n  var pos = 0\n  for (i = 0; i < list.length; ++i) {\n    var buf = list[i]\n    if (!Buffer.isBuffer(buf)) {\n      throw new TypeError('\"list\" argument must be an Array of Buffers')\n    }\n    buf.copy(buffer, pos)\n    pos += buf.length\n  }\n  return buffer\n}\n\nfunction byteLength (string, encoding) {\n  if (Buffer.isBuffer(string)) {\n    return string.length\n  }\n  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&\n      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {\n    return string.byteLength\n  }\n  if (typeof string !== 'string') {\n    string = '' + string\n  }\n\n  var len = string.length\n  if (len === 0) return 0\n\n  // Use a for loop to avoid recursion\n  var loweredCase = false\n  for (;;) {\n    switch (encoding) {\n      case 'ascii':\n      case 'latin1':\n      case 'binary':\n        return len\n      case 'utf8':\n      case 'utf-8':\n      case undefined:\n        return utf8ToBytes(string).length\n      case 'ucs2':\n      case 'ucs-2':\n      case 'utf16le':\n      case 'utf-16le':\n        return len * 2\n      case 'hex':\n        return len >>> 1\n      case 'base64':\n        return base64ToBytes(string).length\n      default:\n        if (loweredCase) return utf8ToBytes(string).length // assume utf8\n        encoding = ('' + encoding).toLowerCase()\n        loweredCase = true\n    }\n  }\n}\nBuffer.byteLength = byteLength\n\nfunction slowToString (encoding, start, end) {\n  var loweredCase = false\n\n  // No need to verify that \"this.length <= MAX_UINT32\" since it's a read-only\n  // property of a typed array.\n\n  // This behaves neither like String nor Uint8Array in that we set start/end\n  // to their upper/lower bounds if the value passed is out of range.\n  // undefined is handled specially as per ECMA-262 6th Edition,\n  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.\n  if (start === undefined || start < 0) {\n    start = 0\n  }\n  // Return early if start > this.length. Done here to prevent potential uint32\n  // coercion fail below.\n  if (start > this.length) {\n    return ''\n  }\n\n  if (end === undefined || end > this.length) {\n    end = this.length\n  }\n\n  if (end <= 0) {\n    return ''\n  }\n\n  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.\n  end >>>= 0\n  start >>>= 0\n\n  if (end <= start) {\n    return ''\n  }\n\n  if (!encoding) encoding = 'utf8'\n\n  while (true) {\n    switch (encoding) {\n      case 'hex':\n        return hexSlice(this, start, end)\n\n      case 'utf8':\n      case 'utf-8':\n        return utf8Slice(this, start, end)\n\n      case 'ascii':\n        return asciiSlice(this, start, end)\n\n      case 'latin1':\n      case 'binary':\n        return latin1Slice(this, start, end)\n\n      case 'base64':\n        return base64Slice(this, start, end)\n\n      case 'ucs2':\n      case 'ucs-2':\n      case 'utf16le':\n      case 'utf-16le':\n        return utf16leSlice(this, start, end)\n\n      default:\n        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)\n        encoding = (encoding + '').toLowerCase()\n        loweredCase = true\n    }\n  }\n}\n\n// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect\n// Buffer instances.\nBuffer.prototype._isBuffer = true\n\nfunction swap (b, n, m) {\n  var i = b[n]\n  b[n] = b[m]\n  b[m] = i\n}\n\nBuffer.prototype.swap16 = function swap16 () {\n  var len = this.length\n  if (len % 2 !== 0) {\n    throw new RangeError('Buffer size must be a multiple of 16-bits')\n  }\n  for (var i = 0; i < len; i += 2) {\n    swap(this, i, i + 1)\n  }\n  return this\n}\n\nBuffer.prototype.swap32 = function swap32 () {\n  var len = this.length\n  if (len % 4 !== 0) {\n    throw new RangeError('Buffer size must be a multiple of 32-bits')\n  }\n  for (var i = 0; i < len; i += 4) {\n    swap(this, i, i + 3)\n    swap(this, i + 1, i + 2)\n  }\n  return this\n}\n\nBuffer.prototype.swap64 = function swap64 () {\n  var len = this.length\n  if (len % 8 !== 0) {\n    throw new RangeError('Buffer size must be a multiple of 64-bits')\n  }\n  for (var i = 0; i < len; i += 8) {\n    swap(this, i, i + 7)\n    swap(this, i + 1, i + 6)\n    swap(this, i + 2, i + 5)\n    swap(this, i + 3, i + 4)\n  }\n  return this\n}\n\nBuffer.prototype.toString = function toString () {\n  var length = this.length | 0\n  if (length === 0) return ''\n  if (arguments.length === 0) return utf8Slice(this, 0, length)\n  return slowToString.apply(this, arguments)\n}\n\nBuffer.prototype.equals = function equals (b) {\n  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')\n  if (this === b) return true\n  return Buffer.compare(this, b) === 0\n}\n\nBuffer.prototype.inspect = function inspect () {\n  var str = ''\n  var max = exports.INSPECT_MAX_BYTES\n  if (this.length > 0) {\n    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')\n    if (this.length > max) str += ' ... '\n  }\n  return '<Buffer ' + str + '>'\n}\n\nBuffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {\n  if (!Buffer.isBuffer(target)) {\n    throw new TypeError('Argument must be a Buffer')\n  }\n\n  if (start === undefined) {\n    start = 0\n  }\n  if (end === undefined) {\n    end = target ? target.length : 0\n  }\n  if (thisStart === undefined) {\n    thisStart = 0\n  }\n  if (thisEnd === undefined) {\n    thisEnd = this.length\n  }\n\n  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {\n    throw new RangeError('out of range index')\n  }\n\n  if (thisStart >= thisEnd && start >= end) {\n    return 0\n  }\n  if (thisStart >= thisEnd) {\n    return -1\n  }\n  if (start >= end) {\n    return 1\n  }\n\n  start >>>= 0\n  end >>>= 0\n  thisStart >>>= 0\n  thisEnd >>>= 0\n\n  if (this === target) return 0\n\n  var x = thisEnd - thisStart\n  var y = end - start\n  var len = Math.min(x, y)\n\n  var thisCopy = this.slice(thisStart, thisEnd)\n  var targetCopy = target.slice(start, end)\n\n  for (var i = 0; i < len; ++i) {\n    if (thisCopy[i] !== targetCopy[i]) {\n      x = thisCopy[i]\n      y = targetCopy[i]\n      break\n    }\n  }\n\n  if (x < y) return -1\n  if (y < x) return 1\n  return 0\n}\n\n// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,\n// OR the last index of `val` in `buffer` at offset <= `byteOffset`.\n//\n// Arguments:\n// - buffer - a Buffer to search\n// - val - a string, Buffer, or number\n// - byteOffset - an index into `buffer`; will be clamped to an int32\n// - encoding - an optional encoding, relevant is val is a string\n// - dir - true for indexOf, false for lastIndexOf\nfunction bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {\n  // Empty buffer means no match\n  if (buffer.length === 0) return -1\n\n  // Normalize byteOffset\n  if (typeof byteOffset === 'string') {\n    encoding = byteOffset\n    byteOffset = 0\n  } else if (byteOffset > 0x7fffffff) {\n    byteOffset = 0x7fffffff\n  } else if (byteOffset < -0x80000000) {\n    byteOffset = -0x80000000\n  }\n  byteOffset = +byteOffset  // Coerce to Number.\n  if (isNaN(byteOffset)) {\n    // byteOffset: it it's undefined, null, NaN, \"foo\", etc, search whole buffer\n    byteOffset = dir ? 0 : (buffer.length - 1)\n  }\n\n  // Normalize byteOffset: negative offsets start from the end of the buffer\n  if (byteOffset < 0) byteOffset = buffer.length + byteOffset\n  if (byteOffset >= buffer.length) {\n    if (dir) return -1\n    else byteOffset = buffer.length - 1\n  } else if (byteOffset < 0) {\n    if (dir) byteOffset = 0\n    else return -1\n  }\n\n  // Normalize val\n  if (typeof val === 'string') {\n    val = Buffer.from(val, encoding)\n  }\n\n  // Finally, search either indexOf (if dir is true) or lastIndexOf\n  if (Buffer.isBuffer(val)) {\n    // Special case: looking for empty string/buffer always fails\n    if (val.length === 0) {\n      return -1\n    }\n    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)\n  } else if (typeof val === 'number') {\n    val = val & 0xFF // Search for a byte value [0-255]\n    if (Buffer.TYPED_ARRAY_SUPPORT &&\n        typeof Uint8Array.prototype.indexOf === 'function') {\n      if (dir) {\n        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)\n      } else {\n        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)\n      }\n    }\n    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)\n  }\n\n  throw new TypeError('val must be string, number or Buffer')\n}\n\nfunction arrayIndexOf (arr, val, byteOffset, encoding, dir) {\n  var indexSize = 1\n  var arrLength = arr.length\n  var valLength = val.length\n\n  if (encoding !== undefined) {\n    encoding = String(encoding).toLowerCase()\n    if (encoding === 'ucs2' || encoding === 'ucs-2' ||\n        encoding === 'utf16le' || encoding === 'utf-16le') {\n      if (arr.length < 2 || val.length < 2) {\n        return -1\n      }\n      indexSize = 2\n      arrLength /= 2\n      valLength /= 2\n      byteOffset /= 2\n    }\n  }\n\n  function read (buf, i) {\n    if (indexSize === 1) {\n      return buf[i]\n    } else {\n      return buf.readUInt16BE(i * indexSize)\n    }\n  }\n\n  var i\n  if (dir) {\n    var foundIndex = -1\n    for (i = byteOffset; i < arrLength; i++) {\n      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {\n        if (foundIndex === -1) foundIndex = i\n        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize\n      } else {\n        if (foundIndex !== -1) i -= i - foundIndex\n        foundIndex = -1\n      }\n    }\n  } else {\n    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength\n    for (i = byteOffset; i >= 0; i--) {\n      var found = true\n      for (var j = 0; j < valLength; j++) {\n        if (read(arr, i + j) !== read(val, j)) {\n          found = false\n          break\n        }\n      }\n      if (found) return i\n    }\n  }\n\n  return -1\n}\n\nBuffer.prototype.includes = function includes (val, byteOffset, encoding) {\n  return this.indexOf(val, byteOffset, encoding) !== -1\n}\n\nBuffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {\n  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)\n}\n\nBuffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {\n  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)\n}\n\nfunction hexWrite (buf, string, offset, length) {\n  offset = Number(offset) || 0\n  var remaining = buf.length - offset\n  if (!length) {\n    length = remaining\n  } else {\n    length = Number(length)\n    if (length > remaining) {\n      length = remaining\n    }\n  }\n\n  // must be an even number of digits\n  var strLen = string.length\n  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')\n\n  if (length > strLen / 2) {\n    length = strLen / 2\n  }\n  for (var i = 0; i < length; ++i) {\n    var parsed = parseInt(string.substr(i * 2, 2), 16)\n    if (isNaN(parsed)) return i\n    buf[offset + i] = parsed\n  }\n  return i\n}\n\nfunction utf8Write (buf, string, offset, length) {\n  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)\n}\n\nfunction asciiWrite (buf, string, offset, length) {\n  return blitBuffer(asciiToBytes(string), buf, offset, length)\n}\n\nfunction latin1Write (buf, string, offset, length) {\n  return asciiWrite(buf, string, offset, length)\n}\n\nfunction base64Write (buf, string, offset, length) {\n  return blitBuffer(base64ToBytes(string), buf, offset, length)\n}\n\nfunction ucs2Write (buf, string, offset, length) {\n  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)\n}\n\nBuffer.prototype.write = function write (string, offset, length, encoding) {\n  // Buffer#write(string)\n  if (offset === undefined) {\n    encoding = 'utf8'\n    length = this.length\n    offset = 0\n  // Buffer#write(string, encoding)\n  } else if (length === undefined && typeof offset === 'string') {\n    encoding = offset\n    length = this.length\n    offset = 0\n  // Buffer#write(string, offset[, length][, encoding])\n  } else if (isFinite(offset)) {\n    offset = offset | 0\n    if (isFinite(length)) {\n      length = length | 0\n      if (encoding === undefined) encoding = 'utf8'\n    } else {\n      encoding = length\n      length = undefined\n    }\n  // legacy write(string, encoding, offset, length) - remove in v0.13\n  } else {\n    throw new Error(\n      'Buffer.write(string, encoding, offset[, length]) is no longer supported'\n    )\n  }\n\n  var remaining = this.length - offset\n  if (length === undefined || length > remaining) length = remaining\n\n  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {\n    throw new RangeError('Attempt to write outside buffer bounds')\n  }\n\n  if (!encoding) encoding = 'utf8'\n\n  var loweredCase = false\n  for (;;) {\n    switch (encoding) {\n      case 'hex':\n        return hexWrite(this, string, offset, length)\n\n      case 'utf8':\n      case 'utf-8':\n        return utf8Write(this, string, offset, length)\n\n      case 'ascii':\n        return asciiWrite(this, string, offset, length)\n\n      case 'latin1':\n      case 'binary':\n        return latin1Write(this, string, offset, length)\n\n      case 'base64':\n        // Warning: maxLength not taken into account in base64Write\n        return base64Write(this, string, offset, length)\n\n      case 'ucs2':\n      case 'ucs-2':\n      case 'utf16le':\n      case 'utf-16le':\n        return ucs2Write(this, string, offset, length)\n\n      default:\n        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)\n        encoding = ('' + encoding).toLowerCase()\n        loweredCase = true\n    }\n  }\n}\n\nBuffer.prototype.toJSON = function toJSON () {\n  return {\n    type: 'Buffer',\n    data: Array.prototype.slice.call(this._arr || this, 0)\n  }\n}\n\nfunction base64Slice (buf, start, end) {\n  if (start === 0 && end === buf.length) {\n    return base64.fromByteArray(buf)\n  } else {\n    return base64.fromByteArray(buf.slice(start, end))\n  }\n}\n\nfunction utf8Slice (buf, start, end) {\n  end = Math.min(buf.length, end)\n  var res = []\n\n  var i = start\n  while (i < end) {\n    var firstByte = buf[i]\n    var codePoint = null\n    var bytesPerSequence = (firstByte > 0xEF) ? 4\n      : (firstByte > 0xDF) ? 3\n      : (firstByte > 0xBF) ? 2\n      : 1\n\n    if (i + bytesPerSequence <= end) {\n      var secondByte, thirdByte, fourthByte, tempCodePoint\n\n      switch (bytesPerSequence) {\n        case 1:\n          if (firstByte < 0x80) {\n            codePoint = firstByte\n          }\n          break\n        case 2:\n          secondByte = buf[i + 1]\n          if ((secondByte & 0xC0) === 0x80) {\n            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)\n            if (tempCodePoint > 0x7F) {\n              codePoint = tempCodePoint\n            }\n          }\n          break\n        case 3:\n          secondByte = buf[i + 1]\n          thirdByte = buf[i + 2]\n          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {\n            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)\n            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {\n              codePoint = tempCodePoint\n            }\n          }\n          break\n        case 4:\n          secondByte = buf[i + 1]\n          thirdByte = buf[i + 2]\n          fourthByte = buf[i + 3]\n          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {\n            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)\n            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {\n              codePoint = tempCodePoint\n            }\n          }\n      }\n    }\n\n    if (codePoint === null) {\n      // we did not generate a valid codePoint so insert a\n      // replacement char (U+FFFD) and advance only 1 byte\n      codePoint = 0xFFFD\n      bytesPerSequence = 1\n    } else if (codePoint > 0xFFFF) {\n      // encode to utf16 (surrogate pair dance)\n      codePoint -= 0x10000\n      res.push(codePoint >>> 10 & 0x3FF | 0xD800)\n      codePoint = 0xDC00 | codePoint & 0x3FF\n    }\n\n    res.push(codePoint)\n    i += bytesPerSequence\n  }\n\n  return decodeCodePointsArray(res)\n}\n\n// Based on http://stackoverflow.com/a/22747272/680742, the browser with\n// the lowest limit is Chrome, with 0x10000 args.\n// We go 1 magnitude less, for safety\nvar MAX_ARGUMENTS_LENGTH = 0x1000\n\nfunction decodeCodePointsArray (codePoints) {\n  var len = codePoints.length\n  if (len <= MAX_ARGUMENTS_LENGTH) {\n    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()\n  }\n\n  // Decode in chunks to avoid \"call stack size exceeded\".\n  var res = ''\n  var i = 0\n  while (i < len) {\n    res += String.fromCharCode.apply(\n      String,\n      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)\n    )\n  }\n  return res\n}\n\nfunction asciiSlice (buf, start, end) {\n  var ret = ''\n  end = Math.min(buf.length, end)\n\n  for (var i = start; i < end; ++i) {\n    ret += String.fromCharCode(buf[i] & 0x7F)\n  }\n  return ret\n}\n\nfunction latin1Slice (buf, start, end) {\n  var ret = ''\n  end = Math.min(buf.length, end)\n\n  for (var i = start; i < end; ++i) {\n    ret += String.fromCharCode(buf[i])\n  }\n  return ret\n}\n\nfunction hexSlice (buf, start, end) {\n  var len = buf.length\n\n  if (!start || start < 0) start = 0\n  if (!end || end < 0 || end > len) end = len\n\n  var out = ''\n  for (var i = start; i < end; ++i) {\n    out += toHex(buf[i])\n  }\n  return out\n}\n\nfunction utf16leSlice (buf, start, end) {\n  var bytes = buf.slice(start, end)\n  var res = ''\n  for (var i = 0; i < bytes.length; i += 2) {\n    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)\n  }\n  return res\n}\n\nBuffer.prototype.slice = function slice (start, end) {\n  var len = this.length\n  start = ~~start\n  end = end === undefined ? len : ~~end\n\n  if (start < 0) {\n    start += len\n    if (start < 0) start = 0\n  } else if (start > len) {\n    start = len\n  }\n\n  if (end < 0) {\n    end += len\n    if (end < 0) end = 0\n  } else if (end > len) {\n    end = len\n  }\n\n  if (end < start) end = start\n\n  var newBuf\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    newBuf = this.subarray(start, end)\n    newBuf.__proto__ = Buffer.prototype\n  } else {\n    var sliceLen = end - start\n    newBuf = new Buffer(sliceLen, undefined)\n    for (var i = 0; i < sliceLen; ++i) {\n      newBuf[i] = this[i + start]\n    }\n  }\n\n  return newBuf\n}\n\n/*\n * Need to make sure that buffer isn't trying to write out of bounds.\n */\nfunction checkOffset (offset, ext, length) {\n  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')\n  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')\n}\n\nBuffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) checkOffset(offset, byteLength, this.length)\n\n  var val = this[offset]\n  var mul = 1\n  var i = 0\n  while (++i < byteLength && (mul *= 0x100)) {\n    val += this[offset + i] * mul\n  }\n\n  return val\n}\n\nBuffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) {\n    checkOffset(offset, byteLength, this.length)\n  }\n\n  var val = this[offset + --byteLength]\n  var mul = 1\n  while (byteLength > 0 && (mul *= 0x100)) {\n    val += this[offset + --byteLength] * mul\n  }\n\n  return val\n}\n\nBuffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 1, this.length)\n  return this[offset]\n}\n\nBuffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  return this[offset] | (this[offset + 1] << 8)\n}\n\nBuffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  return (this[offset] << 8) | this[offset + 1]\n}\n\nBuffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return ((this[offset]) |\n      (this[offset + 1] << 8) |\n      (this[offset + 2] << 16)) +\n      (this[offset + 3] * 0x1000000)\n}\n\nBuffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return (this[offset] * 0x1000000) +\n    ((this[offset + 1] << 16) |\n    (this[offset + 2] << 8) |\n    this[offset + 3])\n}\n\nBuffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) checkOffset(offset, byteLength, this.length)\n\n  var val = this[offset]\n  var mul = 1\n  var i = 0\n  while (++i < byteLength && (mul *= 0x100)) {\n    val += this[offset + i] * mul\n  }\n  mul *= 0x80\n\n  if (val >= mul) val -= Math.pow(2, 8 * byteLength)\n\n  return val\n}\n\nBuffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) checkOffset(offset, byteLength, this.length)\n\n  var i = byteLength\n  var mul = 1\n  var val = this[offset + --i]\n  while (i > 0 && (mul *= 0x100)) {\n    val += this[offset + --i] * mul\n  }\n  mul *= 0x80\n\n  if (val >= mul) val -= Math.pow(2, 8 * byteLength)\n\n  return val\n}\n\nBuffer.prototype.readInt8 = function readInt8 (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 1, this.length)\n  if (!(this[offset] & 0x80)) return (this[offset])\n  return ((0xff - this[offset] + 1) * -1)\n}\n\nBuffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  var val = this[offset] | (this[offset + 1] << 8)\n  return (val & 0x8000) ? val | 0xFFFF0000 : val\n}\n\nBuffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 2, this.length)\n  var val = this[offset + 1] | (this[offset] << 8)\n  return (val & 0x8000) ? val | 0xFFFF0000 : val\n}\n\nBuffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return (this[offset]) |\n    (this[offset + 1] << 8) |\n    (this[offset + 2] << 16) |\n    (this[offset + 3] << 24)\n}\n\nBuffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n\n  return (this[offset] << 24) |\n    (this[offset + 1] << 16) |\n    (this[offset + 2] << 8) |\n    (this[offset + 3])\n}\n\nBuffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n  return ieee754.read(this, offset, true, 23, 4)\n}\n\nBuffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 4, this.length)\n  return ieee754.read(this, offset, false, 23, 4)\n}\n\nBuffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 8, this.length)\n  return ieee754.read(this, offset, true, 52, 8)\n}\n\nBuffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {\n  if (!noAssert) checkOffset(offset, 8, this.length)\n  return ieee754.read(this, offset, false, 52, 8)\n}\n\nfunction checkInt (buf, value, offset, ext, max, min) {\n  if (!Buffer.isBuffer(buf)) throw new TypeError('\"buffer\" argument must be a Buffer instance')\n  if (value > max || value < min) throw new RangeError('\"value\" argument is out of bounds')\n  if (offset + ext > buf.length) throw new RangeError('Index out of range')\n}\n\nBuffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) {\n    var maxBytes = Math.pow(2, 8 * byteLength) - 1\n    checkInt(this, value, offset, byteLength, maxBytes, 0)\n  }\n\n  var mul = 1\n  var i = 0\n  this[offset] = value & 0xFF\n  while (++i < byteLength && (mul *= 0x100)) {\n    this[offset + i] = (value / mul) & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  byteLength = byteLength | 0\n  if (!noAssert) {\n    var maxBytes = Math.pow(2, 8 * byteLength) - 1\n    checkInt(this, value, offset, byteLength, maxBytes, 0)\n  }\n\n  var i = byteLength - 1\n  var mul = 1\n  this[offset + i] = value & 0xFF\n  while (--i >= 0 && (mul *= 0x100)) {\n    this[offset + i] = (value / mul) & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)\n  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)\n  this[offset] = (value & 0xff)\n  return offset + 1\n}\n\nfunction objectWriteUInt16 (buf, value, offset, littleEndian) {\n  if (value < 0) value = 0xffff + value + 1\n  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {\n    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>\n      (littleEndian ? i : 1 - i) * 8\n  }\n}\n\nBuffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value & 0xff)\n    this[offset + 1] = (value >>> 8)\n  } else {\n    objectWriteUInt16(this, value, offset, true)\n  }\n  return offset + 2\n}\n\nBuffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 8)\n    this[offset + 1] = (value & 0xff)\n  } else {\n    objectWriteUInt16(this, value, offset, false)\n  }\n  return offset + 2\n}\n\nfunction objectWriteUInt32 (buf, value, offset, littleEndian) {\n  if (value < 0) value = 0xffffffff + value + 1\n  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {\n    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff\n  }\n}\n\nBuffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset + 3] = (value >>> 24)\n    this[offset + 2] = (value >>> 16)\n    this[offset + 1] = (value >>> 8)\n    this[offset] = (value & 0xff)\n  } else {\n    objectWriteUInt32(this, value, offset, true)\n  }\n  return offset + 4\n}\n\nBuffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 24)\n    this[offset + 1] = (value >>> 16)\n    this[offset + 2] = (value >>> 8)\n    this[offset + 3] = (value & 0xff)\n  } else {\n    objectWriteUInt32(this, value, offset, false)\n  }\n  return offset + 4\n}\n\nBuffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) {\n    var limit = Math.pow(2, 8 * byteLength - 1)\n\n    checkInt(this, value, offset, byteLength, limit - 1, -limit)\n  }\n\n  var i = 0\n  var mul = 1\n  var sub = 0\n  this[offset] = value & 0xFF\n  while (++i < byteLength && (mul *= 0x100)) {\n    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {\n      sub = 1\n    }\n    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) {\n    var limit = Math.pow(2, 8 * byteLength - 1)\n\n    checkInt(this, value, offset, byteLength, limit - 1, -limit)\n  }\n\n  var i = byteLength - 1\n  var mul = 1\n  var sub = 0\n  this[offset + i] = value & 0xFF\n  while (--i >= 0 && (mul *= 0x100)) {\n    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {\n      sub = 1\n    }\n    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF\n  }\n\n  return offset + byteLength\n}\n\nBuffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)\n  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)\n  if (value < 0) value = 0xff + value + 1\n  this[offset] = (value & 0xff)\n  return offset + 1\n}\n\nBuffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value & 0xff)\n    this[offset + 1] = (value >>> 8)\n  } else {\n    objectWriteUInt16(this, value, offset, true)\n  }\n  return offset + 2\n}\n\nBuffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 8)\n    this[offset + 1] = (value & 0xff)\n  } else {\n    objectWriteUInt16(this, value, offset, false)\n  }\n  return offset + 2\n}\n\nBuffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value & 0xff)\n    this[offset + 1] = (value >>> 8)\n    this[offset + 2] = (value >>> 16)\n    this[offset + 3] = (value >>> 24)\n  } else {\n    objectWriteUInt32(this, value, offset, true)\n  }\n  return offset + 4\n}\n\nBuffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {\n  value = +value\n  offset = offset | 0\n  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)\n  if (value < 0) value = 0xffffffff + value + 1\n  if (Buffer.TYPED_ARRAY_SUPPORT) {\n    this[offset] = (value >>> 24)\n    this[offset + 1] = (value >>> 16)\n    this[offset + 2] = (value >>> 8)\n    this[offset + 3] = (value & 0xff)\n  } else {\n    objectWriteUInt32(this, value, offset, false)\n  }\n  return offset + 4\n}\n\nfunction checkIEEE754 (buf, value, offset, ext, max, min) {\n  if (offset + ext > buf.length) throw new RangeError('Index out of range')\n  if (offset < 0) throw new RangeError('Index out of range')\n}\n\nfunction writeFloat (buf, value, offset, littleEndian, noAssert) {\n  if (!noAssert) {\n    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)\n  }\n  ieee754.write(buf, value, offset, littleEndian, 23, 4)\n  return offset + 4\n}\n\nBuffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {\n  return writeFloat(this, value, offset, true, noAssert)\n}\n\nBuffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {\n  return writeFloat(this, value, offset, false, noAssert)\n}\n\nfunction writeDouble (buf, value, offset, littleEndian, noAssert) {\n  if (!noAssert) {\n    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)\n  }\n  ieee754.write(buf, value, offset, littleEndian, 52, 8)\n  return offset + 8\n}\n\nBuffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {\n  return writeDouble(this, value, offset, true, noAssert)\n}\n\nBuffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {\n  return writeDouble(this, value, offset, false, noAssert)\n}\n\n// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)\nBuffer.prototype.copy = function copy (target, targetStart, start, end) {\n  if (!start) start = 0\n  if (!end && end !== 0) end = this.length\n  if (targetStart >= target.length) targetStart = target.length\n  if (!targetStart) targetStart = 0\n  if (end > 0 && end < start) end = start\n\n  // Copy 0 bytes; we're done\n  if (end === start) return 0\n  if (target.length === 0 || this.length === 0) return 0\n\n  // Fatal error conditions\n  if (targetStart < 0) {\n    throw new RangeError('targetStart out of bounds')\n  }\n  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')\n  if (end < 0) throw new RangeError('sourceEnd out of bounds')\n\n  // Are we oob?\n  if (end > this.length) end = this.length\n  if (target.length - targetStart < end - start) {\n    end = target.length - targetStart + start\n  }\n\n  var len = end - start\n  var i\n\n  if (this === target && start < targetStart && targetStart < end) {\n    // descending copy from end\n    for (i = len - 1; i >= 0; --i) {\n      target[i + targetStart] = this[i + start]\n    }\n  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {\n    // ascending copy from start\n    for (i = 0; i < len; ++i) {\n      target[i + targetStart] = this[i + start]\n    }\n  } else {\n    Uint8Array.prototype.set.call(\n      target,\n      this.subarray(start, start + len),\n      targetStart\n    )\n  }\n\n  return len\n}\n\n// Usage:\n//    buffer.fill(number[, offset[, end]])\n//    buffer.fill(buffer[, offset[, end]])\n//    buffer.fill(string[, offset[, end]][, encoding])\nBuffer.prototype.fill = function fill (val, start, end, encoding) {\n  // Handle string cases:\n  if (typeof val === 'string') {\n    if (typeof start === 'string') {\n      encoding = start\n      start = 0\n      end = this.length\n    } else if (typeof end === 'string') {\n      encoding = end\n      end = this.length\n    }\n    if (val.length === 1) {\n      var code = val.charCodeAt(0)\n      if (code < 256) {\n        val = code\n      }\n    }\n    if (encoding !== undefined && typeof encoding !== 'string') {\n      throw new TypeError('encoding must be a string')\n    }\n    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {\n      throw new TypeError('Unknown encoding: ' + encoding)\n    }\n  } else if (typeof val === 'number') {\n    val = val & 255\n  }\n\n  // Invalid ranges are not set to a default, so can range check early.\n  if (start < 0 || this.length < start || this.length < end) {\n    throw new RangeError('Out of range index')\n  }\n\n  if (end <= start) {\n    return this\n  }\n\n  start = start >>> 0\n  end = end === undefined ? this.length : end >>> 0\n\n  if (!val) val = 0\n\n  var i\n  if (typeof val === 'number') {\n    for (i = start; i < end; ++i) {\n      this[i] = val\n    }\n  } else {\n    var bytes = Buffer.isBuffer(val)\n      ? val\n      : utf8ToBytes(new Buffer(val, encoding).toString())\n    var len = bytes.length\n    for (i = 0; i < end - start; ++i) {\n      this[i + start] = bytes[i % len]\n    }\n  }\n\n  return this\n}\n\n// HELPER FUNCTIONS\n// ================\n\nvar INVALID_BASE64_RE = /[^+\\/0-9A-Za-z-_]/g\n\nfunction base64clean (str) {\n  // Node strips out invalid characters like \\n and \\t from the string, base64-js does not\n  str = stringtrim(str).replace(INVALID_BASE64_RE, '')\n  // Node converts strings with length < 2 to ''\n  if (str.length < 2) return ''\n  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not\n  while (str.length % 4 !== 0) {\n    str = str + '='\n  }\n  return str\n}\n\nfunction stringtrim (str) {\n  if (str.trim) return str.trim()\n  return str.replace(/^\\s+|\\s+$/g, '')\n}\n\nfunction toHex (n) {\n  if (n < 16) return '0' + n.toString(16)\n  return n.toString(16)\n}\n\nfunction utf8ToBytes (string, units) {\n  units = units || Infinity\n  var codePoint\n  var length = string.length\n  var leadSurrogate = null\n  var bytes = []\n\n  for (var i = 0; i < length; ++i) {\n    codePoint = string.charCodeAt(i)\n\n    // is surrogate component\n    if (codePoint > 0xD7FF && codePoint < 0xE000) {\n      // last char was a lead\n      if (!leadSurrogate) {\n        // no lead yet\n        if (codePoint > 0xDBFF) {\n          // unexpected trail\n          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n          continue\n        } else if (i + 1 === length) {\n          // unpaired lead\n          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n          continue\n        }\n\n        // valid lead\n        leadSurrogate = codePoint\n\n        continue\n      }\n\n      // 2 leads in a row\n      if (codePoint < 0xDC00) {\n        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n        leadSurrogate = codePoint\n        continue\n      }\n\n      // valid surrogate pair\n      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000\n    } else if (leadSurrogate) {\n      // valid bmp char, but last char was a lead\n      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)\n    }\n\n    leadSurrogate = null\n\n    // encode utf8\n    if (codePoint < 0x80) {\n      if ((units -= 1) < 0) break\n      bytes.push(codePoint)\n    } else if (codePoint < 0x800) {\n      if ((units -= 2) < 0) break\n      bytes.push(\n        codePoint >> 0x6 | 0xC0,\n        codePoint & 0x3F | 0x80\n      )\n    } else if (codePoint < 0x10000) {\n      if ((units -= 3) < 0) break\n      bytes.push(\n        codePoint >> 0xC | 0xE0,\n        codePoint >> 0x6 & 0x3F | 0x80,\n        codePoint & 0x3F | 0x80\n      )\n    } else if (codePoint < 0x110000) {\n      if ((units -= 4) < 0) break\n      bytes.push(\n        codePoint >> 0x12 | 0xF0,\n        codePoint >> 0xC & 0x3F | 0x80,\n        codePoint >> 0x6 & 0x3F | 0x80,\n        codePoint & 0x3F | 0x80\n      )\n    } else {\n      throw new Error('Invalid code point')\n    }\n  }\n\n  return bytes\n}\n\nfunction asciiToBytes (str) {\n  var byteArray = []\n  for (var i = 0; i < str.length; ++i) {\n    // Node's code seems to be doing this and not & 0x7F..\n    byteArray.push(str.charCodeAt(i) & 0xFF)\n  }\n  return byteArray\n}\n\nfunction utf16leToBytes (str, units) {\n  var c, hi, lo\n  var byteArray = []\n  for (var i = 0; i < str.length; ++i) {\n    if ((units -= 2) < 0) break\n\n    c = str.charCodeAt(i)\n    hi = c >> 8\n    lo = c % 256\n    byteArray.push(lo)\n    byteArray.push(hi)\n  }\n\n  return byteArray\n}\n\nfunction base64ToBytes (str) {\n  return base64.toByteArray(base64clean(str))\n}\n\nfunction blitBuffer (src, dst, offset, length) {\n  for (var i = 0; i < length; ++i) {\n    if ((i + offset >= dst.length) || (i >= src.length)) break\n    dst[i + offset] = src[i]\n  }\n  return i\n}\n\nfunction isnan (val) {\n  return val !== val // eslint-disable-line no-self-compare\n}\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/buffer/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/builtin-status-codes/browser.js":
-/*!******************************************************!*\
-  !*** ./node_modules/builtin-status-codes/browser.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = {\n  \"100\": \"Continue\",\n  \"101\": \"Switching Protocols\",\n  \"102\": \"Processing\",\n  \"200\": \"OK\",\n  \"201\": \"Created\",\n  \"202\": \"Accepted\",\n  \"203\": \"Non-Authoritative Information\",\n  \"204\": \"No Content\",\n  \"205\": \"Reset Content\",\n  \"206\": \"Partial Content\",\n  \"207\": \"Multi-Status\",\n  \"208\": \"Already Reported\",\n  \"226\": \"IM Used\",\n  \"300\": \"Multiple Choices\",\n  \"301\": \"Moved Permanently\",\n  \"302\": \"Found\",\n  \"303\": \"See Other\",\n  \"304\": \"Not Modified\",\n  \"305\": \"Use Proxy\",\n  \"307\": \"Temporary Redirect\",\n  \"308\": \"Permanent Redirect\",\n  \"400\": \"Bad Request\",\n  \"401\": \"Unauthorized\",\n  \"402\": \"Payment Required\",\n  \"403\": \"Forbidden\",\n  \"404\": \"Not Found\",\n  \"405\": \"Method Not Allowed\",\n  \"406\": \"Not Acceptable\",\n  \"407\": \"Proxy Authentication Required\",\n  \"408\": \"Request Timeout\",\n  \"409\": \"Conflict\",\n  \"410\": \"Gone\",\n  \"411\": \"Length Required\",\n  \"412\": \"Precondition Failed\",\n  \"413\": \"Payload Too Large\",\n  \"414\": \"URI Too Long\",\n  \"415\": \"Unsupported Media Type\",\n  \"416\": \"Range Not Satisfiable\",\n  \"417\": \"Expectation Failed\",\n  \"418\": \"I'm a teapot\",\n  \"421\": \"Misdirected Request\",\n  \"422\": \"Unprocessable Entity\",\n  \"423\": \"Locked\",\n  \"424\": \"Failed Dependency\",\n  \"425\": \"Unordered Collection\",\n  \"426\": \"Upgrade Required\",\n  \"428\": \"Precondition Required\",\n  \"429\": \"Too Many Requests\",\n  \"431\": \"Request Header Fields Too Large\",\n  \"451\": \"Unavailable For Legal Reasons\",\n  \"500\": \"Internal Server Error\",\n  \"501\": \"Not Implemented\",\n  \"502\": \"Bad Gateway\",\n  \"503\": \"Service Unavailable\",\n  \"504\": \"Gateway Timeout\",\n  \"505\": \"HTTP Version Not Supported\",\n  \"506\": \"Variant Also Negotiates\",\n  \"507\": \"Insufficient Storage\",\n  \"508\": \"Loop Detected\",\n  \"509\": \"Bandwidth Limit Exceeded\",\n  \"510\": \"Not Extended\",\n  \"511\": \"Network Authentication Required\"\n}\n\n\n//# sourceURL=webpack:///./node_modules/builtin-status-codes/browser.js?");
-
-/***/ }),
-
-/***/ "./node_modules/core-util-is/lib/util.js":
-/*!***********************************************!*\
-  !*** ./node_modules/core-util-is/lib/util.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n// NOTE: These type checking functions intentionally don't use `instanceof`\n// because it is fragile and can be easily faked with `Object.create()`.\n\nfunction isArray(arg) {\n  if (Array.isArray) {\n    return Array.isArray(arg);\n  }\n  return objectToString(arg) === '[object Array]';\n}\nexports.isArray = isArray;\n\nfunction isBoolean(arg) {\n  return typeof arg === 'boolean';\n}\nexports.isBoolean = isBoolean;\n\nfunction isNull(arg) {\n  return arg === null;\n}\nexports.isNull = isNull;\n\nfunction isNullOrUndefined(arg) {\n  return arg == null;\n}\nexports.isNullOrUndefined = isNullOrUndefined;\n\nfunction isNumber(arg) {\n  return typeof arg === 'number';\n}\nexports.isNumber = isNumber;\n\nfunction isString(arg) {\n  return typeof arg === 'string';\n}\nexports.isString = isString;\n\nfunction isSymbol(arg) {\n  return typeof arg === 'symbol';\n}\nexports.isSymbol = isSymbol;\n\nfunction isUndefined(arg) {\n  return arg === void 0;\n}\nexports.isUndefined = isUndefined;\n\nfunction isRegExp(re) {\n  return objectToString(re) === '[object RegExp]';\n}\nexports.isRegExp = isRegExp;\n\nfunction isObject(arg) {\n  return typeof arg === 'object' && arg !== null;\n}\nexports.isObject = isObject;\n\nfunction isDate(d) {\n  return objectToString(d) === '[object Date]';\n}\nexports.isDate = isDate;\n\nfunction isError(e) {\n  return (objectToString(e) === '[object Error]' || e instanceof Error);\n}\nexports.isError = isError;\n\nfunction isFunction(arg) {\n  return typeof arg === 'function';\n}\nexports.isFunction = isFunction;\n\nfunction isPrimitive(arg) {\n  return arg === null ||\n         typeof arg === 'boolean' ||\n         typeof arg === 'number' ||\n         typeof arg === 'string' ||\n         typeof arg === 'symbol' ||  // ES6 symbol\n         typeof arg === 'undefined';\n}\nexports.isPrimitive = isPrimitive;\n\nexports.isBuffer = Buffer.isBuffer;\n\nfunction objectToString(o) {\n  return Object.prototype.toString.call(o);\n}\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../buffer/index.js */ \"./node_modules/buffer/index.js\").Buffer))\n\n//# sourceURL=webpack:///./node_modules/core-util-is/lib/util.js?");
-
-/***/ }),
-
-/***/ "./node_modules/events/events.js":
-/*!***************************************!*\
-  !*** ./node_modules/events/events.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\n\nvar R = typeof Reflect === 'object' ? Reflect : null\nvar ReflectApply = R && typeof R.apply === 'function'\n  ? R.apply\n  : function ReflectApply(target, receiver, args) {\n    return Function.prototype.apply.call(target, receiver, args);\n  }\n\nvar ReflectOwnKeys\nif (R && typeof R.ownKeys === 'function') {\n  ReflectOwnKeys = R.ownKeys\n} else if (Object.getOwnPropertySymbols) {\n  ReflectOwnKeys = function ReflectOwnKeys(target) {\n    return Object.getOwnPropertyNames(target)\n      .concat(Object.getOwnPropertySymbols(target));\n  };\n} else {\n  ReflectOwnKeys = function ReflectOwnKeys(target) {\n    return Object.getOwnPropertyNames(target);\n  };\n}\n\nfunction ProcessEmitWarning(warning) {\n  if (console && console.warn) console.warn(warning);\n}\n\nvar NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {\n  return value !== value;\n}\n\nfunction EventEmitter() {\n  EventEmitter.init.call(this);\n}\nmodule.exports = EventEmitter;\nmodule.exports.once = once;\n\n// Backwards-compat with node 0.10.x\nEventEmitter.EventEmitter = EventEmitter;\n\nEventEmitter.prototype._events = undefined;\nEventEmitter.prototype._eventsCount = 0;\nEventEmitter.prototype._maxListeners = undefined;\n\n// By default EventEmitters will print a warning if more than 10 listeners are\n// added to it. This is a useful default which helps finding memory leaks.\nvar defaultMaxListeners = 10;\n\nfunction checkListener(listener) {\n  if (typeof listener !== 'function') {\n    throw new TypeError('The \"listener\" argument must be of type Function. Received type ' + typeof listener);\n  }\n}\n\nObject.defineProperty(EventEmitter, 'defaultMaxListeners', {\n  enumerable: true,\n  get: function() {\n    return defaultMaxListeners;\n  },\n  set: function(arg) {\n    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {\n      throw new RangeError('The value of \"defaultMaxListeners\" is out of range. It must be a non-negative number. Received ' + arg + '.');\n    }\n    defaultMaxListeners = arg;\n  }\n});\n\nEventEmitter.init = function() {\n\n  if (this._events === undefined ||\n      this._events === Object.getPrototypeOf(this)._events) {\n    this._events = Object.create(null);\n    this._eventsCount = 0;\n  }\n\n  this._maxListeners = this._maxListeners || undefined;\n};\n\n// Obviously not all Emitters should be limited to 10. This function allows\n// that to be increased. Set to zero for unlimited.\nEventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {\n  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {\n    throw new RangeError('The value of \"n\" is out of range. It must be a non-negative number. Received ' + n + '.');\n  }\n  this._maxListeners = n;\n  return this;\n};\n\nfunction _getMaxListeners(that) {\n  if (that._maxListeners === undefined)\n    return EventEmitter.defaultMaxListeners;\n  return that._maxListeners;\n}\n\nEventEmitter.prototype.getMaxListeners = function getMaxListeners() {\n  return _getMaxListeners(this);\n};\n\nEventEmitter.prototype.emit = function emit(type) {\n  var args = [];\n  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);\n  var doError = (type === 'error');\n\n  var events = this._events;\n  if (events !== undefined)\n    doError = (doError && events.error === undefined);\n  else if (!doError)\n    return false;\n\n  // If there is no 'error' event listener then throw.\n  if (doError) {\n    var er;\n    if (args.length > 0)\n      er = args[0];\n    if (er instanceof Error) {\n      // Note: The comments on the `throw` lines are intentional, they show\n      // up in Node's output if this results in an unhandled exception.\n      throw er; // Unhandled 'error' event\n    }\n    // At least give some kind of context to the user\n    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));\n    err.context = er;\n    throw err; // Unhandled 'error' event\n  }\n\n  var handler = events[type];\n\n  if (handler === undefined)\n    return false;\n\n  if (typeof handler === 'function') {\n    ReflectApply(handler, this, args);\n  } else {\n    var len = handler.length;\n    var listeners = arrayClone(handler, len);\n    for (var i = 0; i < len; ++i)\n      ReflectApply(listeners[i], this, args);\n  }\n\n  return true;\n};\n\nfunction _addListener(target, type, listener, prepend) {\n  var m;\n  var events;\n  var existing;\n\n  checkListener(listener);\n\n  events = target._events;\n  if (events === undefined) {\n    events = target._events = Object.create(null);\n    target._eventsCount = 0;\n  } else {\n    // To avoid recursion in the case that type === \"newListener\"! Before\n    // adding it to the listeners, first emit \"newListener\".\n    if (events.newListener !== undefined) {\n      target.emit('newListener', type,\n                  listener.listener ? listener.listener : listener);\n\n      // Re-assign `events` because a newListener handler could have caused the\n      // this._events to be assigned to a new object\n      events = target._events;\n    }\n    existing = events[type];\n  }\n\n  if (existing === undefined) {\n    // Optimize the case of one listener. Don't need the extra array object.\n    existing = events[type] = listener;\n    ++target._eventsCount;\n  } else {\n    if (typeof existing === 'function') {\n      // Adding the second element, need to change to array.\n      existing = events[type] =\n        prepend ? [listener, existing] : [existing, listener];\n      // If we've already got an array, just append.\n    } else if (prepend) {\n      existing.unshift(listener);\n    } else {\n      existing.push(listener);\n    }\n\n    // Check for listener leak\n    m = _getMaxListeners(target);\n    if (m > 0 && existing.length > m && !existing.warned) {\n      existing.warned = true;\n      // No error code for this since it is a Warning\n      // eslint-disable-next-line no-restricted-syntax\n      var w = new Error('Possible EventEmitter memory leak detected. ' +\n                          existing.length + ' ' + String(type) + ' listeners ' +\n                          'added. Use emitter.setMaxListeners() to ' +\n                          'increase limit');\n      w.name = 'MaxListenersExceededWarning';\n      w.emitter = target;\n      w.type = type;\n      w.count = existing.length;\n      ProcessEmitWarning(w);\n    }\n  }\n\n  return target;\n}\n\nEventEmitter.prototype.addListener = function addListener(type, listener) {\n  return _addListener(this, type, listener, false);\n};\n\nEventEmitter.prototype.on = EventEmitter.prototype.addListener;\n\nEventEmitter.prototype.prependListener =\n    function prependListener(type, listener) {\n      return _addListener(this, type, listener, true);\n    };\n\nfunction onceWrapper() {\n  if (!this.fired) {\n    this.target.removeListener(this.type, this.wrapFn);\n    this.fired = true;\n    if (arguments.length === 0)\n      return this.listener.call(this.target);\n    return this.listener.apply(this.target, arguments);\n  }\n}\n\nfunction _onceWrap(target, type, listener) {\n  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };\n  var wrapped = onceWrapper.bind(state);\n  wrapped.listener = listener;\n  state.wrapFn = wrapped;\n  return wrapped;\n}\n\nEventEmitter.prototype.once = function once(type, listener) {\n  checkListener(listener);\n  this.on(type, _onceWrap(this, type, listener));\n  return this;\n};\n\nEventEmitter.prototype.prependOnceListener =\n    function prependOnceListener(type, listener) {\n      checkListener(listener);\n      this.prependListener(type, _onceWrap(this, type, listener));\n      return this;\n    };\n\n// Emits a 'removeListener' event if and only if the listener was removed.\nEventEmitter.prototype.removeListener =\n    function removeListener(type, listener) {\n      var list, events, position, i, originalListener;\n\n      checkListener(listener);\n\n      events = this._events;\n      if (events === undefined)\n        return this;\n\n      list = events[type];\n      if (list === undefined)\n        return this;\n\n      if (list === listener || list.listener === listener) {\n        if (--this._eventsCount === 0)\n          this._events = Object.create(null);\n        else {\n          delete events[type];\n          if (events.removeListener)\n            this.emit('removeListener', type, list.listener || listener);\n        }\n      } else if (typeof list !== 'function') {\n        position = -1;\n\n        for (i = list.length - 1; i >= 0; i--) {\n          if (list[i] === listener || list[i].listener === listener) {\n            originalListener = list[i].listener;\n            position = i;\n            break;\n          }\n        }\n\n        if (position < 0)\n          return this;\n\n        if (position === 0)\n          list.shift();\n        else {\n          spliceOne(list, position);\n        }\n\n        if (list.length === 1)\n          events[type] = list[0];\n\n        if (events.removeListener !== undefined)\n          this.emit('removeListener', type, originalListener || listener);\n      }\n\n      return this;\n    };\n\nEventEmitter.prototype.off = EventEmitter.prototype.removeListener;\n\nEventEmitter.prototype.removeAllListeners =\n    function removeAllListeners(type) {\n      var listeners, events, i;\n\n      events = this._events;\n      if (events === undefined)\n        return this;\n\n      // not listening for removeListener, no need to emit\n      if (events.removeListener === undefined) {\n        if (arguments.length === 0) {\n          this._events = Object.create(null);\n          this._eventsCount = 0;\n        } else if (events[type] !== undefined) {\n          if (--this._eventsCount === 0)\n            this._events = Object.create(null);\n          else\n            delete events[type];\n        }\n        return this;\n      }\n\n      // emit removeListener for all listeners on all events\n      if (arguments.length === 0) {\n        var keys = Object.keys(events);\n        var key;\n        for (i = 0; i < keys.length; ++i) {\n          key = keys[i];\n          if (key === 'removeListener') continue;\n          this.removeAllListeners(key);\n        }\n        this.removeAllListeners('removeListener');\n        this._events = Object.create(null);\n        this._eventsCount = 0;\n        return this;\n      }\n\n      listeners = events[type];\n\n      if (typeof listeners === 'function') {\n        this.removeListener(type, listeners);\n      } else if (listeners !== undefined) {\n        // LIFO order\n        for (i = listeners.length - 1; i >= 0; i--) {\n          this.removeListener(type, listeners[i]);\n        }\n      }\n\n      return this;\n    };\n\nfunction _listeners(target, type, unwrap) {\n  var events = target._events;\n\n  if (events === undefined)\n    return [];\n\n  var evlistener = events[type];\n  if (evlistener === undefined)\n    return [];\n\n  if (typeof evlistener === 'function')\n    return unwrap ? [evlistener.listener || evlistener] : [evlistener];\n\n  return unwrap ?\n    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);\n}\n\nEventEmitter.prototype.listeners = function listeners(type) {\n  return _listeners(this, type, true);\n};\n\nEventEmitter.prototype.rawListeners = function rawListeners(type) {\n  return _listeners(this, type, false);\n};\n\nEventEmitter.listenerCount = function(emitter, type) {\n  if (typeof emitter.listenerCount === 'function') {\n    return emitter.listenerCount(type);\n  } else {\n    return listenerCount.call(emitter, type);\n  }\n};\n\nEventEmitter.prototype.listenerCount = listenerCount;\nfunction listenerCount(type) {\n  var events = this._events;\n\n  if (events !== undefined) {\n    var evlistener = events[type];\n\n    if (typeof evlistener === 'function') {\n      return 1;\n    } else if (evlistener !== undefined) {\n      return evlistener.length;\n    }\n  }\n\n  return 0;\n}\n\nEventEmitter.prototype.eventNames = function eventNames() {\n  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];\n};\n\nfunction arrayClone(arr, n) {\n  var copy = new Array(n);\n  for (var i = 0; i < n; ++i)\n    copy[i] = arr[i];\n  return copy;\n}\n\nfunction spliceOne(list, index) {\n  for (; index + 1 < list.length; index++)\n    list[index] = list[index + 1];\n  list.pop();\n}\n\nfunction unwrapListeners(arr) {\n  var ret = new Array(arr.length);\n  for (var i = 0; i < ret.length; ++i) {\n    ret[i] = arr[i].listener || arr[i];\n  }\n  return ret;\n}\n\nfunction once(emitter, name) {\n  return new Promise(function (resolve, reject) {\n    function eventListener() {\n      if (errorListener !== undefined) {\n        emitter.removeListener('error', errorListener);\n      }\n      resolve([].slice.call(arguments));\n    };\n    var errorListener;\n\n    // Adding an error listener is not optional because\n    // if an error is thrown on an event emitter we cannot\n    // guarantee that the actual event we are waiting will\n    // be fired. The result could be a silent way to create\n    // memory or file descriptor leaks, which is something\n    // we should avoid.\n    if (name !== 'error') {\n      errorListener = function errorListener(err) {\n        emitter.removeListener(name, eventListener);\n        reject(err);\n      };\n\n      emitter.once('error', errorListener);\n    }\n\n    emitter.once(name, eventListener);\n  });\n}\n\n\n//# sourceURL=webpack:///./node_modules/events/events.js?");
-
-/***/ }),
-
-/***/ "./node_modules/https-browserify/index.js":
-/*!************************************************!*\
-  !*** ./node_modules/https-browserify/index.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var http = __webpack_require__(/*! http */ \"./node_modules/stream-http/index.js\")\nvar url = __webpack_require__(/*! url */ \"./node_modules/url/url.js\")\n\nvar https = module.exports\n\nfor (var key in http) {\n  if (http.hasOwnProperty(key)) https[key] = http[key]\n}\n\nhttps.request = function (params, cb) {\n  params = validateParams(params)\n  return http.request.call(this, params, cb)\n}\n\nhttps.get = function (params, cb) {\n  params = validateParams(params)\n  return http.get.call(this, params, cb)\n}\n\nfunction validateParams (params) {\n  if (typeof params === 'string') {\n    params = url.parse(params)\n  }\n  if (!params.protocol) {\n    params.protocol = 'https:'\n  }\n  if (params.protocol !== 'https:') {\n    throw new Error('Protocol \"' + params.protocol + '\" not supported. Expected \"https:\"')\n  }\n  return params\n}\n\n\n//# sourceURL=webpack:///./node_modules/https-browserify/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/ieee754/index.js":
-/*!***************************************!*\
-  !*** ./node_modules/ieee754/index.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("exports.read = function (buffer, offset, isLE, mLen, nBytes) {\n  var e, m\n  var eLen = (nBytes * 8) - mLen - 1\n  var eMax = (1 << eLen) - 1\n  var eBias = eMax >> 1\n  var nBits = -7\n  var i = isLE ? (nBytes - 1) : 0\n  var d = isLE ? -1 : 1\n  var s = buffer[offset + i]\n\n  i += d\n\n  e = s & ((1 << (-nBits)) - 1)\n  s >>= (-nBits)\n  nBits += eLen\n  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}\n\n  m = e & ((1 << (-nBits)) - 1)\n  e >>= (-nBits)\n  nBits += mLen\n  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}\n\n  if (e === 0) {\n    e = 1 - eBias\n  } else if (e === eMax) {\n    return m ? NaN : ((s ? -1 : 1) * Infinity)\n  } else {\n    m = m + Math.pow(2, mLen)\n    e = e - eBias\n  }\n  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)\n}\n\nexports.write = function (buffer, value, offset, isLE, mLen, nBytes) {\n  var e, m, c\n  var eLen = (nBytes * 8) - mLen - 1\n  var eMax = (1 << eLen) - 1\n  var eBias = eMax >> 1\n  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)\n  var i = isLE ? 0 : (nBytes - 1)\n  var d = isLE ? 1 : -1\n  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0\n\n  value = Math.abs(value)\n\n  if (isNaN(value) || value === Infinity) {\n    m = isNaN(value) ? 1 : 0\n    e = eMax\n  } else {\n    e = Math.floor(Math.log(value) / Math.LN2)\n    if (value * (c = Math.pow(2, -e)) < 1) {\n      e--\n      c *= 2\n    }\n    if (e + eBias >= 1) {\n      value += rt / c\n    } else {\n      value += rt * Math.pow(2, 1 - eBias)\n    }\n    if (value * c >= 2) {\n      e++\n      c /= 2\n    }\n\n    if (e + eBias >= eMax) {\n      m = 0\n      e = eMax\n    } else if (e + eBias >= 1) {\n      m = ((value * c) - 1) * Math.pow(2, mLen)\n      e = e + eBias\n    } else {\n      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)\n      e = 0\n    }\n  }\n\n  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}\n\n  e = (e << mLen) | m\n  eLen += mLen\n  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}\n\n  buffer[offset + i - d] |= s * 128\n}\n\n\n//# sourceURL=webpack:///./node_modules/ieee754/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/inherits/inherits_browser.js":
-/*!***************************************************!*\
-  !*** ./node_modules/inherits/inherits_browser.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("if (typeof Object.create === 'function') {\n  // implementation from standard node.js 'util' module\n  module.exports = function inherits(ctor, superCtor) {\n    if (superCtor) {\n      ctor.super_ = superCtor\n      ctor.prototype = Object.create(superCtor.prototype, {\n        constructor: {\n          value: ctor,\n          enumerable: false,\n          writable: true,\n          configurable: true\n        }\n      })\n    }\n  };\n} else {\n  // old school shim for old browsers\n  module.exports = function inherits(ctor, superCtor) {\n    if (superCtor) {\n      ctor.super_ = superCtor\n      var TempCtor = function () {}\n      TempCtor.prototype = superCtor.prototype\n      ctor.prototype = new TempCtor()\n      ctor.prototype.constructor = ctor\n    }\n  }\n}\n\n\n//# sourceURL=webpack:///./node_modules/inherits/inherits_browser.js?");
-
-/***/ }),
-
-/***/ "./node_modules/isarray/index.js":
-/*!***************************************!*\
-  !*** ./node_modules/isarray/index.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("var toString = {}.toString;\n\nmodule.exports = Array.isArray || function (arr) {\n  return toString.call(arr) == '[object Array]';\n};\n\n\n//# sourceURL=webpack:///./node_modules/isarray/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/node-libs-browser/node_modules/punycode/punycode.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/node-libs-browser/node_modules/punycode/punycode.js ***!
-  \**************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.1 by @mathias */\n;(function(root) {\n\n\t/** Detect free variables */\n\tvar freeExports =  true && exports &&\n\t\t!exports.nodeType && exports;\n\tvar freeModule =  true && module &&\n\t\t!module.nodeType && module;\n\tvar freeGlobal = typeof global == 'object' && global;\n\tif (\n\t\tfreeGlobal.global === freeGlobal ||\n\t\tfreeGlobal.window === freeGlobal ||\n\t\tfreeGlobal.self === freeGlobal\n\t) {\n\t\troot = freeGlobal;\n\t}\n\n\t/**\n\t * The `punycode` object.\n\t * @name punycode\n\t * @type Object\n\t */\n\tvar punycode,\n\n\t/** Highest positive signed 32-bit float value */\n\tmaxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1\n\n\t/** Bootstring parameters */\n\tbase = 36,\n\ttMin = 1,\n\ttMax = 26,\n\tskew = 38,\n\tdamp = 700,\n\tinitialBias = 72,\n\tinitialN = 128, // 0x80\n\tdelimiter = '-', // '\\x2D'\n\n\t/** Regular expressions */\n\tregexPunycode = /^xn--/,\n\tregexNonASCII = /[^\\x20-\\x7E]/, // unprintable ASCII chars + non-ASCII chars\n\tregexSeparators = /[\\x2E\\u3002\\uFF0E\\uFF61]/g, // RFC 3490 separators\n\n\t/** Error messages */\n\terrors = {\n\t\t'overflow': 'Overflow: input needs wider integers to process',\n\t\t'not-basic': 'Illegal input >= 0x80 (not a basic code point)',\n\t\t'invalid-input': 'Invalid input'\n\t},\n\n\t/** Convenience shortcuts */\n\tbaseMinusTMin = base - tMin,\n\tfloor = Math.floor,\n\tstringFromCharCode = String.fromCharCode,\n\n\t/** Temporary variable */\n\tkey;\n\n\t/*--------------------------------------------------------------------------*/\n\n\t/**\n\t * A generic error utility function.\n\t * @private\n\t * @param {String} type The error type.\n\t * @returns {Error} Throws a `RangeError` with the applicable error message.\n\t */\n\tfunction error(type) {\n\t\tthrow new RangeError(errors[type]);\n\t}\n\n\t/**\n\t * A generic `Array#map` utility function.\n\t * @private\n\t * @param {Array} array The array to iterate over.\n\t * @param {Function} callback The function that gets called for every array\n\t * item.\n\t * @returns {Array} A new array of values returned by the callback function.\n\t */\n\tfunction map(array, fn) {\n\t\tvar length = array.length;\n\t\tvar result = [];\n\t\twhile (length--) {\n\t\t\tresult[length] = fn(array[length]);\n\t\t}\n\t\treturn result;\n\t}\n\n\t/**\n\t * A simple `Array#map`-like wrapper to work with domain name strings or email\n\t * addresses.\n\t * @private\n\t * @param {String} domain The domain name or email address.\n\t * @param {Function} callback The function that gets called for every\n\t * character.\n\t * @returns {Array} A new string of characters returned by the callback\n\t * function.\n\t */\n\tfunction mapDomain(string, fn) {\n\t\tvar parts = string.split('@');\n\t\tvar result = '';\n\t\tif (parts.length > 1) {\n\t\t\t// In email addresses, only the domain name should be punycoded. Leave\n\t\t\t// the local part (i.e. everything up to `@`) intact.\n\t\t\tresult = parts[0] + '@';\n\t\t\tstring = parts[1];\n\t\t}\n\t\t// Avoid `split(regex)` for IE8 compatibility. See #17.\n\t\tstring = string.replace(regexSeparators, '\\x2E');\n\t\tvar labels = string.split('.');\n\t\tvar encoded = map(labels, fn).join('.');\n\t\treturn result + encoded;\n\t}\n\n\t/**\n\t * Creates an array containing the numeric code points of each Unicode\n\t * character in the string. While JavaScript uses UCS-2 internally,\n\t * this function will convert a pair of surrogate halves (each of which\n\t * UCS-2 exposes as separate characters) into a single code point,\n\t * matching UTF-16.\n\t * @see `punycode.ucs2.encode`\n\t * @see <https://mathiasbynens.be/notes/javascript-encoding>\n\t * @memberOf punycode.ucs2\n\t * @name decode\n\t * @param {String} string The Unicode input string (UCS-2).\n\t * @returns {Array} The new array of code points.\n\t */\n\tfunction ucs2decode(string) {\n\t\tvar output = [],\n\t\t    counter = 0,\n\t\t    length = string.length,\n\t\t    value,\n\t\t    extra;\n\t\twhile (counter < length) {\n\t\t\tvalue = string.charCodeAt(counter++);\n\t\t\tif (value >= 0xD800 && value <= 0xDBFF && counter < length) {\n\t\t\t\t// high surrogate, and there is a next character\n\t\t\t\textra = string.charCodeAt(counter++);\n\t\t\t\tif ((extra & 0xFC00) == 0xDC00) { // low surrogate\n\t\t\t\t\toutput.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);\n\t\t\t\t} else {\n\t\t\t\t\t// unmatched surrogate; only append this code unit, in case the next\n\t\t\t\t\t// code unit is the high surrogate of a surrogate pair\n\t\t\t\t\toutput.push(value);\n\t\t\t\t\tcounter--;\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\toutput.push(value);\n\t\t\t}\n\t\t}\n\t\treturn output;\n\t}\n\n\t/**\n\t * Creates a string based on an array of numeric code points.\n\t * @see `punycode.ucs2.decode`\n\t * @memberOf punycode.ucs2\n\t * @name encode\n\t * @param {Array} codePoints The array of numeric code points.\n\t * @returns {String} The new Unicode string (UCS-2).\n\t */\n\tfunction ucs2encode(array) {\n\t\treturn map(array, function(value) {\n\t\t\tvar output = '';\n\t\t\tif (value > 0xFFFF) {\n\t\t\t\tvalue -= 0x10000;\n\t\t\t\toutput += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);\n\t\t\t\tvalue = 0xDC00 | value & 0x3FF;\n\t\t\t}\n\t\t\toutput += stringFromCharCode(value);\n\t\t\treturn output;\n\t\t}).join('');\n\t}\n\n\t/**\n\t * Converts a basic code point into a digit/integer.\n\t * @see `digitToBasic()`\n\t * @private\n\t * @param {Number} codePoint The basic numeric code point value.\n\t * @returns {Number} The numeric value of a basic code point (for use in\n\t * representing integers) in the range `0` to `base - 1`, or `base` if\n\t * the code point does not represent a value.\n\t */\n\tfunction basicToDigit(codePoint) {\n\t\tif (codePoint - 48 < 10) {\n\t\t\treturn codePoint - 22;\n\t\t}\n\t\tif (codePoint - 65 < 26) {\n\t\t\treturn codePoint - 65;\n\t\t}\n\t\tif (codePoint - 97 < 26) {\n\t\t\treturn codePoint - 97;\n\t\t}\n\t\treturn base;\n\t}\n\n\t/**\n\t * Converts a digit/integer into a basic code point.\n\t * @see `basicToDigit()`\n\t * @private\n\t * @param {Number} digit The numeric value of a basic code point.\n\t * @returns {Number} The basic code point whose value (when used for\n\t * representing integers) is `digit`, which needs to be in the range\n\t * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is\n\t * used; else, the lowercase form is used. The behavior is undefined\n\t * if `flag` is non-zero and `digit` has no uppercase form.\n\t */\n\tfunction digitToBasic(digit, flag) {\n\t\t//  0..25 map to ASCII a..z or A..Z\n\t\t// 26..35 map to ASCII 0..9\n\t\treturn digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);\n\t}\n\n\t/**\n\t * Bias adaptation function as per section 3.4 of RFC 3492.\n\t * https://tools.ietf.org/html/rfc3492#section-3.4\n\t * @private\n\t */\n\tfunction adapt(delta, numPoints, firstTime) {\n\t\tvar k = 0;\n\t\tdelta = firstTime ? floor(delta / damp) : delta >> 1;\n\t\tdelta += floor(delta / numPoints);\n\t\tfor (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {\n\t\t\tdelta = floor(delta / baseMinusTMin);\n\t\t}\n\t\treturn floor(k + (baseMinusTMin + 1) * delta / (delta + skew));\n\t}\n\n\t/**\n\t * Converts a Punycode string of ASCII-only symbols to a string of Unicode\n\t * symbols.\n\t * @memberOf punycode\n\t * @param {String} input The Punycode string of ASCII-only symbols.\n\t * @returns {String} The resulting string of Unicode symbols.\n\t */\n\tfunction decode(input) {\n\t\t// Don't use UCS-2\n\t\tvar output = [],\n\t\t    inputLength = input.length,\n\t\t    out,\n\t\t    i = 0,\n\t\t    n = initialN,\n\t\t    bias = initialBias,\n\t\t    basic,\n\t\t    j,\n\t\t    index,\n\t\t    oldi,\n\t\t    w,\n\t\t    k,\n\t\t    digit,\n\t\t    t,\n\t\t    /** Cached calculation results */\n\t\t    baseMinusT;\n\n\t\t// Handle the basic code points: let `basic` be the number of input code\n\t\t// points before the last delimiter, or `0` if there is none, then copy\n\t\t// the first basic code points to the output.\n\n\t\tbasic = input.lastIndexOf(delimiter);\n\t\tif (basic < 0) {\n\t\t\tbasic = 0;\n\t\t}\n\n\t\tfor (j = 0; j < basic; ++j) {\n\t\t\t// if it's not a basic code point\n\t\t\tif (input.charCodeAt(j) >= 0x80) {\n\t\t\t\terror('not-basic');\n\t\t\t}\n\t\t\toutput.push(input.charCodeAt(j));\n\t\t}\n\n\t\t// Main decoding loop: start just after the last delimiter if any basic code\n\t\t// points were copied; start at the beginning otherwise.\n\n\t\tfor (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {\n\n\t\t\t// `index` is the index of the next character to be consumed.\n\t\t\t// Decode a generalized variable-length integer into `delta`,\n\t\t\t// which gets added to `i`. The overflow checking is easier\n\t\t\t// if we increase `i` as we go, then subtract off its starting\n\t\t\t// value at the end to obtain `delta`.\n\t\t\tfor (oldi = i, w = 1, k = base; /* no condition */; k += base) {\n\n\t\t\t\tif (index >= inputLength) {\n\t\t\t\t\terror('invalid-input');\n\t\t\t\t}\n\n\t\t\t\tdigit = basicToDigit(input.charCodeAt(index++));\n\n\t\t\t\tif (digit >= base || digit > floor((maxInt - i) / w)) {\n\t\t\t\t\terror('overflow');\n\t\t\t\t}\n\n\t\t\t\ti += digit * w;\n\t\t\t\tt = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);\n\n\t\t\t\tif (digit < t) {\n\t\t\t\t\tbreak;\n\t\t\t\t}\n\n\t\t\t\tbaseMinusT = base - t;\n\t\t\t\tif (w > floor(maxInt / baseMinusT)) {\n\t\t\t\t\terror('overflow');\n\t\t\t\t}\n\n\t\t\t\tw *= baseMinusT;\n\n\t\t\t}\n\n\t\t\tout = output.length + 1;\n\t\t\tbias = adapt(i - oldi, out, oldi == 0);\n\n\t\t\t// `i` was supposed to wrap around from `out` to `0`,\n\t\t\t// incrementing `n` each time, so we'll fix that now:\n\t\t\tif (floor(i / out) > maxInt - n) {\n\t\t\t\terror('overflow');\n\t\t\t}\n\n\t\t\tn += floor(i / out);\n\t\t\ti %= out;\n\n\t\t\t// Insert `n` at position `i` of the output\n\t\t\toutput.splice(i++, 0, n);\n\n\t\t}\n\n\t\treturn ucs2encode(output);\n\t}\n\n\t/**\n\t * Converts a string of Unicode symbols (e.g. a domain name label) to a\n\t * Punycode string of ASCII-only symbols.\n\t * @memberOf punycode\n\t * @param {String} input The string of Unicode symbols.\n\t * @returns {String} The resulting Punycode string of ASCII-only symbols.\n\t */\n\tfunction encode(input) {\n\t\tvar n,\n\t\t    delta,\n\t\t    handledCPCount,\n\t\t    basicLength,\n\t\t    bias,\n\t\t    j,\n\t\t    m,\n\t\t    q,\n\t\t    k,\n\t\t    t,\n\t\t    currentValue,\n\t\t    output = [],\n\t\t    /** `inputLength` will hold the number of code points in `input`. */\n\t\t    inputLength,\n\t\t    /** Cached calculation results */\n\t\t    handledCPCountPlusOne,\n\t\t    baseMinusT,\n\t\t    qMinusT;\n\n\t\t// Convert the input in UCS-2 to Unicode\n\t\tinput = ucs2decode(input);\n\n\t\t// Cache the length\n\t\tinputLength = input.length;\n\n\t\t// Initialize the state\n\t\tn = initialN;\n\t\tdelta = 0;\n\t\tbias = initialBias;\n\n\t\t// Handle the basic code points\n\t\tfor (j = 0; j < inputLength; ++j) {\n\t\t\tcurrentValue = input[j];\n\t\t\tif (currentValue < 0x80) {\n\t\t\t\toutput.push(stringFromCharCode(currentValue));\n\t\t\t}\n\t\t}\n\n\t\thandledCPCount = basicLength = output.length;\n\n\t\t// `handledCPCount` is the number of code points that have been handled;\n\t\t// `basicLength` is the number of basic code points.\n\n\t\t// Finish the basic string - if it is not empty - with a delimiter\n\t\tif (basicLength) {\n\t\t\toutput.push(delimiter);\n\t\t}\n\n\t\t// Main encoding loop:\n\t\twhile (handledCPCount < inputLength) {\n\n\t\t\t// All non-basic code points < n have been handled already. Find the next\n\t\t\t// larger one:\n\t\t\tfor (m = maxInt, j = 0; j < inputLength; ++j) {\n\t\t\t\tcurrentValue = input[j];\n\t\t\t\tif (currentValue >= n && currentValue < m) {\n\t\t\t\t\tm = currentValue;\n\t\t\t\t}\n\t\t\t}\n\n\t\t\t// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,\n\t\t\t// but guard against overflow\n\t\t\thandledCPCountPlusOne = handledCPCount + 1;\n\t\t\tif (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {\n\t\t\t\terror('overflow');\n\t\t\t}\n\n\t\t\tdelta += (m - n) * handledCPCountPlusOne;\n\t\t\tn = m;\n\n\t\t\tfor (j = 0; j < inputLength; ++j) {\n\t\t\t\tcurrentValue = input[j];\n\n\t\t\t\tif (currentValue < n && ++delta > maxInt) {\n\t\t\t\t\terror('overflow');\n\t\t\t\t}\n\n\t\t\t\tif (currentValue == n) {\n\t\t\t\t\t// Represent delta as a generalized variable-length integer\n\t\t\t\t\tfor (q = delta, k = base; /* no condition */; k += base) {\n\t\t\t\t\t\tt = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);\n\t\t\t\t\t\tif (q < t) {\n\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tqMinusT = q - t;\n\t\t\t\t\t\tbaseMinusT = base - t;\n\t\t\t\t\t\toutput.push(\n\t\t\t\t\t\t\tstringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))\n\t\t\t\t\t\t);\n\t\t\t\t\t\tq = floor(qMinusT / baseMinusT);\n\t\t\t\t\t}\n\n\t\t\t\t\toutput.push(stringFromCharCode(digitToBasic(q, 0)));\n\t\t\t\t\tbias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);\n\t\t\t\t\tdelta = 0;\n\t\t\t\t\t++handledCPCount;\n\t\t\t\t}\n\t\t\t}\n\n\t\t\t++delta;\n\t\t\t++n;\n\n\t\t}\n\t\treturn output.join('');\n\t}\n\n\t/**\n\t * Converts a Punycode string representing a domain name or an email address\n\t * to Unicode. Only the Punycoded parts of the input will be converted, i.e.\n\t * it doesn't matter if you call it on a string that has already been\n\t * converted to Unicode.\n\t * @memberOf punycode\n\t * @param {String} input The Punycoded domain name or email address to\n\t * convert to Unicode.\n\t * @returns {String} The Unicode representation of the given Punycode\n\t * string.\n\t */\n\tfunction toUnicode(input) {\n\t\treturn mapDomain(input, function(string) {\n\t\t\treturn regexPunycode.test(string)\n\t\t\t\t? decode(string.slice(4).toLowerCase())\n\t\t\t\t: string;\n\t\t});\n\t}\n\n\t/**\n\t * Converts a Unicode string representing a domain name or an email address to\n\t * Punycode. Only the non-ASCII parts of the domain name will be converted,\n\t * i.e. it doesn't matter if you call it with a domain that's already in\n\t * ASCII.\n\t * @memberOf punycode\n\t * @param {String} input The domain name or email address to convert, as a\n\t * Unicode string.\n\t * @returns {String} The Punycode representation of the given domain name or\n\t * email address.\n\t */\n\tfunction toASCII(input) {\n\t\treturn mapDomain(input, function(string) {\n\t\t\treturn regexNonASCII.test(string)\n\t\t\t\t? 'xn--' + encode(string)\n\t\t\t\t: string;\n\t\t});\n\t}\n\n\t/*--------------------------------------------------------------------------*/\n\n\t/** Define the public API */\n\tpunycode = {\n\t\t/**\n\t\t * A string representing the current Punycode.js version number.\n\t\t * @memberOf punycode\n\t\t * @type String\n\t\t */\n\t\t'version': '1.4.1',\n\t\t/**\n\t\t * An object of methods to convert from JavaScript's internal character\n\t\t * representation (UCS-2) to Unicode code points, and back.\n\t\t * @see <https://mathiasbynens.be/notes/javascript-encoding>\n\t\t * @memberOf punycode\n\t\t * @type Object\n\t\t */\n\t\t'ucs2': {\n\t\t\t'decode': ucs2decode,\n\t\t\t'encode': ucs2encode\n\t\t},\n\t\t'decode': decode,\n\t\t'encode': encode,\n\t\t'toASCII': toASCII,\n\t\t'toUnicode': toUnicode\n\t};\n\n\t/** Expose `punycode` */\n\t// Some AMD build optimizers, like r.js, check for specific condition patterns\n\t// like the following:\n\tif (\n\t\ttrue\n\t) {\n\t\t!(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {\n\t\t\treturn punycode;\n\t\t}).call(exports, __webpack_require__, exports, module),\n\t\t\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));\n\t} else {}\n\n}(this));\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ \"./node_modules/webpack/buildin/module.js\")(module), __webpack_require__(/*! ./../../../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/node-libs-browser/node_modules/punycode/punycode.js?");
-
-/***/ }),
-
-/***/ "./node_modules/os-browserify/browser.js":
-/*!***********************************************!*\
-  !*** ./node_modules/os-browserify/browser.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("exports.endianness = function () { return 'LE' };\n\nexports.hostname = function () {\n    if (typeof location !== 'undefined') {\n        return location.hostname\n    }\n    else return '';\n};\n\nexports.loadavg = function () { return [] };\n\nexports.uptime = function () { return 0 };\n\nexports.freemem = function () {\n    return Number.MAX_VALUE;\n};\n\nexports.totalmem = function () {\n    return Number.MAX_VALUE;\n};\n\nexports.cpus = function () { return [] };\n\nexports.type = function () { return 'Browser' };\n\nexports.release = function () {\n    if (typeof navigator !== 'undefined') {\n        return navigator.appVersion;\n    }\n    return '';\n};\n\nexports.networkInterfaces\n= exports.getNetworkInterfaces\n= function () { return {} };\n\nexports.arch = function () { return 'javascript' };\n\nexports.platform = function () { return 'browser' };\n\nexports.tmpdir = exports.tmpDir = function () {\n    return '/tmp';\n};\n\nexports.EOL = '\\n';\n\nexports.homedir = function () {\n\treturn '/'\n};\n\n\n//# sourceURL=webpack:///./node_modules/os-browserify/browser.js?");
-
-/***/ }),
-
-/***/ "./node_modules/process-nextick-args/index.js":
-/*!****************************************************!*\
-  !*** ./node_modules/process-nextick-args/index.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("/* WEBPACK VAR INJECTION */(function(process) {\n\nif (typeof process === 'undefined' ||\n    !process.version ||\n    process.version.indexOf('v0.') === 0 ||\n    process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {\n  module.exports = { nextTick: nextTick };\n} else {\n  module.exports = process\n}\n\nfunction nextTick(fn, arg1, arg2, arg3) {\n  if (typeof fn !== 'function') {\n    throw new TypeError('\"callback\" argument must be a function');\n  }\n  var len = arguments.length;\n  var args, i;\n  switch (len) {\n  case 0:\n  case 1:\n    return process.nextTick(fn);\n  case 2:\n    return process.nextTick(function afterTickOne() {\n      fn.call(null, arg1);\n    });\n  case 3:\n    return process.nextTick(function afterTickTwo() {\n      fn.call(null, arg1, arg2);\n    });\n  case 4:\n    return process.nextTick(function afterTickThree() {\n      fn.call(null, arg1, arg2, arg3);\n    });\n  default:\n    args = new Array(len - 1);\n    i = 0;\n    while (i < args.length) {\n      args[i++] = arguments[i];\n    }\n    return process.nextTick(function afterTick() {\n      fn.apply(null, args);\n    });\n  }\n}\n\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../process/browser.js */ \"./node_modules/process/browser.js\")))\n\n//# sourceURL=webpack:///./node_modules/process-nextick-args/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/process/browser.js":
-/*!*****************************************!*\
-  !*** ./node_modules/process/browser.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("// shim for using process in browser\nvar process = module.exports = {};\n\n// cached from whatever global is present so that test runners that stub it\n// don't break things.  But we need to wrap it in a try catch in case it is\n// wrapped in strict mode code which doesn't define any globals.  It's inside a\n// function because try/catches deoptimize in certain engines.\n\nvar cachedSetTimeout;\nvar cachedClearTimeout;\n\nfunction defaultSetTimout() {\n    throw new Error('setTimeout has not been defined');\n}\nfunction defaultClearTimeout () {\n    throw new Error('clearTimeout has not been defined');\n}\n(function () {\n    try {\n        if (typeof setTimeout === 'function') {\n            cachedSetTimeout = setTimeout;\n        } else {\n            cachedSetTimeout = defaultSetTimout;\n        }\n    } catch (e) {\n        cachedSetTimeout = defaultSetTimout;\n    }\n    try {\n        if (typeof clearTimeout === 'function') {\n            cachedClearTimeout = clearTimeout;\n        } else {\n            cachedClearTimeout = defaultClearTimeout;\n        }\n    } catch (e) {\n        cachedClearTimeout = defaultClearTimeout;\n    }\n} ())\nfunction runTimeout(fun) {\n    if (cachedSetTimeout === setTimeout) {\n        //normal enviroments in sane situations\n        return setTimeout(fun, 0);\n    }\n    // if setTimeout wasn't available but was latter defined\n    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {\n        cachedSetTimeout = setTimeout;\n        return setTimeout(fun, 0);\n    }\n    try {\n        // when when somebody has screwed with setTimeout but no I.E. maddness\n        return cachedSetTimeout(fun, 0);\n    } catch(e){\n        try {\n            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally\n            return cachedSetTimeout.call(null, fun, 0);\n        } catch(e){\n            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error\n            return cachedSetTimeout.call(this, fun, 0);\n        }\n    }\n\n\n}\nfunction runClearTimeout(marker) {\n    if (cachedClearTimeout === clearTimeout) {\n        //normal enviroments in sane situations\n        return clearTimeout(marker);\n    }\n    // if clearTimeout wasn't available but was latter defined\n    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {\n        cachedClearTimeout = clearTimeout;\n        return clearTimeout(marker);\n    }\n    try {\n        // when when somebody has screwed with setTimeout but no I.E. maddness\n        return cachedClearTimeout(marker);\n    } catch (e){\n        try {\n            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally\n            return cachedClearTimeout.call(null, marker);\n        } catch (e){\n            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.\n            // Some versions of I.E. have different rules for clearTimeout vs setTimeout\n            return cachedClearTimeout.call(this, marker);\n        }\n    }\n\n\n\n}\nvar queue = [];\nvar draining = false;\nvar currentQueue;\nvar queueIndex = -1;\n\nfunction cleanUpNextTick() {\n    if (!draining || !currentQueue) {\n        return;\n    }\n    draining = false;\n    if (currentQueue.length) {\n        queue = currentQueue.concat(queue);\n    } else {\n        queueIndex = -1;\n    }\n    if (queue.length) {\n        drainQueue();\n    }\n}\n\nfunction drainQueue() {\n    if (draining) {\n        return;\n    }\n    var timeout = runTimeout(cleanUpNextTick);\n    draining = true;\n\n    var len = queue.length;\n    while(len) {\n        currentQueue = queue;\n        queue = [];\n        while (++queueIndex < len) {\n            if (currentQueue) {\n                currentQueue[queueIndex].run();\n            }\n        }\n        queueIndex = -1;\n        len = queue.length;\n    }\n    currentQueue = null;\n    draining = false;\n    runClearTimeout(timeout);\n}\n\nprocess.nextTick = function (fun) {\n    var args = new Array(arguments.length - 1);\n    if (arguments.length > 1) {\n        for (var i = 1; i < arguments.length; i++) {\n            args[i - 1] = arguments[i];\n        }\n    }\n    queue.push(new Item(fun, args));\n    if (queue.length === 1 && !draining) {\n        runTimeout(drainQueue);\n    }\n};\n\n// v8 likes predictible objects\nfunction Item(fun, array) {\n    this.fun = fun;\n    this.array = array;\n}\nItem.prototype.run = function () {\n    this.fun.apply(null, this.array);\n};\nprocess.title = 'browser';\nprocess.browser = true;\nprocess.env = {};\nprocess.argv = [];\nprocess.version = ''; // empty string to avoid regexp issues\nprocess.versions = {};\n\nfunction noop() {}\n\nprocess.on = noop;\nprocess.addListener = noop;\nprocess.once = noop;\nprocess.off = noop;\nprocess.removeListener = noop;\nprocess.removeAllListeners = noop;\nprocess.emit = noop;\nprocess.prependListener = noop;\nprocess.prependOnceListener = noop;\n\nprocess.listeners = function (name) { return [] }\n\nprocess.binding = function (name) {\n    throw new Error('process.binding is not supported');\n};\n\nprocess.cwd = function () { return '/' };\nprocess.chdir = function (dir) {\n    throw new Error('process.chdir is not supported');\n};\nprocess.umask = function() { return 0; };\n\n\n//# sourceURL=webpack:///./node_modules/process/browser.js?");
-
-/***/ }),
-
-/***/ "./node_modules/querystring-es3/decode.js":
-/*!************************************************!*\
-  !*** ./node_modules/querystring-es3/decode.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\n\n// If obj.hasOwnProperty has been overridden, then calling\n// obj.hasOwnProperty(prop) will break.\n// See: https://github.com/joyent/node/issues/1707\nfunction hasOwnProperty(obj, prop) {\n  return Object.prototype.hasOwnProperty.call(obj, prop);\n}\n\nmodule.exports = function(qs, sep, eq, options) {\n  sep = sep || '&';\n  eq = eq || '=';\n  var obj = {};\n\n  if (typeof qs !== 'string' || qs.length === 0) {\n    return obj;\n  }\n\n  var regexp = /\\+/g;\n  qs = qs.split(sep);\n\n  var maxKeys = 1000;\n  if (options && typeof options.maxKeys === 'number') {\n    maxKeys = options.maxKeys;\n  }\n\n  var len = qs.length;\n  // maxKeys <= 0 means that we should not limit keys count\n  if (maxKeys > 0 && len > maxKeys) {\n    len = maxKeys;\n  }\n\n  for (var i = 0; i < len; ++i) {\n    var x = qs[i].replace(regexp, '%20'),\n        idx = x.indexOf(eq),\n        kstr, vstr, k, v;\n\n    if (idx >= 0) {\n      kstr = x.substr(0, idx);\n      vstr = x.substr(idx + 1);\n    } else {\n      kstr = x;\n      vstr = '';\n    }\n\n    k = decodeURIComponent(kstr);\n    v = decodeURIComponent(vstr);\n\n    if (!hasOwnProperty(obj, k)) {\n      obj[k] = v;\n    } else if (isArray(obj[k])) {\n      obj[k].push(v);\n    } else {\n      obj[k] = [obj[k], v];\n    }\n  }\n\n  return obj;\n};\n\nvar isArray = Array.isArray || function (xs) {\n  return Object.prototype.toString.call(xs) === '[object Array]';\n};\n\n\n//# sourceURL=webpack:///./node_modules/querystring-es3/decode.js?");
-
-/***/ }),
-
-/***/ "./node_modules/querystring-es3/encode.js":
-/*!************************************************!*\
-  !*** ./node_modules/querystring-es3/encode.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\n\nvar stringifyPrimitive = function(v) {\n  switch (typeof v) {\n    case 'string':\n      return v;\n\n    case 'boolean':\n      return v ? 'true' : 'false';\n\n    case 'number':\n      return isFinite(v) ? v : '';\n\n    default:\n      return '';\n  }\n};\n\nmodule.exports = function(obj, sep, eq, name) {\n  sep = sep || '&';\n  eq = eq || '=';\n  if (obj === null) {\n    obj = undefined;\n  }\n\n  if (typeof obj === 'object') {\n    return map(objectKeys(obj), function(k) {\n      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;\n      if (isArray(obj[k])) {\n        return map(obj[k], function(v) {\n          return ks + encodeURIComponent(stringifyPrimitive(v));\n        }).join(sep);\n      } else {\n        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));\n      }\n    }).join(sep);\n\n  }\n\n  if (!name) return '';\n  return encodeURIComponent(stringifyPrimitive(name)) + eq +\n         encodeURIComponent(stringifyPrimitive(obj));\n};\n\nvar isArray = Array.isArray || function (xs) {\n  return Object.prototype.toString.call(xs) === '[object Array]';\n};\n\nfunction map (xs, f) {\n  if (xs.map) return xs.map(f);\n  var res = [];\n  for (var i = 0; i < xs.length; i++) {\n    res.push(f(xs[i], i));\n  }\n  return res;\n}\n\nvar objectKeys = Object.keys || function (obj) {\n  var res = [];\n  for (var key in obj) {\n    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);\n  }\n  return res;\n};\n\n\n//# sourceURL=webpack:///./node_modules/querystring-es3/encode.js?");
-
-/***/ }),
-
-/***/ "./node_modules/querystring-es3/index.js":
-/*!***********************************************!*\
-  !*** ./node_modules/querystring-es3/index.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nexports.decode = exports.parse = __webpack_require__(/*! ./decode */ \"./node_modules/querystring-es3/decode.js\");\nexports.encode = exports.stringify = __webpack_require__(/*! ./encode */ \"./node_modules/querystring-es3/encode.js\");\n\n\n//# sourceURL=webpack:///./node_modules/querystring-es3/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/_stream_duplex.js":
-/*!************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/_stream_duplex.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n// a duplex stream is just a stream that is both readable and writable.\n// Since JS doesn't have multiple prototypal inheritance, this class\n// prototypally inherits from Readable, and then parasitically from\n// Writable.\n\n\n\n/*<replacement>*/\n\nvar pna = __webpack_require__(/*! process-nextick-args */ \"./node_modules/process-nextick-args/index.js\");\n/*</replacement>*/\n\n/*<replacement>*/\nvar objectKeys = Object.keys || function (obj) {\n  var keys = [];\n  for (var key in obj) {\n    keys.push(key);\n  }return keys;\n};\n/*</replacement>*/\n\nmodule.exports = Duplex;\n\n/*<replacement>*/\nvar util = Object.create(__webpack_require__(/*! core-util-is */ \"./node_modules/core-util-is/lib/util.js\"));\nutil.inherits = __webpack_require__(/*! inherits */ \"./node_modules/inherits/inherits_browser.js\");\n/*</replacement>*/\n\nvar Readable = __webpack_require__(/*! ./_stream_readable */ \"./node_modules/readable-stream/lib/_stream_readable.js\");\nvar Writable = __webpack_require__(/*! ./_stream_writable */ \"./node_modules/readable-stream/lib/_stream_writable.js\");\n\nutil.inherits(Duplex, Readable);\n\n{\n  // avoid scope creep, the keys array can then be collected\n  var keys = objectKeys(Writable.prototype);\n  for (var v = 0; v < keys.length; v++) {\n    var method = keys[v];\n    if (!Duplex.prototype[method]) Duplex.prototype[method] = Writable.prototype[method];\n  }\n}\n\nfunction Duplex(options) {\n  if (!(this instanceof Duplex)) return new Duplex(options);\n\n  Readable.call(this, options);\n  Writable.call(this, options);\n\n  if (options && options.readable === false) this.readable = false;\n\n  if (options && options.writable === false) this.writable = false;\n\n  this.allowHalfOpen = true;\n  if (options && options.allowHalfOpen === false) this.allowHalfOpen = false;\n\n  this.once('end', onend);\n}\n\nObject.defineProperty(Duplex.prototype, 'writableHighWaterMark', {\n  // making it explicit this property is not enumerable\n  // because otherwise some prototype manipulation in\n  // userland will fail\n  enumerable: false,\n  get: function () {\n    return this._writableState.highWaterMark;\n  }\n});\n\n// the no-half-open enforcer\nfunction onend() {\n  // if we allow half-open state, or if the writable side ended,\n  // then we're ok.\n  if (this.allowHalfOpen || this._writableState.ended) return;\n\n  // no more data can be written.\n  // But allow more writes to happen in this tick.\n  pna.nextTick(onEndNT, this);\n}\n\nfunction onEndNT(self) {\n  self.end();\n}\n\nObject.defineProperty(Duplex.prototype, 'destroyed', {\n  get: function () {\n    if (this._readableState === undefined || this._writableState === undefined) {\n      return false;\n    }\n    return this._readableState.destroyed && this._writableState.destroyed;\n  },\n  set: function (value) {\n    // we ignore the value if the stream\n    // has not been initialized yet\n    if (this._readableState === undefined || this._writableState === undefined) {\n      return;\n    }\n\n    // backward compatibility, the user is explicitly\n    // managing destroyed\n    this._readableState.destroyed = value;\n    this._writableState.destroyed = value;\n  }\n});\n\nDuplex.prototype._destroy = function (err, cb) {\n  this.push(null);\n  this.end();\n\n  pna.nextTick(cb, err);\n};\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/_stream_duplex.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/_stream_passthrough.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/_stream_passthrough.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n// a passthrough stream.\n// basically just the most minimal sort of Transform stream.\n// Every written chunk gets output as-is.\n\n\n\nmodule.exports = PassThrough;\n\nvar Transform = __webpack_require__(/*! ./_stream_transform */ \"./node_modules/readable-stream/lib/_stream_transform.js\");\n\n/*<replacement>*/\nvar util = Object.create(__webpack_require__(/*! core-util-is */ \"./node_modules/core-util-is/lib/util.js\"));\nutil.inherits = __webpack_require__(/*! inherits */ \"./node_modules/inherits/inherits_browser.js\");\n/*</replacement>*/\n\nutil.inherits(PassThrough, Transform);\n\nfunction PassThrough(options) {\n  if (!(this instanceof PassThrough)) return new PassThrough(options);\n\n  Transform.call(this, options);\n}\n\nPassThrough.prototype._transform = function (chunk, encoding, cb) {\n  cb(null, chunk);\n};\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/_stream_passthrough.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/_stream_readable.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/_stream_readable.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\n\n/*<replacement>*/\n\nvar pna = __webpack_require__(/*! process-nextick-args */ \"./node_modules/process-nextick-args/index.js\");\n/*</replacement>*/\n\nmodule.exports = Readable;\n\n/*<replacement>*/\nvar isArray = __webpack_require__(/*! isarray */ \"./node_modules/isarray/index.js\");\n/*</replacement>*/\n\n/*<replacement>*/\nvar Duplex;\n/*</replacement>*/\n\nReadable.ReadableState = ReadableState;\n\n/*<replacement>*/\nvar EE = __webpack_require__(/*! events */ \"./node_modules/events/events.js\").EventEmitter;\n\nvar EElistenerCount = function (emitter, type) {\n  return emitter.listeners(type).length;\n};\n/*</replacement>*/\n\n/*<replacement>*/\nvar Stream = __webpack_require__(/*! ./internal/streams/stream */ \"./node_modules/readable-stream/lib/internal/streams/stream-browser.js\");\n/*</replacement>*/\n\n/*<replacement>*/\n\nvar Buffer = __webpack_require__(/*! safe-buffer */ \"./node_modules/safe-buffer/index.js\").Buffer;\nvar OurUint8Array = global.Uint8Array || function () {};\nfunction _uint8ArrayToBuffer(chunk) {\n  return Buffer.from(chunk);\n}\nfunction _isUint8Array(obj) {\n  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;\n}\n\n/*</replacement>*/\n\n/*<replacement>*/\nvar util = Object.create(__webpack_require__(/*! core-util-is */ \"./node_modules/core-util-is/lib/util.js\"));\nutil.inherits = __webpack_require__(/*! inherits */ \"./node_modules/inherits/inherits_browser.js\");\n/*</replacement>*/\n\n/*<replacement>*/\nvar debugUtil = __webpack_require__(/*! util */ 0);\nvar debug = void 0;\nif (debugUtil && debugUtil.debuglog) {\n  debug = debugUtil.debuglog('stream');\n} else {\n  debug = function () {};\n}\n/*</replacement>*/\n\nvar BufferList = __webpack_require__(/*! ./internal/streams/BufferList */ \"./node_modules/readable-stream/lib/internal/streams/BufferList.js\");\nvar destroyImpl = __webpack_require__(/*! ./internal/streams/destroy */ \"./node_modules/readable-stream/lib/internal/streams/destroy.js\");\nvar StringDecoder;\n\nutil.inherits(Readable, Stream);\n\nvar kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];\n\nfunction prependListener(emitter, event, fn) {\n  // Sadly this is not cacheable as some libraries bundle their own\n  // event emitter implementation with them.\n  if (typeof emitter.prependListener === 'function') return emitter.prependListener(event, fn);\n\n  // This is a hack to make sure that our error handler is attached before any\n  // userland ones.  NEVER DO THIS. This is here only because this code needs\n  // to continue to work with older versions of Node.js that do not include\n  // the prependListener() method. The goal is to eventually remove this hack.\n  if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isArray(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];\n}\n\nfunction ReadableState(options, stream) {\n  Duplex = Duplex || __webpack_require__(/*! ./_stream_duplex */ \"./node_modules/readable-stream/lib/_stream_duplex.js\");\n\n  options = options || {};\n\n  // Duplex streams are both readable and writable, but share\n  // the same options object.\n  // However, some cases require setting options to different\n  // values for the readable and the writable sides of the duplex stream.\n  // These options can be provided separately as readableXXX and writableXXX.\n  var isDuplex = stream instanceof Duplex;\n\n  // object stream flag. Used to make read(n) ignore n and to\n  // make all the buffer merging and length checks go away\n  this.objectMode = !!options.objectMode;\n\n  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode;\n\n  // the point at which it stops calling _read() to fill the buffer\n  // Note: 0 is a valid value, means \"don't call _read preemptively ever\"\n  var hwm = options.highWaterMark;\n  var readableHwm = options.readableHighWaterMark;\n  var defaultHwm = this.objectMode ? 16 : 16 * 1024;\n\n  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (readableHwm || readableHwm === 0)) this.highWaterMark = readableHwm;else this.highWaterMark = defaultHwm;\n\n  // cast to ints.\n  this.highWaterMark = Math.floor(this.highWaterMark);\n\n  // A linked list is used to store data chunks instead of an array because the\n  // linked list can remove elements from the beginning faster than\n  // array.shift()\n  this.buffer = new BufferList();\n  this.length = 0;\n  this.pipes = null;\n  this.pipesCount = 0;\n  this.flowing = null;\n  this.ended = false;\n  this.endEmitted = false;\n  this.reading = false;\n\n  // a flag to be able to tell if the event 'readable'/'data' is emitted\n  // immediately, or on a later tick.  We set this to true at first, because\n  // any actions that shouldn't happen until \"later\" should generally also\n  // not happen before the first read call.\n  this.sync = true;\n\n  // whenever we return null, then we set a flag to say\n  // that we're awaiting a 'readable' event emission.\n  this.needReadable = false;\n  this.emittedReadable = false;\n  this.readableListening = false;\n  this.resumeScheduled = false;\n\n  // has it been destroyed\n  this.destroyed = false;\n\n  // Crypto is kind of old and crusty.  Historically, its default string\n  // encoding is 'binary' so we have to make this configurable.\n  // Everything else in the universe uses 'utf8', though.\n  this.defaultEncoding = options.defaultEncoding || 'utf8';\n\n  // the number of writers that are awaiting a drain event in .pipe()s\n  this.awaitDrain = 0;\n\n  // if true, a maybeReadMore has been scheduled\n  this.readingMore = false;\n\n  this.decoder = null;\n  this.encoding = null;\n  if (options.encoding) {\n    if (!StringDecoder) StringDecoder = __webpack_require__(/*! string_decoder/ */ \"./node_modules/string_decoder/lib/string_decoder.js\").StringDecoder;\n    this.decoder = new StringDecoder(options.encoding);\n    this.encoding = options.encoding;\n  }\n}\n\nfunction Readable(options) {\n  Duplex = Duplex || __webpack_require__(/*! ./_stream_duplex */ \"./node_modules/readable-stream/lib/_stream_duplex.js\");\n\n  if (!(this instanceof Readable)) return new Readable(options);\n\n  this._readableState = new ReadableState(options, this);\n\n  // legacy\n  this.readable = true;\n\n  if (options) {\n    if (typeof options.read === 'function') this._read = options.read;\n\n    if (typeof options.destroy === 'function') this._destroy = options.destroy;\n  }\n\n  Stream.call(this);\n}\n\nObject.defineProperty(Readable.prototype, 'destroyed', {\n  get: function () {\n    if (this._readableState === undefined) {\n      return false;\n    }\n    return this._readableState.destroyed;\n  },\n  set: function (value) {\n    // we ignore the value if the stream\n    // has not been initialized yet\n    if (!this._readableState) {\n      return;\n    }\n\n    // backward compatibility, the user is explicitly\n    // managing destroyed\n    this._readableState.destroyed = value;\n  }\n});\n\nReadable.prototype.destroy = destroyImpl.destroy;\nReadable.prototype._undestroy = destroyImpl.undestroy;\nReadable.prototype._destroy = function (err, cb) {\n  this.push(null);\n  cb(err);\n};\n\n// Manually shove something into the read() buffer.\n// This returns true if the highWaterMark has not been hit yet,\n// similar to how Writable.write() returns true if you should\n// write() some more.\nReadable.prototype.push = function (chunk, encoding) {\n  var state = this._readableState;\n  var skipChunkCheck;\n\n  if (!state.objectMode) {\n    if (typeof chunk === 'string') {\n      encoding = encoding || state.defaultEncoding;\n      if (encoding !== state.encoding) {\n        chunk = Buffer.from(chunk, encoding);\n        encoding = '';\n      }\n      skipChunkCheck = true;\n    }\n  } else {\n    skipChunkCheck = true;\n  }\n\n  return readableAddChunk(this, chunk, encoding, false, skipChunkCheck);\n};\n\n// Unshift should *always* be something directly out of read()\nReadable.prototype.unshift = function (chunk) {\n  return readableAddChunk(this, chunk, null, true, false);\n};\n\nfunction readableAddChunk(stream, chunk, encoding, addToFront, skipChunkCheck) {\n  var state = stream._readableState;\n  if (chunk === null) {\n    state.reading = false;\n    onEofChunk(stream, state);\n  } else {\n    var er;\n    if (!skipChunkCheck) er = chunkInvalid(state, chunk);\n    if (er) {\n      stream.emit('error', er);\n    } else if (state.objectMode || chunk && chunk.length > 0) {\n      if (typeof chunk !== 'string' && !state.objectMode && Object.getPrototypeOf(chunk) !== Buffer.prototype) {\n        chunk = _uint8ArrayToBuffer(chunk);\n      }\n\n      if (addToFront) {\n        if (state.endEmitted) stream.emit('error', new Error('stream.unshift() after end event'));else addChunk(stream, state, chunk, true);\n      } else if (state.ended) {\n        stream.emit('error', new Error('stream.push() after EOF'));\n      } else {\n        state.reading = false;\n        if (state.decoder && !encoding) {\n          chunk = state.decoder.write(chunk);\n          if (state.objectMode || chunk.length !== 0) addChunk(stream, state, chunk, false);else maybeReadMore(stream, state);\n        } else {\n          addChunk(stream, state, chunk, false);\n        }\n      }\n    } else if (!addToFront) {\n      state.reading = false;\n    }\n  }\n\n  return needMoreData(state);\n}\n\nfunction addChunk(stream, state, chunk, addToFront) {\n  if (state.flowing && state.length === 0 && !state.sync) {\n    stream.emit('data', chunk);\n    stream.read(0);\n  } else {\n    // update the buffer info.\n    state.length += state.objectMode ? 1 : chunk.length;\n    if (addToFront) state.buffer.unshift(chunk);else state.buffer.push(chunk);\n\n    if (state.needReadable) emitReadable(stream);\n  }\n  maybeReadMore(stream, state);\n}\n\nfunction chunkInvalid(state, chunk) {\n  var er;\n  if (!_isUint8Array(chunk) && typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {\n    er = new TypeError('Invalid non-string/buffer chunk');\n  }\n  return er;\n}\n\n// if it's past the high water mark, we can push in some more.\n// Also, if we have no data yet, we can stand some\n// more bytes.  This is to work around cases where hwm=0,\n// such as the repl.  Also, if the push() triggered a\n// readable event, and the user called read(largeNumber) such that\n// needReadable was set, then we ought to push more, so that another\n// 'readable' event will be triggered.\nfunction needMoreData(state) {\n  return !state.ended && (state.needReadable || state.length < state.highWaterMark || state.length === 0);\n}\n\nReadable.prototype.isPaused = function () {\n  return this._readableState.flowing === false;\n};\n\n// backwards compatibility.\nReadable.prototype.setEncoding = function (enc) {\n  if (!StringDecoder) StringDecoder = __webpack_require__(/*! string_decoder/ */ \"./node_modules/string_decoder/lib/string_decoder.js\").StringDecoder;\n  this._readableState.decoder = new StringDecoder(enc);\n  this._readableState.encoding = enc;\n  return this;\n};\n\n// Don't raise the hwm > 8MB\nvar MAX_HWM = 0x800000;\nfunction computeNewHighWaterMark(n) {\n  if (n >= MAX_HWM) {\n    n = MAX_HWM;\n  } else {\n    // Get the next highest power of 2 to prevent increasing hwm excessively in\n    // tiny amounts\n    n--;\n    n |= n >>> 1;\n    n |= n >>> 2;\n    n |= n >>> 4;\n    n |= n >>> 8;\n    n |= n >>> 16;\n    n++;\n  }\n  return n;\n}\n\n// This function is designed to be inlinable, so please take care when making\n// changes to the function body.\nfunction howMuchToRead(n, state) {\n  if (n <= 0 || state.length === 0 && state.ended) return 0;\n  if (state.objectMode) return 1;\n  if (n !== n) {\n    // Only flow one buffer at a time\n    if (state.flowing && state.length) return state.buffer.head.data.length;else return state.length;\n  }\n  // If we're asking for more than the current hwm, then raise the hwm.\n  if (n > state.highWaterMark) state.highWaterMark = computeNewHighWaterMark(n);\n  if (n <= state.length) return n;\n  // Don't have enough\n  if (!state.ended) {\n    state.needReadable = true;\n    return 0;\n  }\n  return state.length;\n}\n\n// you can override either this method, or the async _read(n) below.\nReadable.prototype.read = function (n) {\n  debug('read', n);\n  n = parseInt(n, 10);\n  var state = this._readableState;\n  var nOrig = n;\n\n  if (n !== 0) state.emittedReadable = false;\n\n  // if we're doing read(0) to trigger a readable event, but we\n  // already have a bunch of data in the buffer, then just trigger\n  // the 'readable' event and move on.\n  if (n === 0 && state.needReadable && (state.length >= state.highWaterMark || state.ended)) {\n    debug('read: emitReadable', state.length, state.ended);\n    if (state.length === 0 && state.ended) endReadable(this);else emitReadable(this);\n    return null;\n  }\n\n  n = howMuchToRead(n, state);\n\n  // if we've ended, and we're now clear, then finish it up.\n  if (n === 0 && state.ended) {\n    if (state.length === 0) endReadable(this);\n    return null;\n  }\n\n  // All the actual chunk generation logic needs to be\n  // *below* the call to _read.  The reason is that in certain\n  // synthetic stream cases, such as passthrough streams, _read\n  // may be a completely synchronous operation which may change\n  // the state of the read buffer, providing enough data when\n  // before there was *not* enough.\n  //\n  // So, the steps are:\n  // 1. Figure out what the state of things will be after we do\n  // a read from the buffer.\n  //\n  // 2. If that resulting state will trigger a _read, then call _read.\n  // Note that this may be asynchronous, or synchronous.  Yes, it is\n  // deeply ugly to write APIs this way, but that still doesn't mean\n  // that the Readable class should behave improperly, as streams are\n  // designed to be sync/async agnostic.\n  // Take note if the _read call is sync or async (ie, if the read call\n  // has returned yet), so that we know whether or not it's safe to emit\n  // 'readable' etc.\n  //\n  // 3. Actually pull the requested chunks out of the buffer and return.\n\n  // if we need a readable event, then we need to do some reading.\n  var doRead = state.needReadable;\n  debug('need readable', doRead);\n\n  // if we currently have less than the highWaterMark, then also read some\n  if (state.length === 0 || state.length - n < state.highWaterMark) {\n    doRead = true;\n    debug('length less than watermark', doRead);\n  }\n\n  // however, if we've ended, then there's no point, and if we're already\n  // reading, then it's unnecessary.\n  if (state.ended || state.reading) {\n    doRead = false;\n    debug('reading or ended', doRead);\n  } else if (doRead) {\n    debug('do read');\n    state.reading = true;\n    state.sync = true;\n    // if the length is currently zero, then we *need* a readable event.\n    if (state.length === 0) state.needReadable = true;\n    // call internal read method\n    this._read(state.highWaterMark);\n    state.sync = false;\n    // If _read pushed data synchronously, then `reading` will be false,\n    // and we need to re-evaluate how much data we can return to the user.\n    if (!state.reading) n = howMuchToRead(nOrig, state);\n  }\n\n  var ret;\n  if (n > 0) ret = fromList(n, state);else ret = null;\n\n  if (ret === null) {\n    state.needReadable = true;\n    n = 0;\n  } else {\n    state.length -= n;\n  }\n\n  if (state.length === 0) {\n    // If we have nothing in the buffer, then we want to know\n    // as soon as we *do* get something into the buffer.\n    if (!state.ended) state.needReadable = true;\n\n    // If we tried to read() past the EOF, then emit end on the next tick.\n    if (nOrig !== n && state.ended) endReadable(this);\n  }\n\n  if (ret !== null) this.emit('data', ret);\n\n  return ret;\n};\n\nfunction onEofChunk(stream, state) {\n  if (state.ended) return;\n  if (state.decoder) {\n    var chunk = state.decoder.end();\n    if (chunk && chunk.length) {\n      state.buffer.push(chunk);\n      state.length += state.objectMode ? 1 : chunk.length;\n    }\n  }\n  state.ended = true;\n\n  // emit 'readable' now to make sure it gets picked up.\n  emitReadable(stream);\n}\n\n// Don't emit readable right away in sync mode, because this can trigger\n// another read() call => stack overflow.  This way, it might trigger\n// a nextTick recursion warning, but that's not so bad.\nfunction emitReadable(stream) {\n  var state = stream._readableState;\n  state.needReadable = false;\n  if (!state.emittedReadable) {\n    debug('emitReadable', state.flowing);\n    state.emittedReadable = true;\n    if (state.sync) pna.nextTick(emitReadable_, stream);else emitReadable_(stream);\n  }\n}\n\nfunction emitReadable_(stream) {\n  debug('emit readable');\n  stream.emit('readable');\n  flow(stream);\n}\n\n// at this point, the user has presumably seen the 'readable' event,\n// and called read() to consume some data.  that may have triggered\n// in turn another _read(n) call, in which case reading = true if\n// it's in progress.\n// However, if we're not ended, or reading, and the length < hwm,\n// then go ahead and try to read some more preemptively.\nfunction maybeReadMore(stream, state) {\n  if (!state.readingMore) {\n    state.readingMore = true;\n    pna.nextTick(maybeReadMore_, stream, state);\n  }\n}\n\nfunction maybeReadMore_(stream, state) {\n  var len = state.length;\n  while (!state.reading && !state.flowing && !state.ended && state.length < state.highWaterMark) {\n    debug('maybeReadMore read 0');\n    stream.read(0);\n    if (len === state.length)\n      // didn't get any data, stop spinning.\n      break;else len = state.length;\n  }\n  state.readingMore = false;\n}\n\n// abstract method.  to be overridden in specific implementation classes.\n// call cb(er, data) where data is <= n in length.\n// for virtual (non-string, non-buffer) streams, \"length\" is somewhat\n// arbitrary, and perhaps not very meaningful.\nReadable.prototype._read = function (n) {\n  this.emit('error', new Error('_read() is not implemented'));\n};\n\nReadable.prototype.pipe = function (dest, pipeOpts) {\n  var src = this;\n  var state = this._readableState;\n\n  switch (state.pipesCount) {\n    case 0:\n      state.pipes = dest;\n      break;\n    case 1:\n      state.pipes = [state.pipes, dest];\n      break;\n    default:\n      state.pipes.push(dest);\n      break;\n  }\n  state.pipesCount += 1;\n  debug('pipe count=%d opts=%j', state.pipesCount, pipeOpts);\n\n  var doEnd = (!pipeOpts || pipeOpts.end !== false) && dest !== process.stdout && dest !== process.stderr;\n\n  var endFn = doEnd ? onend : unpipe;\n  if (state.endEmitted) pna.nextTick(endFn);else src.once('end', endFn);\n\n  dest.on('unpipe', onunpipe);\n  function onunpipe(readable, unpipeInfo) {\n    debug('onunpipe');\n    if (readable === src) {\n      if (unpipeInfo && unpipeInfo.hasUnpiped === false) {\n        unpipeInfo.hasUnpiped = true;\n        cleanup();\n      }\n    }\n  }\n\n  function onend() {\n    debug('onend');\n    dest.end();\n  }\n\n  // when the dest drains, it reduces the awaitDrain counter\n  // on the source.  This would be more elegant with a .once()\n  // handler in flow(), but adding and removing repeatedly is\n  // too slow.\n  var ondrain = pipeOnDrain(src);\n  dest.on('drain', ondrain);\n\n  var cleanedUp = false;\n  function cleanup() {\n    debug('cleanup');\n    // cleanup event handlers once the pipe is broken\n    dest.removeListener('close', onclose);\n    dest.removeListener('finish', onfinish);\n    dest.removeListener('drain', ondrain);\n    dest.removeListener('error', onerror);\n    dest.removeListener('unpipe', onunpipe);\n    src.removeListener('end', onend);\n    src.removeListener('end', unpipe);\n    src.removeListener('data', ondata);\n\n    cleanedUp = true;\n\n    // if the reader is waiting for a drain event from this\n    // specific writer, then it would cause it to never start\n    // flowing again.\n    // So, if this is awaiting a drain, then we just call it now.\n    // If we don't know, then assume that we are waiting for one.\n    if (state.awaitDrain && (!dest._writableState || dest._writableState.needDrain)) ondrain();\n  }\n\n  // If the user pushes more data while we're writing to dest then we'll end up\n  // in ondata again. However, we only want to increase awaitDrain once because\n  // dest will only emit one 'drain' event for the multiple writes.\n  // => Introduce a guard on increasing awaitDrain.\n  var increasedAwaitDrain = false;\n  src.on('data', ondata);\n  function ondata(chunk) {\n    debug('ondata');\n    increasedAwaitDrain = false;\n    var ret = dest.write(chunk);\n    if (false === ret && !increasedAwaitDrain) {\n      // If the user unpiped during `dest.write()`, it is possible\n      // to get stuck in a permanently paused state if that write\n      // also returned false.\n      // => Check whether `dest` is still a piping destination.\n      if ((state.pipesCount === 1 && state.pipes === dest || state.pipesCount > 1 && indexOf(state.pipes, dest) !== -1) && !cleanedUp) {\n        debug('false write response, pause', src._readableState.awaitDrain);\n        src._readableState.awaitDrain++;\n        increasedAwaitDrain = true;\n      }\n      src.pause();\n    }\n  }\n\n  // if the dest has an error, then stop piping into it.\n  // however, don't suppress the throwing behavior for this.\n  function onerror(er) {\n    debug('onerror', er);\n    unpipe();\n    dest.removeListener('error', onerror);\n    if (EElistenerCount(dest, 'error') === 0) dest.emit('error', er);\n  }\n\n  // Make sure our error handler is attached before userland ones.\n  prependListener(dest, 'error', onerror);\n\n  // Both close and finish should trigger unpipe, but only once.\n  function onclose() {\n    dest.removeListener('finish', onfinish);\n    unpipe();\n  }\n  dest.once('close', onclose);\n  function onfinish() {\n    debug('onfinish');\n    dest.removeListener('close', onclose);\n    unpipe();\n  }\n  dest.once('finish', onfinish);\n\n  function unpipe() {\n    debug('unpipe');\n    src.unpipe(dest);\n  }\n\n  // tell the dest that it's being piped to\n  dest.emit('pipe', src);\n\n  // start the flow if it hasn't been started already.\n  if (!state.flowing) {\n    debug('pipe resume');\n    src.resume();\n  }\n\n  return dest;\n};\n\nfunction pipeOnDrain(src) {\n  return function () {\n    var state = src._readableState;\n    debug('pipeOnDrain', state.awaitDrain);\n    if (state.awaitDrain) state.awaitDrain--;\n    if (state.awaitDrain === 0 && EElistenerCount(src, 'data')) {\n      state.flowing = true;\n      flow(src);\n    }\n  };\n}\n\nReadable.prototype.unpipe = function (dest) {\n  var state = this._readableState;\n  var unpipeInfo = { hasUnpiped: false };\n\n  // if we're not piping anywhere, then do nothing.\n  if (state.pipesCount === 0) return this;\n\n  // just one destination.  most common case.\n  if (state.pipesCount === 1) {\n    // passed in one, but it's not the right one.\n    if (dest && dest !== state.pipes) return this;\n\n    if (!dest) dest = state.pipes;\n\n    // got a match.\n    state.pipes = null;\n    state.pipesCount = 0;\n    state.flowing = false;\n    if (dest) dest.emit('unpipe', this, unpipeInfo);\n    return this;\n  }\n\n  // slow case. multiple pipe destinations.\n\n  if (!dest) {\n    // remove all.\n    var dests = state.pipes;\n    var len = state.pipesCount;\n    state.pipes = null;\n    state.pipesCount = 0;\n    state.flowing = false;\n\n    for (var i = 0; i < len; i++) {\n      dests[i].emit('unpipe', this, unpipeInfo);\n    }return this;\n  }\n\n  // try to find the right one.\n  var index = indexOf(state.pipes, dest);\n  if (index === -1) return this;\n\n  state.pipes.splice(index, 1);\n  state.pipesCount -= 1;\n  if (state.pipesCount === 1) state.pipes = state.pipes[0];\n\n  dest.emit('unpipe', this, unpipeInfo);\n\n  return this;\n};\n\n// set up data events if they are asked for\n// Ensure readable listeners eventually get something\nReadable.prototype.on = function (ev, fn) {\n  var res = Stream.prototype.on.call(this, ev, fn);\n\n  if (ev === 'data') {\n    // Start flowing on next tick if stream isn't explicitly paused\n    if (this._readableState.flowing !== false) this.resume();\n  } else if (ev === 'readable') {\n    var state = this._readableState;\n    if (!state.endEmitted && !state.readableListening) {\n      state.readableListening = state.needReadable = true;\n      state.emittedReadable = false;\n      if (!state.reading) {\n        pna.nextTick(nReadingNextTick, this);\n      } else if (state.length) {\n        emitReadable(this);\n      }\n    }\n  }\n\n  return res;\n};\nReadable.prototype.addListener = Readable.prototype.on;\n\nfunction nReadingNextTick(self) {\n  debug('readable nexttick read 0');\n  self.read(0);\n}\n\n// pause() and resume() are remnants of the legacy readable stream API\n// If the user uses them, then switch into old mode.\nReadable.prototype.resume = function () {\n  var state = this._readableState;\n  if (!state.flowing) {\n    debug('resume');\n    state.flowing = true;\n    resume(this, state);\n  }\n  return this;\n};\n\nfunction resume(stream, state) {\n  if (!state.resumeScheduled) {\n    state.resumeScheduled = true;\n    pna.nextTick(resume_, stream, state);\n  }\n}\n\nfunction resume_(stream, state) {\n  if (!state.reading) {\n    debug('resume read 0');\n    stream.read(0);\n  }\n\n  state.resumeScheduled = false;\n  state.awaitDrain = 0;\n  stream.emit('resume');\n  flow(stream);\n  if (state.flowing && !state.reading) stream.read(0);\n}\n\nReadable.prototype.pause = function () {\n  debug('call pause flowing=%j', this._readableState.flowing);\n  if (false !== this._readableState.flowing) {\n    debug('pause');\n    this._readableState.flowing = false;\n    this.emit('pause');\n  }\n  return this;\n};\n\nfunction flow(stream) {\n  var state = stream._readableState;\n  debug('flow', state.flowing);\n  while (state.flowing && stream.read() !== null) {}\n}\n\n// wrap an old-style stream as the async data source.\n// This is *not* part of the readable stream interface.\n// It is an ugly unfortunate mess of history.\nReadable.prototype.wrap = function (stream) {\n  var _this = this;\n\n  var state = this._readableState;\n  var paused = false;\n\n  stream.on('end', function () {\n    debug('wrapped end');\n    if (state.decoder && !state.ended) {\n      var chunk = state.decoder.end();\n      if (chunk && chunk.length) _this.push(chunk);\n    }\n\n    _this.push(null);\n  });\n\n  stream.on('data', function (chunk) {\n    debug('wrapped data');\n    if (state.decoder) chunk = state.decoder.write(chunk);\n\n    // don't skip over falsy values in objectMode\n    if (state.objectMode && (chunk === null || chunk === undefined)) return;else if (!state.objectMode && (!chunk || !chunk.length)) return;\n\n    var ret = _this.push(chunk);\n    if (!ret) {\n      paused = true;\n      stream.pause();\n    }\n  });\n\n  // proxy all the other methods.\n  // important when wrapping filters and duplexes.\n  for (var i in stream) {\n    if (this[i] === undefined && typeof stream[i] === 'function') {\n      this[i] = function (method) {\n        return function () {\n          return stream[method].apply(stream, arguments);\n        };\n      }(i);\n    }\n  }\n\n  // proxy certain important events.\n  for (var n = 0; n < kProxyEvents.length; n++) {\n    stream.on(kProxyEvents[n], this.emit.bind(this, kProxyEvents[n]));\n  }\n\n  // when we try to consume some more bytes, simply unpause the\n  // underlying stream.\n  this._read = function (n) {\n    debug('wrapped _read', n);\n    if (paused) {\n      paused = false;\n      stream.resume();\n    }\n  };\n\n  return this;\n};\n\nObject.defineProperty(Readable.prototype, 'readableHighWaterMark', {\n  // making it explicit this property is not enumerable\n  // because otherwise some prototype manipulation in\n  // userland will fail\n  enumerable: false,\n  get: function () {\n    return this._readableState.highWaterMark;\n  }\n});\n\n// exposed for testing purposes only.\nReadable._fromList = fromList;\n\n// Pluck off n bytes from an array of buffers.\n// Length is the combined lengths of all the buffers in the list.\n// This function is designed to be inlinable, so please take care when making\n// changes to the function body.\nfunction fromList(n, state) {\n  // nothing buffered\n  if (state.length === 0) return null;\n\n  var ret;\n  if (state.objectMode) ret = state.buffer.shift();else if (!n || n >= state.length) {\n    // read it all, truncate the list\n    if (state.decoder) ret = state.buffer.join('');else if (state.buffer.length === 1) ret = state.buffer.head.data;else ret = state.buffer.concat(state.length);\n    state.buffer.clear();\n  } else {\n    // read part of list\n    ret = fromListPartial(n, state.buffer, state.decoder);\n  }\n\n  return ret;\n}\n\n// Extracts only enough buffered data to satisfy the amount requested.\n// This function is designed to be inlinable, so please take care when making\n// changes to the function body.\nfunction fromListPartial(n, list, hasStrings) {\n  var ret;\n  if (n < list.head.data.length) {\n    // slice is the same for buffers and strings\n    ret = list.head.data.slice(0, n);\n    list.head.data = list.head.data.slice(n);\n  } else if (n === list.head.data.length) {\n    // first chunk is a perfect match\n    ret = list.shift();\n  } else {\n    // result spans more than one buffer\n    ret = hasStrings ? copyFromBufferString(n, list) : copyFromBuffer(n, list);\n  }\n  return ret;\n}\n\n// Copies a specified amount of characters from the list of buffered data\n// chunks.\n// This function is designed to be inlinable, so please take care when making\n// changes to the function body.\nfunction copyFromBufferString(n, list) {\n  var p = list.head;\n  var c = 1;\n  var ret = p.data;\n  n -= ret.length;\n  while (p = p.next) {\n    var str = p.data;\n    var nb = n > str.length ? str.length : n;\n    if (nb === str.length) ret += str;else ret += str.slice(0, n);\n    n -= nb;\n    if (n === 0) {\n      if (nb === str.length) {\n        ++c;\n        if (p.next) list.head = p.next;else list.head = list.tail = null;\n      } else {\n        list.head = p;\n        p.data = str.slice(nb);\n      }\n      break;\n    }\n    ++c;\n  }\n  list.length -= c;\n  return ret;\n}\n\n// Copies a specified amount of bytes from the list of buffered data chunks.\n// This function is designed to be inlinable, so please take care when making\n// changes to the function body.\nfunction copyFromBuffer(n, list) {\n  var ret = Buffer.allocUnsafe(n);\n  var p = list.head;\n  var c = 1;\n  p.data.copy(ret);\n  n -= p.data.length;\n  while (p = p.next) {\n    var buf = p.data;\n    var nb = n > buf.length ? buf.length : n;\n    buf.copy(ret, ret.length - n, 0, nb);\n    n -= nb;\n    if (n === 0) {\n      if (nb === buf.length) {\n        ++c;\n        if (p.next) list.head = p.next;else list.head = list.tail = null;\n      } else {\n        list.head = p;\n        p.data = buf.slice(nb);\n      }\n      break;\n    }\n    ++c;\n  }\n  list.length -= c;\n  return ret;\n}\n\nfunction endReadable(stream) {\n  var state = stream._readableState;\n\n  // If we get here before consuming all the bytes, then that is a\n  // bug in node.  Should never happen.\n  if (state.length > 0) throw new Error('\"endReadable()\" called on non-empty stream');\n\n  if (!state.endEmitted) {\n    state.ended = true;\n    pna.nextTick(endReadableNT, state, stream);\n  }\n}\n\nfunction endReadableNT(state, stream) {\n  // Check that we didn't get one last unshift.\n  if (!state.endEmitted && state.length === 0) {\n    state.endEmitted = true;\n    stream.readable = false;\n    stream.emit('end');\n  }\n}\n\nfunction indexOf(xs, x) {\n  for (var i = 0, l = xs.length; i < l; i++) {\n    if (xs[i] === x) return i;\n  }\n  return -1;\n}\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\"), __webpack_require__(/*! ./../../process/browser.js */ \"./node_modules/process/browser.js\")))\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/_stream_readable.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/_stream_transform.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/_stream_transform.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n// a transform stream is a readable/writable stream where you do\n// something with the data.  Sometimes it's called a \"filter\",\n// but that's not a great name for it, since that implies a thing where\n// some bits pass through, and others are simply ignored.  (That would\n// be a valid example of a transform, of course.)\n//\n// While the output is causally related to the input, it's not a\n// necessarily symmetric or synchronous transformation.  For example,\n// a zlib stream might take multiple plain-text writes(), and then\n// emit a single compressed chunk some time in the future.\n//\n// Here's how this works:\n//\n// The Transform stream has all the aspects of the readable and writable\n// stream classes.  When you write(chunk), that calls _write(chunk,cb)\n// internally, and returns false if there's a lot of pending writes\n// buffered up.  When you call read(), that calls _read(n) until\n// there's enough pending readable data buffered up.\n//\n// In a transform stream, the written data is placed in a buffer.  When\n// _read(n) is called, it transforms the queued up data, calling the\n// buffered _write cb's as it consumes chunks.  If consuming a single\n// written chunk would result in multiple output chunks, then the first\n// outputted bit calls the readcb, and subsequent chunks just go into\n// the read buffer, and will cause it to emit 'readable' if necessary.\n//\n// This way, back-pressure is actually determined by the reading side,\n// since _read has to be called to start processing a new chunk.  However,\n// a pathological inflate type of transform can cause excessive buffering\n// here.  For example, imagine a stream where every byte of input is\n// interpreted as an integer from 0-255, and then results in that many\n// bytes of output.  Writing the 4 bytes {ff,ff,ff,ff} would result in\n// 1kb of data being output.  In this case, you could write a very small\n// amount of input, and end up with a very large amount of output.  In\n// such a pathological inflating mechanism, there'd be no way to tell\n// the system to stop doing the transform.  A single 4MB write could\n// cause the system to run out of memory.\n//\n// However, even in such a pathological case, only a single written chunk\n// would be consumed, and then the rest would wait (un-transformed) until\n// the results of the previous transformed chunk were consumed.\n\n\n\nmodule.exports = Transform;\n\nvar Duplex = __webpack_require__(/*! ./_stream_duplex */ \"./node_modules/readable-stream/lib/_stream_duplex.js\");\n\n/*<replacement>*/\nvar util = Object.create(__webpack_require__(/*! core-util-is */ \"./node_modules/core-util-is/lib/util.js\"));\nutil.inherits = __webpack_require__(/*! inherits */ \"./node_modules/inherits/inherits_browser.js\");\n/*</replacement>*/\n\nutil.inherits(Transform, Duplex);\n\nfunction afterTransform(er, data) {\n  var ts = this._transformState;\n  ts.transforming = false;\n\n  var cb = ts.writecb;\n\n  if (!cb) {\n    return this.emit('error', new Error('write callback called multiple times'));\n  }\n\n  ts.writechunk = null;\n  ts.writecb = null;\n\n  if (data != null) // single equals check for both `null` and `undefined`\n    this.push(data);\n\n  cb(er);\n\n  var rs = this._readableState;\n  rs.reading = false;\n  if (rs.needReadable || rs.length < rs.highWaterMark) {\n    this._read(rs.highWaterMark);\n  }\n}\n\nfunction Transform(options) {\n  if (!(this instanceof Transform)) return new Transform(options);\n\n  Duplex.call(this, options);\n\n  this._transformState = {\n    afterTransform: afterTransform.bind(this),\n    needTransform: false,\n    transforming: false,\n    writecb: null,\n    writechunk: null,\n    writeencoding: null\n  };\n\n  // start out asking for a readable event once data is transformed.\n  this._readableState.needReadable = true;\n\n  // we have implemented the _read method, and done the other things\n  // that Readable wants before the first _read call, so unset the\n  // sync guard flag.\n  this._readableState.sync = false;\n\n  if (options) {\n    if (typeof options.transform === 'function') this._transform = options.transform;\n\n    if (typeof options.flush === 'function') this._flush = options.flush;\n  }\n\n  // When the writable side finishes, then flush out anything remaining.\n  this.on('prefinish', prefinish);\n}\n\nfunction prefinish() {\n  var _this = this;\n\n  if (typeof this._flush === 'function') {\n    this._flush(function (er, data) {\n      done(_this, er, data);\n    });\n  } else {\n    done(this, null, null);\n  }\n}\n\nTransform.prototype.push = function (chunk, encoding) {\n  this._transformState.needTransform = false;\n  return Duplex.prototype.push.call(this, chunk, encoding);\n};\n\n// This is the part where you do stuff!\n// override this function in implementation classes.\n// 'chunk' is an input chunk.\n//\n// Call `push(newChunk)` to pass along transformed output\n// to the readable side.  You may call 'push' zero or more times.\n//\n// Call `cb(err)` when you are done with this chunk.  If you pass\n// an error, then that'll put the hurt on the whole operation.  If you\n// never call cb(), then you'll never get another chunk.\nTransform.prototype._transform = function (chunk, encoding, cb) {\n  throw new Error('_transform() is not implemented');\n};\n\nTransform.prototype._write = function (chunk, encoding, cb) {\n  var ts = this._transformState;\n  ts.writecb = cb;\n  ts.writechunk = chunk;\n  ts.writeencoding = encoding;\n  if (!ts.transforming) {\n    var rs = this._readableState;\n    if (ts.needTransform || rs.needReadable || rs.length < rs.highWaterMark) this._read(rs.highWaterMark);\n  }\n};\n\n// Doesn't matter what the args are here.\n// _transform does all the work.\n// That we got here means that the readable side wants more data.\nTransform.prototype._read = function (n) {\n  var ts = this._transformState;\n\n  if (ts.writechunk !== null && ts.writecb && !ts.transforming) {\n    ts.transforming = true;\n    this._transform(ts.writechunk, ts.writeencoding, ts.afterTransform);\n  } else {\n    // mark that we need a transform, so that any data that comes in\n    // will get processed, now that we've asked for it.\n    ts.needTransform = true;\n  }\n};\n\nTransform.prototype._destroy = function (err, cb) {\n  var _this2 = this;\n\n  Duplex.prototype._destroy.call(this, err, function (err2) {\n    cb(err2);\n    _this2.emit('close');\n  });\n};\n\nfunction done(stream, er, data) {\n  if (er) return stream.emit('error', er);\n\n  if (data != null) // single equals check for both `null` and `undefined`\n    stream.push(data);\n\n  // if there's nothing in the write buffer, then that means\n  // that nothing more will ever be provided\n  if (stream._writableState.length) throw new Error('Calling transform done when ws.length != 0');\n\n  if (stream._transformState.transforming) throw new Error('Calling transform done when still transforming');\n\n  return stream.push(null);\n}\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/_stream_transform.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/_stream_writable.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/_stream_writable.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("/* WEBPACK VAR INJECTION */(function(process, setImmediate, global) {// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n// A bit simpler than readable streams.\n// Implement an async ._write(chunk, encoding, cb), and it'll handle all\n// the drain event emission and buffering.\n\n\n\n/*<replacement>*/\n\nvar pna = __webpack_require__(/*! process-nextick-args */ \"./node_modules/process-nextick-args/index.js\");\n/*</replacement>*/\n\nmodule.exports = Writable;\n\n/* <replacement> */\nfunction WriteReq(chunk, encoding, cb) {\n  this.chunk = chunk;\n  this.encoding = encoding;\n  this.callback = cb;\n  this.next = null;\n}\n\n// It seems a linked list but it is not\n// there will be only 2 of these for each stream\nfunction CorkedRequest(state) {\n  var _this = this;\n\n  this.next = null;\n  this.entry = null;\n  this.finish = function () {\n    onCorkedFinish(_this, state);\n  };\n}\n/* </replacement> */\n\n/*<replacement>*/\nvar asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : pna.nextTick;\n/*</replacement>*/\n\n/*<replacement>*/\nvar Duplex;\n/*</replacement>*/\n\nWritable.WritableState = WritableState;\n\n/*<replacement>*/\nvar util = Object.create(__webpack_require__(/*! core-util-is */ \"./node_modules/core-util-is/lib/util.js\"));\nutil.inherits = __webpack_require__(/*! inherits */ \"./node_modules/inherits/inherits_browser.js\");\n/*</replacement>*/\n\n/*<replacement>*/\nvar internalUtil = {\n  deprecate: __webpack_require__(/*! util-deprecate */ \"./node_modules/util-deprecate/browser.js\")\n};\n/*</replacement>*/\n\n/*<replacement>*/\nvar Stream = __webpack_require__(/*! ./internal/streams/stream */ \"./node_modules/readable-stream/lib/internal/streams/stream-browser.js\");\n/*</replacement>*/\n\n/*<replacement>*/\n\nvar Buffer = __webpack_require__(/*! safe-buffer */ \"./node_modules/safe-buffer/index.js\").Buffer;\nvar OurUint8Array = global.Uint8Array || function () {};\nfunction _uint8ArrayToBuffer(chunk) {\n  return Buffer.from(chunk);\n}\nfunction _isUint8Array(obj) {\n  return Buffer.isBuffer(obj) || obj instanceof OurUint8Array;\n}\n\n/*</replacement>*/\n\nvar destroyImpl = __webpack_require__(/*! ./internal/streams/destroy */ \"./node_modules/readable-stream/lib/internal/streams/destroy.js\");\n\nutil.inherits(Writable, Stream);\n\nfunction nop() {}\n\nfunction WritableState(options, stream) {\n  Duplex = Duplex || __webpack_require__(/*! ./_stream_duplex */ \"./node_modules/readable-stream/lib/_stream_duplex.js\");\n\n  options = options || {};\n\n  // Duplex streams are both readable and writable, but share\n  // the same options object.\n  // However, some cases require setting options to different\n  // values for the readable and the writable sides of the duplex stream.\n  // These options can be provided separately as readableXXX and writableXXX.\n  var isDuplex = stream instanceof Duplex;\n\n  // object stream flag to indicate whether or not this stream\n  // contains buffers or objects.\n  this.objectMode = !!options.objectMode;\n\n  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode;\n\n  // the point at which write() starts returning false\n  // Note: 0 is a valid value, means that we always return false if\n  // the entire buffer is not flushed immediately on write()\n  var hwm = options.highWaterMark;\n  var writableHwm = options.writableHighWaterMark;\n  var defaultHwm = this.objectMode ? 16 : 16 * 1024;\n\n  if (hwm || hwm === 0) this.highWaterMark = hwm;else if (isDuplex && (writableHwm || writableHwm === 0)) this.highWaterMark = writableHwm;else this.highWaterMark = defaultHwm;\n\n  // cast to ints.\n  this.highWaterMark = Math.floor(this.highWaterMark);\n\n  // if _final has been called\n  this.finalCalled = false;\n\n  // drain event flag.\n  this.needDrain = false;\n  // at the start of calling end()\n  this.ending = false;\n  // when end() has been called, and returned\n  this.ended = false;\n  // when 'finish' is emitted\n  this.finished = false;\n\n  // has it been destroyed\n  this.destroyed = false;\n\n  // should we decode strings into buffers before passing to _write?\n  // this is here so that some node-core streams can optimize string\n  // handling at a lower level.\n  var noDecode = options.decodeStrings === false;\n  this.decodeStrings = !noDecode;\n\n  // Crypto is kind of old and crusty.  Historically, its default string\n  // encoding is 'binary' so we have to make this configurable.\n  // Everything else in the universe uses 'utf8', though.\n  this.defaultEncoding = options.defaultEncoding || 'utf8';\n\n  // not an actual buffer we keep track of, but a measurement\n  // of how much we're waiting to get pushed to some underlying\n  // socket or file.\n  this.length = 0;\n\n  // a flag to see when we're in the middle of a write.\n  this.writing = false;\n\n  // when true all writes will be buffered until .uncork() call\n  this.corked = 0;\n\n  // a flag to be able to tell if the onwrite cb is called immediately,\n  // or on a later tick.  We set this to true at first, because any\n  // actions that shouldn't happen until \"later\" should generally also\n  // not happen before the first write call.\n  this.sync = true;\n\n  // a flag to know if we're processing previously buffered items, which\n  // may call the _write() callback in the same tick, so that we don't\n  // end up in an overlapped onwrite situation.\n  this.bufferProcessing = false;\n\n  // the callback that's passed to _write(chunk,cb)\n  this.onwrite = function (er) {\n    onwrite(stream, er);\n  };\n\n  // the callback that the user supplies to write(chunk,encoding,cb)\n  this.writecb = null;\n\n  // the amount that is being written when _write is called.\n  this.writelen = 0;\n\n  this.bufferedRequest = null;\n  this.lastBufferedRequest = null;\n\n  // number of pending user-supplied write callbacks\n  // this must be 0 before 'finish' can be emitted\n  this.pendingcb = 0;\n\n  // emit prefinish if the only thing we're waiting for is _write cbs\n  // This is relevant for synchronous Transform streams\n  this.prefinished = false;\n\n  // True if the error was already emitted and should not be thrown again\n  this.errorEmitted = false;\n\n  // count buffered requests\n  this.bufferedRequestCount = 0;\n\n  // allocate the first CorkedRequest, there is always\n  // one allocated and free to use, and we maintain at most two\n  this.corkedRequestsFree = new CorkedRequest(this);\n}\n\nWritableState.prototype.getBuffer = function getBuffer() {\n  var current = this.bufferedRequest;\n  var out = [];\n  while (current) {\n    out.push(current);\n    current = current.next;\n  }\n  return out;\n};\n\n(function () {\n  try {\n    Object.defineProperty(WritableState.prototype, 'buffer', {\n      get: internalUtil.deprecate(function () {\n        return this.getBuffer();\n      }, '_writableState.buffer is deprecated. Use _writableState.getBuffer ' + 'instead.', 'DEP0003')\n    });\n  } catch (_) {}\n})();\n\n// Test _writableState for inheritance to account for Duplex streams,\n// whose prototype chain only points to Readable.\nvar realHasInstance;\nif (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.prototype[Symbol.hasInstance] === 'function') {\n  realHasInstance = Function.prototype[Symbol.hasInstance];\n  Object.defineProperty(Writable, Symbol.hasInstance, {\n    value: function (object) {\n      if (realHasInstance.call(this, object)) return true;\n      if (this !== Writable) return false;\n\n      return object && object._writableState instanceof WritableState;\n    }\n  });\n} else {\n  realHasInstance = function (object) {\n    return object instanceof this;\n  };\n}\n\nfunction Writable(options) {\n  Duplex = Duplex || __webpack_require__(/*! ./_stream_duplex */ \"./node_modules/readable-stream/lib/_stream_duplex.js\");\n\n  // Writable ctor is applied to Duplexes, too.\n  // `realHasInstance` is necessary because using plain `instanceof`\n  // would return false, as no `_writableState` property is attached.\n\n  // Trying to use the custom `instanceof` for Writable here will also break the\n  // Node.js LazyTransform implementation, which has a non-trivial getter for\n  // `_writableState` that would lead to infinite recursion.\n  if (!realHasInstance.call(Writable, this) && !(this instanceof Duplex)) {\n    return new Writable(options);\n  }\n\n  this._writableState = new WritableState(options, this);\n\n  // legacy.\n  this.writable = true;\n\n  if (options) {\n    if (typeof options.write === 'function') this._write = options.write;\n\n    if (typeof options.writev === 'function') this._writev = options.writev;\n\n    if (typeof options.destroy === 'function') this._destroy = options.destroy;\n\n    if (typeof options.final === 'function') this._final = options.final;\n  }\n\n  Stream.call(this);\n}\n\n// Otherwise people can pipe Writable streams, which is just wrong.\nWritable.prototype.pipe = function () {\n  this.emit('error', new Error('Cannot pipe, not readable'));\n};\n\nfunction writeAfterEnd(stream, cb) {\n  var er = new Error('write after end');\n  // TODO: defer error events consistently everywhere, not just the cb\n  stream.emit('error', er);\n  pna.nextTick(cb, er);\n}\n\n// Checks that a user-supplied chunk is valid, especially for the particular\n// mode the stream is in. Currently this means that `null` is never accepted\n// and undefined/non-string values are only allowed in object mode.\nfunction validChunk(stream, state, chunk, cb) {\n  var valid = true;\n  var er = false;\n\n  if (chunk === null) {\n    er = new TypeError('May not write null values to stream');\n  } else if (typeof chunk !== 'string' && chunk !== undefined && !state.objectMode) {\n    er = new TypeError('Invalid non-string/buffer chunk');\n  }\n  if (er) {\n    stream.emit('error', er);\n    pna.nextTick(cb, er);\n    valid = false;\n  }\n  return valid;\n}\n\nWritable.prototype.write = function (chunk, encoding, cb) {\n  var state = this._writableState;\n  var ret = false;\n  var isBuf = !state.objectMode && _isUint8Array(chunk);\n\n  if (isBuf && !Buffer.isBuffer(chunk)) {\n    chunk = _uint8ArrayToBuffer(chunk);\n  }\n\n  if (typeof encoding === 'function') {\n    cb = encoding;\n    encoding = null;\n  }\n\n  if (isBuf) encoding = 'buffer';else if (!encoding) encoding = state.defaultEncoding;\n\n  if (typeof cb !== 'function') cb = nop;\n\n  if (state.ended) writeAfterEnd(this, cb);else if (isBuf || validChunk(this, state, chunk, cb)) {\n    state.pendingcb++;\n    ret = writeOrBuffer(this, state, isBuf, chunk, encoding, cb);\n  }\n\n  return ret;\n};\n\nWritable.prototype.cork = function () {\n  var state = this._writableState;\n\n  state.corked++;\n};\n\nWritable.prototype.uncork = function () {\n  var state = this._writableState;\n\n  if (state.corked) {\n    state.corked--;\n\n    if (!state.writing && !state.corked && !state.finished && !state.bufferProcessing && state.bufferedRequest) clearBuffer(this, state);\n  }\n};\n\nWritable.prototype.setDefaultEncoding = function setDefaultEncoding(encoding) {\n  // node::ParseEncoding() requires lower case.\n  if (typeof encoding === 'string') encoding = encoding.toLowerCase();\n  if (!(['hex', 'utf8', 'utf-8', 'ascii', 'binary', 'base64', 'ucs2', 'ucs-2', 'utf16le', 'utf-16le', 'raw'].indexOf((encoding + '').toLowerCase()) > -1)) throw new TypeError('Unknown encoding: ' + encoding);\n  this._writableState.defaultEncoding = encoding;\n  return this;\n};\n\nfunction decodeChunk(state, chunk, encoding) {\n  if (!state.objectMode && state.decodeStrings !== false && typeof chunk === 'string') {\n    chunk = Buffer.from(chunk, encoding);\n  }\n  return chunk;\n}\n\nObject.defineProperty(Writable.prototype, 'writableHighWaterMark', {\n  // making it explicit this property is not enumerable\n  // because otherwise some prototype manipulation in\n  // userland will fail\n  enumerable: false,\n  get: function () {\n    return this._writableState.highWaterMark;\n  }\n});\n\n// if we're already writing something, then just put this\n// in the queue, and wait our turn.  Otherwise, call _write\n// If we return false, then we need a drain event, so set that flag.\nfunction writeOrBuffer(stream, state, isBuf, chunk, encoding, cb) {\n  if (!isBuf) {\n    var newChunk = decodeChunk(state, chunk, encoding);\n    if (chunk !== newChunk) {\n      isBuf = true;\n      encoding = 'buffer';\n      chunk = newChunk;\n    }\n  }\n  var len = state.objectMode ? 1 : chunk.length;\n\n  state.length += len;\n\n  var ret = state.length < state.highWaterMark;\n  // we must ensure that previous needDrain will not be reset to false.\n  if (!ret) state.needDrain = true;\n\n  if (state.writing || state.corked) {\n    var last = state.lastBufferedRequest;\n    state.lastBufferedRequest = {\n      chunk: chunk,\n      encoding: encoding,\n      isBuf: isBuf,\n      callback: cb,\n      next: null\n    };\n    if (last) {\n      last.next = state.lastBufferedRequest;\n    } else {\n      state.bufferedRequest = state.lastBufferedRequest;\n    }\n    state.bufferedRequestCount += 1;\n  } else {\n    doWrite(stream, state, false, len, chunk, encoding, cb);\n  }\n\n  return ret;\n}\n\nfunction doWrite(stream, state, writev, len, chunk, encoding, cb) {\n  state.writelen = len;\n  state.writecb = cb;\n  state.writing = true;\n  state.sync = true;\n  if (writev) stream._writev(chunk, state.onwrite);else stream._write(chunk, encoding, state.onwrite);\n  state.sync = false;\n}\n\nfunction onwriteError(stream, state, sync, er, cb) {\n  --state.pendingcb;\n\n  if (sync) {\n    // defer the callback if we are being called synchronously\n    // to avoid piling up things on the stack\n    pna.nextTick(cb, er);\n    // this can emit finish, and it will always happen\n    // after error\n    pna.nextTick(finishMaybe, stream, state);\n    stream._writableState.errorEmitted = true;\n    stream.emit('error', er);\n  } else {\n    // the caller expect this to happen before if\n    // it is async\n    cb(er);\n    stream._writableState.errorEmitted = true;\n    stream.emit('error', er);\n    // this can emit finish, but finish must\n    // always follow error\n    finishMaybe(stream, state);\n  }\n}\n\nfunction onwriteStateUpdate(state) {\n  state.writing = false;\n  state.writecb = null;\n  state.length -= state.writelen;\n  state.writelen = 0;\n}\n\nfunction onwrite(stream, er) {\n  var state = stream._writableState;\n  var sync = state.sync;\n  var cb = state.writecb;\n\n  onwriteStateUpdate(state);\n\n  if (er) onwriteError(stream, state, sync, er, cb);else {\n    // Check if we're actually ready to finish, but don't emit yet\n    var finished = needFinish(state);\n\n    if (!finished && !state.corked && !state.bufferProcessing && state.bufferedRequest) {\n      clearBuffer(stream, state);\n    }\n\n    if (sync) {\n      /*<replacement>*/\n      asyncWrite(afterWrite, stream, state, finished, cb);\n      /*</replacement>*/\n    } else {\n      afterWrite(stream, state, finished, cb);\n    }\n  }\n}\n\nfunction afterWrite(stream, state, finished, cb) {\n  if (!finished) onwriteDrain(stream, state);\n  state.pendingcb--;\n  cb();\n  finishMaybe(stream, state);\n}\n\n// Must force callback to be called on nextTick, so that we don't\n// emit 'drain' before the write() consumer gets the 'false' return\n// value, and has a chance to attach a 'drain' listener.\nfunction onwriteDrain(stream, state) {\n  if (state.length === 0 && state.needDrain) {\n    state.needDrain = false;\n    stream.emit('drain');\n  }\n}\n\n// if there's something in the buffer waiting, then process it\nfunction clearBuffer(stream, state) {\n  state.bufferProcessing = true;\n  var entry = state.bufferedRequest;\n\n  if (stream._writev && entry && entry.next) {\n    // Fast case, write everything using _writev()\n    var l = state.bufferedRequestCount;\n    var buffer = new Array(l);\n    var holder = state.corkedRequestsFree;\n    holder.entry = entry;\n\n    var count = 0;\n    var allBuffers = true;\n    while (entry) {\n      buffer[count] = entry;\n      if (!entry.isBuf) allBuffers = false;\n      entry = entry.next;\n      count += 1;\n    }\n    buffer.allBuffers = allBuffers;\n\n    doWrite(stream, state, true, state.length, buffer, '', holder.finish);\n\n    // doWrite is almost always async, defer these to save a bit of time\n    // as the hot path ends with doWrite\n    state.pendingcb++;\n    state.lastBufferedRequest = null;\n    if (holder.next) {\n      state.corkedRequestsFree = holder.next;\n      holder.next = null;\n    } else {\n      state.corkedRequestsFree = new CorkedRequest(state);\n    }\n    state.bufferedRequestCount = 0;\n  } else {\n    // Slow case, write chunks one-by-one\n    while (entry) {\n      var chunk = entry.chunk;\n      var encoding = entry.encoding;\n      var cb = entry.callback;\n      var len = state.objectMode ? 1 : chunk.length;\n\n      doWrite(stream, state, false, len, chunk, encoding, cb);\n      entry = entry.next;\n      state.bufferedRequestCount--;\n      // if we didn't call the onwrite immediately, then\n      // it means that we need to wait until it does.\n      // also, that means that the chunk and cb are currently\n      // being processed, so move the buffer counter past them.\n      if (state.writing) {\n        break;\n      }\n    }\n\n    if (entry === null) state.lastBufferedRequest = null;\n  }\n\n  state.bufferedRequest = entry;\n  state.bufferProcessing = false;\n}\n\nWritable.prototype._write = function (chunk, encoding, cb) {\n  cb(new Error('_write() is not implemented'));\n};\n\nWritable.prototype._writev = null;\n\nWritable.prototype.end = function (chunk, encoding, cb) {\n  var state = this._writableState;\n\n  if (typeof chunk === 'function') {\n    cb = chunk;\n    chunk = null;\n    encoding = null;\n  } else if (typeof encoding === 'function') {\n    cb = encoding;\n    encoding = null;\n  }\n\n  if (chunk !== null && chunk !== undefined) this.write(chunk, encoding);\n\n  // .end() fully uncorks\n  if (state.corked) {\n    state.corked = 1;\n    this.uncork();\n  }\n\n  // ignore unnecessary end() calls.\n  if (!state.ending && !state.finished) endWritable(this, state, cb);\n};\n\nfunction needFinish(state) {\n  return state.ending && state.length === 0 && state.bufferedRequest === null && !state.finished && !state.writing;\n}\nfunction callFinal(stream, state) {\n  stream._final(function (err) {\n    state.pendingcb--;\n    if (err) {\n      stream.emit('error', err);\n    }\n    state.prefinished = true;\n    stream.emit('prefinish');\n    finishMaybe(stream, state);\n  });\n}\nfunction prefinish(stream, state) {\n  if (!state.prefinished && !state.finalCalled) {\n    if (typeof stream._final === 'function') {\n      state.pendingcb++;\n      state.finalCalled = true;\n      pna.nextTick(callFinal, stream, state);\n    } else {\n      state.prefinished = true;\n      stream.emit('prefinish');\n    }\n  }\n}\n\nfunction finishMaybe(stream, state) {\n  var need = needFinish(state);\n  if (need) {\n    prefinish(stream, state);\n    if (state.pendingcb === 0) {\n      state.finished = true;\n      stream.emit('finish');\n    }\n  }\n  return need;\n}\n\nfunction endWritable(stream, state, cb) {\n  state.ending = true;\n  finishMaybe(stream, state);\n  if (cb) {\n    if (state.finished) pna.nextTick(cb);else stream.once('finish', cb);\n  }\n  state.ended = true;\n  stream.writable = false;\n}\n\nfunction onCorkedFinish(corkReq, state, err) {\n  var entry = corkReq.entry;\n  corkReq.entry = null;\n  while (entry) {\n    var cb = entry.callback;\n    state.pendingcb--;\n    cb(err);\n    entry = entry.next;\n  }\n  if (state.corkedRequestsFree) {\n    state.corkedRequestsFree.next = corkReq;\n  } else {\n    state.corkedRequestsFree = corkReq;\n  }\n}\n\nObject.defineProperty(Writable.prototype, 'destroyed', {\n  get: function () {\n    if (this._writableState === undefined) {\n      return false;\n    }\n    return this._writableState.destroyed;\n  },\n  set: function (value) {\n    // we ignore the value if the stream\n    // has not been initialized yet\n    if (!this._writableState) {\n      return;\n    }\n\n    // backward compatibility, the user is explicitly\n    // managing destroyed\n    this._writableState.destroyed = value;\n  }\n});\n\nWritable.prototype.destroy = destroyImpl.destroy;\nWritable.prototype._undestroy = destroyImpl.undestroy;\nWritable.prototype._destroy = function (err, cb) {\n  this.end();\n  cb(err);\n};\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ \"./node_modules/process/browser.js\"), __webpack_require__(/*! ./../../timers-browserify/main.js */ \"./node_modules/timers-browserify/main.js\").setImmediate, __webpack_require__(/*! ./../../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/_stream_writable.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/internal/streams/BufferList.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/internal/streams/BufferList.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Buffer = __webpack_require__(/*! safe-buffer */ \"./node_modules/safe-buffer/index.js\").Buffer;\nvar util = __webpack_require__(/*! util */ 1);\n\nfunction copyBuffer(src, target, offset) {\n  src.copy(target, offset);\n}\n\nmodule.exports = function () {\n  function BufferList() {\n    _classCallCheck(this, BufferList);\n\n    this.head = null;\n    this.tail = null;\n    this.length = 0;\n  }\n\n  BufferList.prototype.push = function push(v) {\n    var entry = { data: v, next: null };\n    if (this.length > 0) this.tail.next = entry;else this.head = entry;\n    this.tail = entry;\n    ++this.length;\n  };\n\n  BufferList.prototype.unshift = function unshift(v) {\n    var entry = { data: v, next: this.head };\n    if (this.length === 0) this.tail = entry;\n    this.head = entry;\n    ++this.length;\n  };\n\n  BufferList.prototype.shift = function shift() {\n    if (this.length === 0) return;\n    var ret = this.head.data;\n    if (this.length === 1) this.head = this.tail = null;else this.head = this.head.next;\n    --this.length;\n    return ret;\n  };\n\n  BufferList.prototype.clear = function clear() {\n    this.head = this.tail = null;\n    this.length = 0;\n  };\n\n  BufferList.prototype.join = function join(s) {\n    if (this.length === 0) return '';\n    var p = this.head;\n    var ret = '' + p.data;\n    while (p = p.next) {\n      ret += s + p.data;\n    }return ret;\n  };\n\n  BufferList.prototype.concat = function concat(n) {\n    if (this.length === 0) return Buffer.alloc(0);\n    if (this.length === 1) return this.head.data;\n    var ret = Buffer.allocUnsafe(n >>> 0);\n    var p = this.head;\n    var i = 0;\n    while (p) {\n      copyBuffer(p.data, ret, i);\n      i += p.data.length;\n      p = p.next;\n    }\n    return ret;\n  };\n\n  return BufferList;\n}();\n\nif (util && util.inspect && util.inspect.custom) {\n  module.exports.prototype[util.inspect.custom] = function () {\n    var obj = util.inspect({ length: this.length });\n    return this.constructor.name + ' ' + obj;\n  };\n}\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/internal/streams/BufferList.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/internal/streams/destroy.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/internal/streams/destroy.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\n/*<replacement>*/\n\nvar pna = __webpack_require__(/*! process-nextick-args */ \"./node_modules/process-nextick-args/index.js\");\n/*</replacement>*/\n\n// undocumented cb() API, needed for core, not for public API\nfunction destroy(err, cb) {\n  var _this = this;\n\n  var readableDestroyed = this._readableState && this._readableState.destroyed;\n  var writableDestroyed = this._writableState && this._writableState.destroyed;\n\n  if (readableDestroyed || writableDestroyed) {\n    if (cb) {\n      cb(err);\n    } else if (err && (!this._writableState || !this._writableState.errorEmitted)) {\n      pna.nextTick(emitErrorNT, this, err);\n    }\n    return this;\n  }\n\n  // we set destroyed to true before firing error callbacks in order\n  // to make it re-entrance safe in case destroy() is called within callbacks\n\n  if (this._readableState) {\n    this._readableState.destroyed = true;\n  }\n\n  // if this is a duplex stream mark the writable part as destroyed as well\n  if (this._writableState) {\n    this._writableState.destroyed = true;\n  }\n\n  this._destroy(err || null, function (err) {\n    if (!cb && err) {\n      pna.nextTick(emitErrorNT, _this, err);\n      if (_this._writableState) {\n        _this._writableState.errorEmitted = true;\n      }\n    } else if (cb) {\n      cb(err);\n    }\n  });\n\n  return this;\n}\n\nfunction undestroy() {\n  if (this._readableState) {\n    this._readableState.destroyed = false;\n    this._readableState.reading = false;\n    this._readableState.ended = false;\n    this._readableState.endEmitted = false;\n  }\n\n  if (this._writableState) {\n    this._writableState.destroyed = false;\n    this._writableState.ended = false;\n    this._writableState.ending = false;\n    this._writableState.finished = false;\n    this._writableState.errorEmitted = false;\n  }\n}\n\nfunction emitErrorNT(self, err) {\n  self.emit('error', err);\n}\n\nmodule.exports = {\n  destroy: destroy,\n  undestroy: undestroy\n};\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/internal/streams/destroy.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/lib/internal/streams/stream-browser.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/readable-stream/lib/internal/streams/stream-browser.js ***!
-  \*****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("module.exports = __webpack_require__(/*! events */ \"./node_modules/events/events.js\").EventEmitter;\n\n\n//# sourceURL=webpack:///./node_modules/readable-stream/lib/internal/streams/stream-browser.js?");
-
-/***/ }),
-
-/***/ "./node_modules/readable-stream/readable-browser.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/readable-stream/readable-browser.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("exports = module.exports = __webpack_require__(/*! ./lib/_stream_readable.js */ \"./node_modules/readable-stream/lib/_stream_readable.js\");\nexports.Stream = exports;\nexports.Readable = exports;\nexports.Writable = __webpack_require__(/*! ./lib/_stream_writable.js */ \"./node_modules/readable-stream/lib/_stream_writable.js\");\nexports.Duplex = __webpack_require__(/*! ./lib/_stream_duplex.js */ \"./node_modules/readable-stream/lib/_stream_duplex.js\");\nexports.Transform = __webpack_require__(/*! ./lib/_stream_transform.js */ \"./node_modules/readable-stream/lib/_stream_transform.js\");\nexports.PassThrough = __webpack_require__(/*! ./lib/_stream_passthrough.js */ \"./node_modules/readable-stream/lib/_stream_passthrough.js\");\n\n\n//# sourceURL=webpack:///./node_modules/readable-stream/readable-browser.js?");
-
-/***/ }),
-
-/***/ "./node_modules/safe-buffer/index.js":
-/*!*******************************************!*\
-  !*** ./node_modules/safe-buffer/index.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* eslint-disable node/no-deprecated-api */\nvar buffer = __webpack_require__(/*! buffer */ \"./node_modules/buffer/index.js\")\nvar Buffer = buffer.Buffer\n\n// alternative to using Object.keys for old browsers\nfunction copyProps (src, dst) {\n  for (var key in src) {\n    dst[key] = src[key]\n  }\n}\nif (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {\n  module.exports = buffer\n} else {\n  // Copy properties from require('buffer')\n  copyProps(buffer, exports)\n  exports.Buffer = SafeBuffer\n}\n\nfunction SafeBuffer (arg, encodingOrOffset, length) {\n  return Buffer(arg, encodingOrOffset, length)\n}\n\n// Copy static methods from Buffer\ncopyProps(Buffer, SafeBuffer)\n\nSafeBuffer.from = function (arg, encodingOrOffset, length) {\n  if (typeof arg === 'number') {\n    throw new TypeError('Argument must not be a number')\n  }\n  return Buffer(arg, encodingOrOffset, length)\n}\n\nSafeBuffer.alloc = function (size, fill, encoding) {\n  if (typeof size !== 'number') {\n    throw new TypeError('Argument must be a number')\n  }\n  var buf = Buffer(size)\n  if (fill !== undefined) {\n    if (typeof encoding === 'string') {\n      buf.fill(fill, encoding)\n    } else {\n      buf.fill(fill)\n    }\n  } else {\n    buf.fill(0)\n  }\n  return buf\n}\n\nSafeBuffer.allocUnsafe = function (size) {\n  if (typeof size !== 'number') {\n    throw new TypeError('Argument must be a number')\n  }\n  return Buffer(size)\n}\n\nSafeBuffer.allocUnsafeSlow = function (size) {\n  if (typeof size !== 'number') {\n    throw new TypeError('Argument must be a number')\n  }\n  return buffer.SlowBuffer(size)\n}\n\n\n//# sourceURL=webpack:///./node_modules/safe-buffer/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/setimmediate/setImmediate.js":
-/*!***************************************************!*\
-  !*** ./node_modules/setimmediate/setImmediate.js ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {\n    \"use strict\";\n\n    if (global.setImmediate) {\n        return;\n    }\n\n    var nextHandle = 1; // Spec says greater than zero\n    var tasksByHandle = {};\n    var currentlyRunningATask = false;\n    var doc = global.document;\n    var registerImmediate;\n\n    function setImmediate(callback) {\n      // Callback can either be a function or a string\n      if (typeof callback !== \"function\") {\n        callback = new Function(\"\" + callback);\n      }\n      // Copy function arguments\n      var args = new Array(arguments.length - 1);\n      for (var i = 0; i < args.length; i++) {\n          args[i] = arguments[i + 1];\n      }\n      // Store and register the task\n      var task = { callback: callback, args: args };\n      tasksByHandle[nextHandle] = task;\n      registerImmediate(nextHandle);\n      return nextHandle++;\n    }\n\n    function clearImmediate(handle) {\n        delete tasksByHandle[handle];\n    }\n\n    function run(task) {\n        var callback = task.callback;\n        var args = task.args;\n        switch (args.length) {\n        case 0:\n            callback();\n            break;\n        case 1:\n            callback(args[0]);\n            break;\n        case 2:\n            callback(args[0], args[1]);\n            break;\n        case 3:\n            callback(args[0], args[1], args[2]);\n            break;\n        default:\n            callback.apply(undefined, args);\n            break;\n        }\n    }\n\n    function runIfPresent(handle) {\n        // From the spec: \"Wait until any invocations of this algorithm started before this one have completed.\"\n        // So if we're currently running a task, we'll need to delay this invocation.\n        if (currentlyRunningATask) {\n            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a\n            // \"too much recursion\" error.\n            setTimeout(runIfPresent, 0, handle);\n        } else {\n            var task = tasksByHandle[handle];\n            if (task) {\n                currentlyRunningATask = true;\n                try {\n                    run(task);\n                } finally {\n                    clearImmediate(handle);\n                    currentlyRunningATask = false;\n                }\n            }\n        }\n    }\n\n    function installNextTickImplementation() {\n        registerImmediate = function(handle) {\n            process.nextTick(function () { runIfPresent(handle); });\n        };\n    }\n\n    function canUsePostMessage() {\n        // The test against `importScripts` prevents this implementation from being installed inside a web worker,\n        // where `global.postMessage` means something completely different and can't be used for this purpose.\n        if (global.postMessage && !global.importScripts) {\n            var postMessageIsAsynchronous = true;\n            var oldOnMessage = global.onmessage;\n            global.onmessage = function() {\n                postMessageIsAsynchronous = false;\n            };\n            global.postMessage(\"\", \"*\");\n            global.onmessage = oldOnMessage;\n            return postMessageIsAsynchronous;\n        }\n    }\n\n    function installPostMessageImplementation() {\n        // Installs an event handler on `global` for the `message` event: see\n        // * https://developer.mozilla.org/en/DOM/window.postMessage\n        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages\n\n        var messagePrefix = \"setImmediate$\" + Math.random() + \"$\";\n        var onGlobalMessage = function(event) {\n            if (event.source === global &&\n                typeof event.data === \"string\" &&\n                event.data.indexOf(messagePrefix) === 0) {\n                runIfPresent(+event.data.slice(messagePrefix.length));\n            }\n        };\n\n        if (global.addEventListener) {\n            global.addEventListener(\"message\", onGlobalMessage, false);\n        } else {\n            global.attachEvent(\"onmessage\", onGlobalMessage);\n        }\n\n        registerImmediate = function(handle) {\n            global.postMessage(messagePrefix + handle, \"*\");\n        };\n    }\n\n    function installMessageChannelImplementation() {\n        var channel = new MessageChannel();\n        channel.port1.onmessage = function(event) {\n            var handle = event.data;\n            runIfPresent(handle);\n        };\n\n        registerImmediate = function(handle) {\n            channel.port2.postMessage(handle);\n        };\n    }\n\n    function installReadyStateChangeImplementation() {\n        var html = doc.documentElement;\n        registerImmediate = function(handle) {\n            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted\n            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.\n            var script = doc.createElement(\"script\");\n            script.onreadystatechange = function () {\n                runIfPresent(handle);\n                script.onreadystatechange = null;\n                html.removeChild(script);\n                script = null;\n            };\n            html.appendChild(script);\n        };\n    }\n\n    function installSetTimeoutImplementation() {\n        registerImmediate = function(handle) {\n            setTimeout(runIfPresent, 0, handle);\n        };\n    }\n\n    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.\n    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);\n    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;\n\n    // Don't get fooled by e.g. browserify environments.\n    if ({}.toString.call(global.process) === \"[object process]\") {\n        // For Node.js before 0.9\n        installNextTickImplementation();\n\n    } else if (canUsePostMessage()) {\n        // For non-IE10 modern browsers\n        installPostMessageImplementation();\n\n    } else if (global.MessageChannel) {\n        // For web workers, where supported\n        installMessageChannelImplementation();\n\n    } else if (doc && \"onreadystatechange\" in doc.createElement(\"script\")) {\n        // For IE 6–8\n        installReadyStateChangeImplementation();\n\n    } else {\n        // For older browsers\n        installSetTimeoutImplementation();\n    }\n\n    attachTo.setImmediate = setImmediate;\n    attachTo.clearImmediate = clearImmediate;\n}(typeof self === \"undefined\" ? typeof global === \"undefined\" ? this : global : self));\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\"), __webpack_require__(/*! ./../process/browser.js */ \"./node_modules/process/browser.js\")))\n\n//# sourceURL=webpack:///./node_modules/setimmediate/setImmediate.js?");
-
-/***/ }),
-
-/***/ "./node_modules/stream-http/index.js":
-/*!*******************************************!*\
-  !*** ./node_modules/stream-http/index.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(global) {var ClientRequest = __webpack_require__(/*! ./lib/request */ \"./node_modules/stream-http/lib/request.js\")\nvar response = __webpack_require__(/*! ./lib/response */ \"./node_modules/stream-http/lib/response.js\")\nvar extend = __webpack_require__(/*! xtend */ \"./node_modules/xtend/immutable.js\")\nvar statusCodes = __webpack_require__(/*! builtin-status-codes */ \"./node_modules/builtin-status-codes/browser.js\")\nvar url = __webpack_require__(/*! url */ \"./node_modules/url/url.js\")\n\nvar http = exports\n\nhttp.request = function (opts, cb) {\n\tif (typeof opts === 'string')\n\t\topts = url.parse(opts)\n\telse\n\t\topts = extend(opts)\n\n\t// Normally, the page is loaded from http or https, so not specifying a protocol\n\t// will result in a (valid) protocol-relative url. However, this won't work if\n\t// the protocol is something else, like 'file:'\n\tvar defaultProtocol = global.location.protocol.search(/^https?:$/) === -1 ? 'http:' : ''\n\n\tvar protocol = opts.protocol || defaultProtocol\n\tvar host = opts.hostname || opts.host\n\tvar port = opts.port\n\tvar path = opts.path || '/'\n\n\t// Necessary for IPv6 addresses\n\tif (host && host.indexOf(':') !== -1)\n\t\thost = '[' + host + ']'\n\n\t// This may be a relative url. The browser should always be able to interpret it correctly.\n\topts.url = (host ? (protocol + '//' + host) : '') + (port ? ':' + port : '') + path\n\topts.method = (opts.method || 'GET').toUpperCase()\n\topts.headers = opts.headers || {}\n\n\t// Also valid opts.auth, opts.mode\n\n\tvar req = new ClientRequest(opts)\n\tif (cb)\n\t\treq.on('response', cb)\n\treturn req\n}\n\nhttp.get = function get (opts, cb) {\n\tvar req = http.request(opts, cb)\n\treq.end()\n\treturn req\n}\n\nhttp.ClientRequest = ClientRequest\nhttp.IncomingMessage = response.IncomingMessage\n\nhttp.Agent = function () {}\nhttp.Agent.defaultMaxSockets = 4\n\nhttp.globalAgent = new http.Agent()\n\nhttp.STATUS_CODES = statusCodes\n\nhttp.METHODS = [\n\t'CHECKOUT',\n\t'CONNECT',\n\t'COPY',\n\t'DELETE',\n\t'GET',\n\t'HEAD',\n\t'LOCK',\n\t'M-SEARCH',\n\t'MERGE',\n\t'MKACTIVITY',\n\t'MKCOL',\n\t'MOVE',\n\t'NOTIFY',\n\t'OPTIONS',\n\t'PATCH',\n\t'POST',\n\t'PROPFIND',\n\t'PROPPATCH',\n\t'PURGE',\n\t'PUT',\n\t'REPORT',\n\t'SEARCH',\n\t'SUBSCRIBE',\n\t'TRACE',\n\t'UNLOCK',\n\t'UNSUBSCRIBE'\n]\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/stream-http/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/stream-http/lib/capability.js":
-/*!****************************************************!*\
-  !*** ./node_modules/stream-http/lib/capability.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(global) {exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)\n\nexports.writableStream = isFunction(global.WritableStream)\n\nexports.abortController = isFunction(global.AbortController)\n\nexports.blobConstructor = false\ntry {\n\tnew Blob([new ArrayBuffer(1)])\n\texports.blobConstructor = true\n} catch (e) {}\n\n// The xhr request to example.com may violate some restrictive CSP configurations,\n// so if we're running in a browser that supports `fetch`, avoid calling getXHR()\n// and assume support for certain features below.\nvar xhr\nfunction getXHR () {\n\t// Cache the xhr value\n\tif (xhr !== undefined) return xhr\n\n\tif (global.XMLHttpRequest) {\n\t\txhr = new global.XMLHttpRequest()\n\t\t// If XDomainRequest is available (ie only, where xhr might not work\n\t\t// cross domain), use the page location. Otherwise use example.com\n\t\t// Note: this doesn't actually make an http request.\n\t\ttry {\n\t\t\txhr.open('GET', global.XDomainRequest ? '/' : 'https://example.com')\n\t\t} catch(e) {\n\t\t\txhr = null\n\t\t}\n\t} else {\n\t\t// Service workers don't have XHR\n\t\txhr = null\n\t}\n\treturn xhr\n}\n\nfunction checkTypeSupport (type) {\n\tvar xhr = getXHR()\n\tif (!xhr) return false\n\ttry {\n\t\txhr.responseType = type\n\t\treturn xhr.responseType === type\n\t} catch (e) {}\n\treturn false\n}\n\n// For some strange reason, Safari 7.0 reports typeof global.ArrayBuffer === 'object'.\n// Safari 7.1 appears to have fixed this bug.\nvar haveArrayBuffer = typeof global.ArrayBuffer !== 'undefined'\nvar haveSlice = haveArrayBuffer && isFunction(global.ArrayBuffer.prototype.slice)\n\n// If fetch is supported, then arraybuffer will be supported too. Skip calling\n// checkTypeSupport(), since that calls getXHR().\nexports.arraybuffer = exports.fetch || (haveArrayBuffer && checkTypeSupport('arraybuffer'))\n\n// These next two tests unavoidably show warnings in Chrome. Since fetch will always\n// be used if it's available, just return false for these to avoid the warnings.\nexports.msstream = !exports.fetch && haveSlice && checkTypeSupport('ms-stream')\nexports.mozchunkedarraybuffer = !exports.fetch && haveArrayBuffer &&\n\tcheckTypeSupport('moz-chunked-arraybuffer')\n\n// If fetch is supported, then overrideMimeType will be supported too. Skip calling\n// getXHR().\nexports.overrideMimeType = exports.fetch || (getXHR() ? isFunction(getXHR().overrideMimeType) : false)\n\nexports.vbArray = isFunction(global.VBArray)\n\nfunction isFunction (value) {\n\treturn typeof value === 'function'\n}\n\nxhr = null // Help gc\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/stream-http/lib/capability.js?");
-
-/***/ }),
-
-/***/ "./node_modules/stream-http/lib/request.js":
-/*!*************************************************!*\
-  !*** ./node_modules/stream-http/lib/request.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(Buffer, global, process) {var capability = __webpack_require__(/*! ./capability */ \"./node_modules/stream-http/lib/capability.js\")\nvar inherits = __webpack_require__(/*! inherits */ \"./node_modules/inherits/inherits_browser.js\")\nvar response = __webpack_require__(/*! ./response */ \"./node_modules/stream-http/lib/response.js\")\nvar stream = __webpack_require__(/*! readable-stream */ \"./node_modules/readable-stream/readable-browser.js\")\nvar toArrayBuffer = __webpack_require__(/*! to-arraybuffer */ \"./node_modules/to-arraybuffer/index.js\")\n\nvar IncomingMessage = response.IncomingMessage\nvar rStates = response.readyStates\n\nfunction decideMode (preferBinary, useFetch) {\n\tif (capability.fetch && useFetch) {\n\t\treturn 'fetch'\n\t} else if (capability.mozchunkedarraybuffer) {\n\t\treturn 'moz-chunked-arraybuffer'\n\t} else if (capability.msstream) {\n\t\treturn 'ms-stream'\n\t} else if (capability.arraybuffer && preferBinary) {\n\t\treturn 'arraybuffer'\n\t} else if (capability.vbArray && preferBinary) {\n\t\treturn 'text:vbarray'\n\t} else {\n\t\treturn 'text'\n\t}\n}\n\nvar ClientRequest = module.exports = function (opts) {\n\tvar self = this\n\tstream.Writable.call(self)\n\n\tself._opts = opts\n\tself._body = []\n\tself._headers = {}\n\tif (opts.auth)\n\t\tself.setHeader('Authorization', 'Basic ' + new Buffer(opts.auth).toString('base64'))\n\tObject.keys(opts.headers).forEach(function (name) {\n\t\tself.setHeader(name, opts.headers[name])\n\t})\n\n\tvar preferBinary\n\tvar useFetch = true\n\tif (opts.mode === 'disable-fetch' || ('requestTimeout' in opts && !capability.abortController)) {\n\t\t// If the use of XHR should be preferred. Not typically needed.\n\t\tuseFetch = false\n\t\tpreferBinary = true\n\t} else if (opts.mode === 'prefer-streaming') {\n\t\t// If streaming is a high priority but binary compatibility and\n\t\t// the accuracy of the 'content-type' header aren't\n\t\tpreferBinary = false\n\t} else if (opts.mode === 'allow-wrong-content-type') {\n\t\t// If streaming is more important than preserving the 'content-type' header\n\t\tpreferBinary = !capability.overrideMimeType\n\t} else if (!opts.mode || opts.mode === 'default' || opts.mode === 'prefer-fast') {\n\t\t// Use binary if text streaming may corrupt data or the content-type header, or for speed\n\t\tpreferBinary = true\n\t} else {\n\t\tthrow new Error('Invalid value for opts.mode')\n\t}\n\tself._mode = decideMode(preferBinary, useFetch)\n\tself._fetchTimer = null\n\n\tself.on('finish', function () {\n\t\tself._onFinish()\n\t})\n}\n\ninherits(ClientRequest, stream.Writable)\n\nClientRequest.prototype.setHeader = function (name, value) {\n\tvar self = this\n\tvar lowerName = name.toLowerCase()\n\t// This check is not necessary, but it prevents warnings from browsers about setting unsafe\n\t// headers. To be honest I'm not entirely sure hiding these warnings is a good thing, but\n\t// http-browserify did it, so I will too.\n\tif (unsafeHeaders.indexOf(lowerName) !== -1)\n\t\treturn\n\n\tself._headers[lowerName] = {\n\t\tname: name,\n\t\tvalue: value\n\t}\n}\n\nClientRequest.prototype.getHeader = function (name) {\n\tvar header = this._headers[name.toLowerCase()]\n\tif (header)\n\t\treturn header.value\n\treturn null\n}\n\nClientRequest.prototype.removeHeader = function (name) {\n\tvar self = this\n\tdelete self._headers[name.toLowerCase()]\n}\n\nClientRequest.prototype._onFinish = function () {\n\tvar self = this\n\n\tif (self._destroyed)\n\t\treturn\n\tvar opts = self._opts\n\n\tvar headersObj = self._headers\n\tvar body = null\n\tif (opts.method !== 'GET' && opts.method !== 'HEAD') {\n\t\tif (capability.arraybuffer) {\n\t\t\tbody = toArrayBuffer(Buffer.concat(self._body))\n\t\t} else if (capability.blobConstructor) {\n\t\t\tbody = new global.Blob(self._body.map(function (buffer) {\n\t\t\t\treturn toArrayBuffer(buffer)\n\t\t\t}), {\n\t\t\t\ttype: (headersObj['content-type'] || {}).value || ''\n\t\t\t})\n\t\t} else {\n\t\t\t// get utf8 string\n\t\t\tbody = Buffer.concat(self._body).toString()\n\t\t}\n\t}\n\n\t// create flattened list of headers\n\tvar headersList = []\n\tObject.keys(headersObj).forEach(function (keyName) {\n\t\tvar name = headersObj[keyName].name\n\t\tvar value = headersObj[keyName].value\n\t\tif (Array.isArray(value)) {\n\t\t\tvalue.forEach(function (v) {\n\t\t\t\theadersList.push([name, v])\n\t\t\t})\n\t\t} else {\n\t\t\theadersList.push([name, value])\n\t\t}\n\t})\n\n\tif (self._mode === 'fetch') {\n\t\tvar signal = null\n\t\tvar fetchTimer = null\n\t\tif (capability.abortController) {\n\t\t\tvar controller = new AbortController()\n\t\t\tsignal = controller.signal\n\t\t\tself._fetchAbortController = controller\n\n\t\t\tif ('requestTimeout' in opts && opts.requestTimeout !== 0) {\n\t\t\t\tself._fetchTimer = global.setTimeout(function () {\n\t\t\t\t\tself.emit('requestTimeout')\n\t\t\t\t\tif (self._fetchAbortController)\n\t\t\t\t\t\tself._fetchAbortController.abort()\n\t\t\t\t}, opts.requestTimeout)\n\t\t\t}\n\t\t}\n\n\t\tglobal.fetch(self._opts.url, {\n\t\t\tmethod: self._opts.method,\n\t\t\theaders: headersList,\n\t\t\tbody: body || undefined,\n\t\t\tmode: 'cors',\n\t\t\tcredentials: opts.withCredentials ? 'include' : 'same-origin',\n\t\t\tsignal: signal\n\t\t}).then(function (response) {\n\t\t\tself._fetchResponse = response\n\t\t\tself._connect()\n\t\t}, function (reason) {\n\t\t\tglobal.clearTimeout(self._fetchTimer)\n\t\t\tif (!self._destroyed)\n\t\t\t\tself.emit('error', reason)\n\t\t})\n\t} else {\n\t\tvar xhr = self._xhr = new global.XMLHttpRequest()\n\t\ttry {\n\t\t\txhr.open(self._opts.method, self._opts.url, true)\n\t\t} catch (err) {\n\t\t\tprocess.nextTick(function () {\n\t\t\t\tself.emit('error', err)\n\t\t\t})\n\t\t\treturn\n\t\t}\n\n\t\t// Can't set responseType on really old browsers\n\t\tif ('responseType' in xhr)\n\t\t\txhr.responseType = self._mode.split(':')[0]\n\n\t\tif ('withCredentials' in xhr)\n\t\t\txhr.withCredentials = !!opts.withCredentials\n\n\t\tif (self._mode === 'text' && 'overrideMimeType' in xhr)\n\t\t\txhr.overrideMimeType('text/plain; charset=x-user-defined')\n\n\t\tif ('requestTimeout' in opts) {\n\t\t\txhr.timeout = opts.requestTimeout\n\t\t\txhr.ontimeout = function () {\n\t\t\t\tself.emit('requestTimeout')\n\t\t\t}\n\t\t}\n\n\t\theadersList.forEach(function (header) {\n\t\t\txhr.setRequestHeader(header[0], header[1])\n\t\t})\n\n\t\tself._response = null\n\t\txhr.onreadystatechange = function () {\n\t\t\tswitch (xhr.readyState) {\n\t\t\t\tcase rStates.LOADING:\n\t\t\t\tcase rStates.DONE:\n\t\t\t\t\tself._onXHRProgress()\n\t\t\t\t\tbreak\n\t\t\t}\n\t\t}\n\t\t// Necessary for streaming in Firefox, since xhr.response is ONLY defined\n\t\t// in onprogress, not in onreadystatechange with xhr.readyState = 3\n\t\tif (self._mode === 'moz-chunked-arraybuffer') {\n\t\t\txhr.onprogress = function () {\n\t\t\t\tself._onXHRProgress()\n\t\t\t}\n\t\t}\n\n\t\txhr.onerror = function () {\n\t\t\tif (self._destroyed)\n\t\t\t\treturn\n\t\t\tself.emit('error', new Error('XHR error'))\n\t\t}\n\n\t\ttry {\n\t\t\txhr.send(body)\n\t\t} catch (err) {\n\t\t\tprocess.nextTick(function () {\n\t\t\t\tself.emit('error', err)\n\t\t\t})\n\t\t\treturn\n\t\t}\n\t}\n}\n\n/**\n * Checks if xhr.status is readable and non-zero, indicating no error.\n * Even though the spec says it should be available in readyState 3,\n * accessing it throws an exception in IE8\n */\nfunction statusValid (xhr) {\n\ttry {\n\t\tvar status = xhr.status\n\t\treturn (status !== null && status !== 0)\n\t} catch (e) {\n\t\treturn false\n\t}\n}\n\nClientRequest.prototype._onXHRProgress = function () {\n\tvar self = this\n\n\tif (!statusValid(self._xhr) || self._destroyed)\n\t\treturn\n\n\tif (!self._response)\n\t\tself._connect()\n\n\tself._response._onXHRProgress()\n}\n\nClientRequest.prototype._connect = function () {\n\tvar self = this\n\n\tif (self._destroyed)\n\t\treturn\n\n\tself._response = new IncomingMessage(self._xhr, self._fetchResponse, self._mode, self._fetchTimer)\n\tself._response.on('error', function(err) {\n\t\tself.emit('error', err)\n\t})\n\n\tself.emit('response', self._response)\n}\n\nClientRequest.prototype._write = function (chunk, encoding, cb) {\n\tvar self = this\n\n\tself._body.push(chunk)\n\tcb()\n}\n\nClientRequest.prototype.abort = ClientRequest.prototype.destroy = function () {\n\tvar self = this\n\tself._destroyed = true\n\tglobal.clearTimeout(self._fetchTimer)\n\tif (self._response)\n\t\tself._response._destroyed = true\n\tif (self._xhr)\n\t\tself._xhr.abort()\n\telse if (self._fetchAbortController)\n\t\tself._fetchAbortController.abort()\n}\n\nClientRequest.prototype.end = function (data, encoding, cb) {\n\tvar self = this\n\tif (typeof data === 'function') {\n\t\tcb = data\n\t\tdata = undefined\n\t}\n\n\tstream.Writable.prototype.end.call(self, data, encoding, cb)\n}\n\nClientRequest.prototype.flushHeaders = function () {}\nClientRequest.prototype.setTimeout = function () {}\nClientRequest.prototype.setNoDelay = function () {}\nClientRequest.prototype.setSocketKeepAlive = function () {}\n\n// Taken from http://www.w3.org/TR/XMLHttpRequest/#the-setrequestheader%28%29-method\nvar unsafeHeaders = [\n\t'accept-charset',\n\t'accept-encoding',\n\t'access-control-request-headers',\n\t'access-control-request-method',\n\t'connection',\n\t'content-length',\n\t'cookie',\n\t'cookie2',\n\t'date',\n\t'dnt',\n\t'expect',\n\t'host',\n\t'keep-alive',\n\t'origin',\n\t'referer',\n\t'te',\n\t'trailer',\n\t'transfer-encoding',\n\t'upgrade',\n\t'via'\n]\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../buffer/index.js */ \"./node_modules/buffer/index.js\").Buffer, __webpack_require__(/*! ./../../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\"), __webpack_require__(/*! ./../../process/browser.js */ \"./node_modules/process/browser.js\")))\n\n//# sourceURL=webpack:///./node_modules/stream-http/lib/request.js?");
-
-/***/ }),
-
-/***/ "./node_modules/stream-http/lib/response.js":
-/*!**************************************************!*\
-  !*** ./node_modules/stream-http/lib/response.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(process, Buffer, global) {var capability = __webpack_require__(/*! ./capability */ \"./node_modules/stream-http/lib/capability.js\")\nvar inherits = __webpack_require__(/*! inherits */ \"./node_modules/inherits/inherits_browser.js\")\nvar stream = __webpack_require__(/*! readable-stream */ \"./node_modules/readable-stream/readable-browser.js\")\n\nvar rStates = exports.readyStates = {\n\tUNSENT: 0,\n\tOPENED: 1,\n\tHEADERS_RECEIVED: 2,\n\tLOADING: 3,\n\tDONE: 4\n}\n\nvar IncomingMessage = exports.IncomingMessage = function (xhr, response, mode, fetchTimer) {\n\tvar self = this\n\tstream.Readable.call(self)\n\n\tself._mode = mode\n\tself.headers = {}\n\tself.rawHeaders = []\n\tself.trailers = {}\n\tself.rawTrailers = []\n\n\t// Fake the 'close' event, but only once 'end' fires\n\tself.on('end', function () {\n\t\t// The nextTick is necessary to prevent the 'request' module from causing an infinite loop\n\t\tprocess.nextTick(function () {\n\t\t\tself.emit('close')\n\t\t})\n\t})\n\n\tif (mode === 'fetch') {\n\t\tself._fetchResponse = response\n\n\t\tself.url = response.url\n\t\tself.statusCode = response.status\n\t\tself.statusMessage = response.statusText\n\t\t\n\t\tresponse.headers.forEach(function (header, key){\n\t\t\tself.headers[key.toLowerCase()] = header\n\t\t\tself.rawHeaders.push(key, header)\n\t\t})\n\n\t\tif (capability.writableStream) {\n\t\t\tvar writable = new WritableStream({\n\t\t\t\twrite: function (chunk) {\n\t\t\t\t\treturn new Promise(function (resolve, reject) {\n\t\t\t\t\t\tif (self._destroyed) {\n\t\t\t\t\t\t\treject()\n\t\t\t\t\t\t} else if(self.push(new Buffer(chunk))) {\n\t\t\t\t\t\t\tresolve()\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\tself._resumeFetch = resolve\n\t\t\t\t\t\t}\n\t\t\t\t\t})\n\t\t\t\t},\n\t\t\t\tclose: function () {\n\t\t\t\t\tglobal.clearTimeout(fetchTimer)\n\t\t\t\t\tif (!self._destroyed)\n\t\t\t\t\t\tself.push(null)\n\t\t\t\t},\n\t\t\t\tabort: function (err) {\n\t\t\t\t\tif (!self._destroyed)\n\t\t\t\t\t\tself.emit('error', err)\n\t\t\t\t}\n\t\t\t})\n\n\t\t\ttry {\n\t\t\t\tresponse.body.pipeTo(writable).catch(function (err) {\n\t\t\t\t\tglobal.clearTimeout(fetchTimer)\n\t\t\t\t\tif (!self._destroyed)\n\t\t\t\t\t\tself.emit('error', err)\n\t\t\t\t})\n\t\t\t\treturn\n\t\t\t} catch (e) {} // pipeTo method isn't defined. Can't find a better way to feature test this\n\t\t}\n\t\t// fallback for when writableStream or pipeTo aren't available\n\t\tvar reader = response.body.getReader()\n\t\tfunction read () {\n\t\t\treader.read().then(function (result) {\n\t\t\t\tif (self._destroyed)\n\t\t\t\t\treturn\n\t\t\t\tif (result.done) {\n\t\t\t\t\tglobal.clearTimeout(fetchTimer)\n\t\t\t\t\tself.push(null)\n\t\t\t\t\treturn\n\t\t\t\t}\n\t\t\t\tself.push(new Buffer(result.value))\n\t\t\t\tread()\n\t\t\t}).catch(function (err) {\n\t\t\t\tglobal.clearTimeout(fetchTimer)\n\t\t\t\tif (!self._destroyed)\n\t\t\t\t\tself.emit('error', err)\n\t\t\t})\n\t\t}\n\t\tread()\n\t} else {\n\t\tself._xhr = xhr\n\t\tself._pos = 0\n\n\t\tself.url = xhr.responseURL\n\t\tself.statusCode = xhr.status\n\t\tself.statusMessage = xhr.statusText\n\t\tvar headers = xhr.getAllResponseHeaders().split(/\\r?\\n/)\n\t\theaders.forEach(function (header) {\n\t\t\tvar matches = header.match(/^([^:]+):\\s*(.*)/)\n\t\t\tif (matches) {\n\t\t\t\tvar key = matches[1].toLowerCase()\n\t\t\t\tif (key === 'set-cookie') {\n\t\t\t\t\tif (self.headers[key] === undefined) {\n\t\t\t\t\t\tself.headers[key] = []\n\t\t\t\t\t}\n\t\t\t\t\tself.headers[key].push(matches[2])\n\t\t\t\t} else if (self.headers[key] !== undefined) {\n\t\t\t\t\tself.headers[key] += ', ' + matches[2]\n\t\t\t\t} else {\n\t\t\t\t\tself.headers[key] = matches[2]\n\t\t\t\t}\n\t\t\t\tself.rawHeaders.push(matches[1], matches[2])\n\t\t\t}\n\t\t})\n\n\t\tself._charset = 'x-user-defined'\n\t\tif (!capability.overrideMimeType) {\n\t\t\tvar mimeType = self.rawHeaders['mime-type']\n\t\t\tif (mimeType) {\n\t\t\t\tvar charsetMatch = mimeType.match(/;\\s*charset=([^;])(;|$)/)\n\t\t\t\tif (charsetMatch) {\n\t\t\t\t\tself._charset = charsetMatch[1].toLowerCase()\n\t\t\t\t}\n\t\t\t}\n\t\t\tif (!self._charset)\n\t\t\t\tself._charset = 'utf-8' // best guess\n\t\t}\n\t}\n}\n\ninherits(IncomingMessage, stream.Readable)\n\nIncomingMessage.prototype._read = function () {\n\tvar self = this\n\n\tvar resolve = self._resumeFetch\n\tif (resolve) {\n\t\tself._resumeFetch = null\n\t\tresolve()\n\t}\n}\n\nIncomingMessage.prototype._onXHRProgress = function () {\n\tvar self = this\n\n\tvar xhr = self._xhr\n\n\tvar response = null\n\tswitch (self._mode) {\n\t\tcase 'text:vbarray': // For IE9\n\t\t\tif (xhr.readyState !== rStates.DONE)\n\t\t\t\tbreak\n\t\t\ttry {\n\t\t\t\t// This fails in IE8\n\t\t\t\tresponse = new global.VBArray(xhr.responseBody).toArray()\n\t\t\t} catch (e) {}\n\t\t\tif (response !== null) {\n\t\t\t\tself.push(new Buffer(response))\n\t\t\t\tbreak\n\t\t\t}\n\t\t\t// Falls through in IE8\t\n\t\tcase 'text':\n\t\t\ttry { // This will fail when readyState = 3 in IE9. Switch mode and wait for readyState = 4\n\t\t\t\tresponse = xhr.responseText\n\t\t\t} catch (e) {\n\t\t\t\tself._mode = 'text:vbarray'\n\t\t\t\tbreak\n\t\t\t}\n\t\t\tif (response.length > self._pos) {\n\t\t\t\tvar newData = response.substr(self._pos)\n\t\t\t\tif (self._charset === 'x-user-defined') {\n\t\t\t\t\tvar buffer = new Buffer(newData.length)\n\t\t\t\t\tfor (var i = 0; i < newData.length; i++)\n\t\t\t\t\t\tbuffer[i] = newData.charCodeAt(i) & 0xff\n\n\t\t\t\t\tself.push(buffer)\n\t\t\t\t} else {\n\t\t\t\t\tself.push(newData, self._charset)\n\t\t\t\t}\n\t\t\t\tself._pos = response.length\n\t\t\t}\n\t\t\tbreak\n\t\tcase 'arraybuffer':\n\t\t\tif (xhr.readyState !== rStates.DONE || !xhr.response)\n\t\t\t\tbreak\n\t\t\tresponse = xhr.response\n\t\t\tself.push(new Buffer(new Uint8Array(response)))\n\t\t\tbreak\n\t\tcase 'moz-chunked-arraybuffer': // take whole\n\t\t\tresponse = xhr.response\n\t\t\tif (xhr.readyState !== rStates.LOADING || !response)\n\t\t\t\tbreak\n\t\t\tself.push(new Buffer(new Uint8Array(response)))\n\t\t\tbreak\n\t\tcase 'ms-stream':\n\t\t\tresponse = xhr.response\n\t\t\tif (xhr.readyState !== rStates.LOADING)\n\t\t\t\tbreak\n\t\t\tvar reader = new global.MSStreamReader()\n\t\t\treader.onprogress = function () {\n\t\t\t\tif (reader.result.byteLength > self._pos) {\n\t\t\t\t\tself.push(new Buffer(new Uint8Array(reader.result.slice(self._pos))))\n\t\t\t\t\tself._pos = reader.result.byteLength\n\t\t\t\t}\n\t\t\t}\n\t\t\treader.onload = function () {\n\t\t\t\tself.push(null)\n\t\t\t}\n\t\t\t// reader.onerror = ??? // TODO: this\n\t\t\treader.readAsArrayBuffer(response)\n\t\t\tbreak\n\t}\n\n\t// The ms-stream case handles end separately in reader.onload()\n\tif (self._xhr.readyState === rStates.DONE && self._mode !== 'ms-stream') {\n\t\tself.push(null)\n\t}\n}\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ \"./node_modules/process/browser.js\"), __webpack_require__(/*! ./../../buffer/index.js */ \"./node_modules/buffer/index.js\").Buffer, __webpack_require__(/*! ./../../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/stream-http/lib/response.js?");
-
-/***/ }),
-
-/***/ "./node_modules/string_decoder/lib/string_decoder.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/string_decoder/lib/string_decoder.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\n\n/*<replacement>*/\n\nvar Buffer = __webpack_require__(/*! safe-buffer */ \"./node_modules/safe-buffer/index.js\").Buffer;\n/*</replacement>*/\n\nvar isEncoding = Buffer.isEncoding || function (encoding) {\n  encoding = '' + encoding;\n  switch (encoding && encoding.toLowerCase()) {\n    case 'hex':case 'utf8':case 'utf-8':case 'ascii':case 'binary':case 'base64':case 'ucs2':case 'ucs-2':case 'utf16le':case 'utf-16le':case 'raw':\n      return true;\n    default:\n      return false;\n  }\n};\n\nfunction _normalizeEncoding(enc) {\n  if (!enc) return 'utf8';\n  var retried;\n  while (true) {\n    switch (enc) {\n      case 'utf8':\n      case 'utf-8':\n        return 'utf8';\n      case 'ucs2':\n      case 'ucs-2':\n      case 'utf16le':\n      case 'utf-16le':\n        return 'utf16le';\n      case 'latin1':\n      case 'binary':\n        return 'latin1';\n      case 'base64':\n      case 'ascii':\n      case 'hex':\n        return enc;\n      default:\n        if (retried) return; // undefined\n        enc = ('' + enc).toLowerCase();\n        retried = true;\n    }\n  }\n};\n\n// Do not cache `Buffer.isEncoding` when checking encoding names as some\n// modules monkey-patch it to support additional encodings\nfunction normalizeEncoding(enc) {\n  var nenc = _normalizeEncoding(enc);\n  if (typeof nenc !== 'string' && (Buffer.isEncoding === isEncoding || !isEncoding(enc))) throw new Error('Unknown encoding: ' + enc);\n  return nenc || enc;\n}\n\n// StringDecoder provides an interface for efficiently splitting a series of\n// buffers into a series of JS strings without breaking apart multi-byte\n// characters.\nexports.StringDecoder = StringDecoder;\nfunction StringDecoder(encoding) {\n  this.encoding = normalizeEncoding(encoding);\n  var nb;\n  switch (this.encoding) {\n    case 'utf16le':\n      this.text = utf16Text;\n      this.end = utf16End;\n      nb = 4;\n      break;\n    case 'utf8':\n      this.fillLast = utf8FillLast;\n      nb = 4;\n      break;\n    case 'base64':\n      this.text = base64Text;\n      this.end = base64End;\n      nb = 3;\n      break;\n    default:\n      this.write = simpleWrite;\n      this.end = simpleEnd;\n      return;\n  }\n  this.lastNeed = 0;\n  this.lastTotal = 0;\n  this.lastChar = Buffer.allocUnsafe(nb);\n}\n\nStringDecoder.prototype.write = function (buf) {\n  if (buf.length === 0) return '';\n  var r;\n  var i;\n  if (this.lastNeed) {\n    r = this.fillLast(buf);\n    if (r === undefined) return '';\n    i = this.lastNeed;\n    this.lastNeed = 0;\n  } else {\n    i = 0;\n  }\n  if (i < buf.length) return r ? r + this.text(buf, i) : this.text(buf, i);\n  return r || '';\n};\n\nStringDecoder.prototype.end = utf8End;\n\n// Returns only complete characters in a Buffer\nStringDecoder.prototype.text = utf8Text;\n\n// Attempts to complete a partial non-UTF-8 character using bytes from a Buffer\nStringDecoder.prototype.fillLast = function (buf) {\n  if (this.lastNeed <= buf.length) {\n    buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, this.lastNeed);\n    return this.lastChar.toString(this.encoding, 0, this.lastTotal);\n  }\n  buf.copy(this.lastChar, this.lastTotal - this.lastNeed, 0, buf.length);\n  this.lastNeed -= buf.length;\n};\n\n// Checks the type of a UTF-8 byte, whether it's ASCII, a leading byte, or a\n// continuation byte. If an invalid byte is detected, -2 is returned.\nfunction utf8CheckByte(byte) {\n  if (byte <= 0x7F) return 0;else if (byte >> 5 === 0x06) return 2;else if (byte >> 4 === 0x0E) return 3;else if (byte >> 3 === 0x1E) return 4;\n  return byte >> 6 === 0x02 ? -1 : -2;\n}\n\n// Checks at most 3 bytes at the end of a Buffer in order to detect an\n// incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)\n// needed to complete the UTF-8 character (if applicable) are returned.\nfunction utf8CheckIncomplete(self, buf, i) {\n  var j = buf.length - 1;\n  if (j < i) return 0;\n  var nb = utf8CheckByte(buf[j]);\n  if (nb >= 0) {\n    if (nb > 0) self.lastNeed = nb - 1;\n    return nb;\n  }\n  if (--j < i || nb === -2) return 0;\n  nb = utf8CheckByte(buf[j]);\n  if (nb >= 0) {\n    if (nb > 0) self.lastNeed = nb - 2;\n    return nb;\n  }\n  if (--j < i || nb === -2) return 0;\n  nb = utf8CheckByte(buf[j]);\n  if (nb >= 0) {\n    if (nb > 0) {\n      if (nb === 2) nb = 0;else self.lastNeed = nb - 3;\n    }\n    return nb;\n  }\n  return 0;\n}\n\n// Validates as many continuation bytes for a multi-byte UTF-8 character as\n// needed or are available. If we see a non-continuation byte where we expect\n// one, we \"replace\" the validated continuation bytes we've seen so far with\n// a single UTF-8 replacement character ('\\ufffd'), to match v8's UTF-8 decoding\n// behavior. The continuation byte check is included three times in the case\n// where all of the continuation bytes for a character exist in the same buffer.\n// It is also done this way as a slight performance increase instead of using a\n// loop.\nfunction utf8CheckExtraBytes(self, buf, p) {\n  if ((buf[0] & 0xC0) !== 0x80) {\n    self.lastNeed = 0;\n    return '\\ufffd';\n  }\n  if (self.lastNeed > 1 && buf.length > 1) {\n    if ((buf[1] & 0xC0) !== 0x80) {\n      self.lastNeed = 1;\n      return '\\ufffd';\n    }\n    if (self.lastNeed > 2 && buf.length > 2) {\n      if ((buf[2] & 0xC0) !== 0x80) {\n        self.lastNeed = 2;\n        return '\\ufffd';\n      }\n    }\n  }\n}\n\n// Attempts to complete a multi-byte UTF-8 character using bytes from a Buffer.\nfunction utf8FillLast(buf) {\n  var p = this.lastTotal - this.lastNeed;\n  var r = utf8CheckExtraBytes(this, buf, p);\n  if (r !== undefined) return r;\n  if (this.lastNeed <= buf.length) {\n    buf.copy(this.lastChar, p, 0, this.lastNeed);\n    return this.lastChar.toString(this.encoding, 0, this.lastTotal);\n  }\n  buf.copy(this.lastChar, p, 0, buf.length);\n  this.lastNeed -= buf.length;\n}\n\n// Returns all complete UTF-8 characters in a Buffer. If the Buffer ended on a\n// partial character, the character's bytes are buffered until the required\n// number of bytes are available.\nfunction utf8Text(buf, i) {\n  var total = utf8CheckIncomplete(this, buf, i);\n  if (!this.lastNeed) return buf.toString('utf8', i);\n  this.lastTotal = total;\n  var end = buf.length - (total - this.lastNeed);\n  buf.copy(this.lastChar, 0, end);\n  return buf.toString('utf8', i, end);\n}\n\n// For UTF-8, a replacement character is added when ending on a partial\n// character.\nfunction utf8End(buf) {\n  var r = buf && buf.length ? this.write(buf) : '';\n  if (this.lastNeed) return r + '\\ufffd';\n  return r;\n}\n\n// UTF-16LE typically needs two bytes per character, but even if we have an even\n// number of bytes available, we need to check if we end on a leading/high\n// surrogate. In that case, we need to wait for the next two bytes in order to\n// decode the last character properly.\nfunction utf16Text(buf, i) {\n  if ((buf.length - i) % 2 === 0) {\n    var r = buf.toString('utf16le', i);\n    if (r) {\n      var c = r.charCodeAt(r.length - 1);\n      if (c >= 0xD800 && c <= 0xDBFF) {\n        this.lastNeed = 2;\n        this.lastTotal = 4;\n        this.lastChar[0] = buf[buf.length - 2];\n        this.lastChar[1] = buf[buf.length - 1];\n        return r.slice(0, -1);\n      }\n    }\n    return r;\n  }\n  this.lastNeed = 1;\n  this.lastTotal = 2;\n  this.lastChar[0] = buf[buf.length - 1];\n  return buf.toString('utf16le', i, buf.length - 1);\n}\n\n// For UTF-16LE we do not explicitly append special replacement characters if we\n// end on a partial character, we simply let v8 handle that.\nfunction utf16End(buf) {\n  var r = buf && buf.length ? this.write(buf) : '';\n  if (this.lastNeed) {\n    var end = this.lastTotal - this.lastNeed;\n    return r + this.lastChar.toString('utf16le', 0, end);\n  }\n  return r;\n}\n\nfunction base64Text(buf, i) {\n  var n = (buf.length - i) % 3;\n  if (n === 0) return buf.toString('base64', i);\n  this.lastNeed = 3 - n;\n  this.lastTotal = 3;\n  if (n === 1) {\n    this.lastChar[0] = buf[buf.length - 1];\n  } else {\n    this.lastChar[0] = buf[buf.length - 2];\n    this.lastChar[1] = buf[buf.length - 1];\n  }\n  return buf.toString('base64', i, buf.length - n);\n}\n\nfunction base64End(buf) {\n  var r = buf && buf.length ? this.write(buf) : '';\n  if (this.lastNeed) return r + this.lastChar.toString('base64', 0, 3 - this.lastNeed);\n  return r;\n}\n\n// Pass bytes on through for single-byte encodings (e.g. ascii, latin1, hex)\nfunction simpleWrite(buf) {\n  return buf.toString(this.encoding);\n}\n\nfunction simpleEnd(buf) {\n  return buf && buf.length ? this.write(buf) : '';\n}\n\n//# sourceURL=webpack:///./node_modules/string_decoder/lib/string_decoder.js?");
-
-/***/ }),
-
-/***/ "./node_modules/timers-browserify/main.js":
-/*!************************************************!*\
-  !*** ./node_modules/timers-browserify/main.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== \"undefined\" && global) ||\n            (typeof self !== \"undefined\" && self) ||\n            window;\nvar apply = Function.prototype.apply;\n\n// DOM APIs, for completeness\n\nexports.setTimeout = function() {\n  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);\n};\nexports.setInterval = function() {\n  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);\n};\nexports.clearTimeout =\nexports.clearInterval = function(timeout) {\n  if (timeout) {\n    timeout.close();\n  }\n};\n\nfunction Timeout(id, clearFn) {\n  this._id = id;\n  this._clearFn = clearFn;\n}\nTimeout.prototype.unref = Timeout.prototype.ref = function() {};\nTimeout.prototype.close = function() {\n  this._clearFn.call(scope, this._id);\n};\n\n// Does not start the time, just sets up the members needed.\nexports.enroll = function(item, msecs) {\n  clearTimeout(item._idleTimeoutId);\n  item._idleTimeout = msecs;\n};\n\nexports.unenroll = function(item) {\n  clearTimeout(item._idleTimeoutId);\n  item._idleTimeout = -1;\n};\n\nexports._unrefActive = exports.active = function(item) {\n  clearTimeout(item._idleTimeoutId);\n\n  var msecs = item._idleTimeout;\n  if (msecs >= 0) {\n    item._idleTimeoutId = setTimeout(function onTimeout() {\n      if (item._onTimeout)\n        item._onTimeout();\n    }, msecs);\n  }\n};\n\n// setimmediate attaches itself to the global object\n__webpack_require__(/*! setimmediate */ \"./node_modules/setimmediate/setImmediate.js\");\n// On some exotic environments, it's not clear which object `setimmediate` was\n// able to install onto.  Search each possibility in the same order as the\n// `setimmediate` library.\nexports.setImmediate = (typeof self !== \"undefined\" && self.setImmediate) ||\n                       (typeof global !== \"undefined\" && global.setImmediate) ||\n                       (this && this.setImmediate);\nexports.clearImmediate = (typeof self !== \"undefined\" && self.clearImmediate) ||\n                         (typeof global !== \"undefined\" && global.clearImmediate) ||\n                         (this && this.clearImmediate);\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/timers-browserify/main.js?");
-
-/***/ }),
-
-/***/ "./node_modules/tincanjs/build/tincan-node.js":
-/*!****************************************************!*\
-  !*** ./node_modules/tincanjs/build/tincan-node.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(Buffer) {\"0.50.0\";\n/*\nCryptoJS v3.1.2\ncode.google.com/p/crypto-js\n(c) 2009-2013 by Jeff Mott. All rights reserved.\ncode.google.com/p/crypto-js/wiki/License\n*/\nvar CryptoJS=CryptoJS||function(e,m){var p={},j=p.lib={},l=function(){},f=j.Base={extend:function(a){l.prototype=this;var c=new l;a&&c.mixIn(a);c.hasOwnProperty(\"init\")||(c.init=function(){c.$super.init.apply(this,arguments)});c.init.prototype=c;c.$super=this;return c},create:function(){var a=this.extend();a.init.apply(a,arguments);return a},init:function(){},mixIn:function(a){for(var c in a)a.hasOwnProperty(c)&&(this[c]=a[c]);a.hasOwnProperty(\"toString\")&&(this.toString=a.toString)},clone:function(){return this.init.prototype.extend(this)}},\nn=j.WordArray=f.extend({init:function(a,c){a=this.words=a||[];this.sigBytes=c!=m?c:4*a.length},toString:function(a){return(a||h).stringify(this)},concat:function(a){var c=this.words,q=a.words,d=this.sigBytes;a=a.sigBytes;this.clamp();if(d%4)for(var b=0;b<a;b++)c[d+b>>>2]|=(q[b>>>2]>>>24-8*(b%4)&255)<<24-8*((d+b)%4);else if(65535<q.length)for(b=0;b<a;b+=4)c[d+b>>>2]=q[b>>>2];else c.push.apply(c,q);this.sigBytes+=a;return this},clamp:function(){var a=this.words,c=this.sigBytes;a[c>>>2]&=4294967295<<\n32-8*(c%4);a.length=e.ceil(c/4)},clone:function(){var a=f.clone.call(this);a.words=this.words.slice(0);return a},random:function(a){for(var c=[],b=0;b<a;b+=4)c.push(4294967296*e.random()|0);return new n.init(c,a)}}),b=p.enc={},h=b.Hex={stringify:function(a){var c=a.words;a=a.sigBytes;for(var b=[],d=0;d<a;d++){var f=c[d>>>2]>>>24-8*(d%4)&255;b.push((f>>>4).toString(16));b.push((f&15).toString(16))}return b.join(\"\")},parse:function(a){for(var c=a.length,b=[],d=0;d<c;d+=2)b[d>>>3]|=parseInt(a.substr(d,\n2),16)<<24-4*(d%8);return new n.init(b,c/2)}},g=b.Latin1={stringify:function(a){var c=a.words;a=a.sigBytes;for(var b=[],d=0;d<a;d++)b.push(String.fromCharCode(c[d>>>2]>>>24-8*(d%4)&255));return b.join(\"\")},parse:function(a){for(var c=a.length,b=[],d=0;d<c;d++)b[d>>>2]|=(a.charCodeAt(d)&255)<<24-8*(d%4);return new n.init(b,c)}},r=b.Utf8={stringify:function(a){try{return decodeURIComponent(escape(g.stringify(a)))}catch(c){throw Error(\"Malformed UTF-8 data\");}},parse:function(a){return g.parse(unescape(encodeURIComponent(a)))}},\nk=j.BufferedBlockAlgorithm=f.extend({reset:function(){this._data=new n.init;this._nDataBytes=0},_append:function(a){\"string\"==typeof a&&(a=r.parse(a));this._data.concat(a);this._nDataBytes+=a.sigBytes},_process:function(a){var c=this._data,b=c.words,d=c.sigBytes,f=this.blockSize,h=d/(4*f),h=a?e.ceil(h):e.max((h|0)-this._minBufferSize,0);a=h*f;d=e.min(4*a,d);if(a){for(var g=0;g<a;g+=f)this._doProcessBlock(b,g);g=b.splice(0,a);c.sigBytes-=d}return new n.init(g,d)},clone:function(){var a=f.clone.call(this);\na._data=this._data.clone();return a},_minBufferSize:0});j.Hasher=k.extend({cfg:f.extend(),init:function(a){this.cfg=this.cfg.extend(a);this.reset()},reset:function(){k.reset.call(this);this._doReset()},update:function(a){this._append(a);this._process();return this},finalize:function(a){a&&this._append(a);return this._doFinalize()},blockSize:16,_createHelper:function(a){return function(c,b){return(new a.init(b)).finalize(c)}},_createHmacHelper:function(a){return function(b,f){return(new s.HMAC.init(a,\nf)).finalize(b)}}});var s=p.algo={};return p}(Math);\n(function(){var e=CryptoJS,m=e.lib,p=m.WordArray,j=m.Hasher,l=[],m=e.algo.SHA1=j.extend({_doReset:function(){this._hash=new p.init([1732584193,4023233417,2562383102,271733878,3285377520])},_doProcessBlock:function(f,n){for(var b=this._hash.words,h=b[0],g=b[1],e=b[2],k=b[3],j=b[4],a=0;80>a;a++){if(16>a)l[a]=f[n+a]|0;else{var c=l[a-3]^l[a-8]^l[a-14]^l[a-16];l[a]=c<<1|c>>>31}c=(h<<5|h>>>27)+j+l[a];c=20>a?c+((g&e|~g&k)+1518500249):40>a?c+((g^e^k)+1859775393):60>a?c+((g&e|g&k|e&k)-1894007588):c+((g^e^\nk)-899497514);j=k;k=e;e=g<<30|g>>>2;g=h;h=c}b[0]=b[0]+h|0;b[1]=b[1]+g|0;b[2]=b[2]+e|0;b[3]=b[3]+k|0;b[4]=b[4]+j|0},_doFinalize:function(){var f=this._data,e=f.words,b=8*this._nDataBytes,h=8*f.sigBytes;e[h>>>5]|=128<<24-h%32;e[(h+64>>>9<<4)+14]=Math.floor(b/4294967296);e[(h+64>>>9<<4)+15]=b;f.sigBytes=4*e.length;this._process();return this._hash},clone:function(){var e=j.clone.call(this);e._hash=this._hash.clone();return e}});e.SHA1=j._createHelper(m);e.HmacSHA1=j._createHmacHelper(m)})();\n\n/*\nCryptoJS v3.1.2\ncode.google.com/p/crypto-js\n(c) 2009-2013 by Jeff Mott. All rights reserved.\ncode.google.com/p/crypto-js/wiki/License\n*/\nvar CryptoJS=CryptoJS||function(h,s){var f={},t=f.lib={},g=function(){},j=t.Base={extend:function(a){g.prototype=this;var c=new g;a&&c.mixIn(a);c.hasOwnProperty(\"init\")||(c.init=function(){c.$super.init.apply(this,arguments)});c.init.prototype=c;c.$super=this;return c},create:function(){var a=this.extend();a.init.apply(a,arguments);return a},init:function(){},mixIn:function(a){for(var c in a)a.hasOwnProperty(c)&&(this[c]=a[c]);a.hasOwnProperty(\"toString\")&&(this.toString=a.toString)},clone:function(){return this.init.prototype.extend(this)}},\nq=t.WordArray=j.extend({init:function(a,c){a=this.words=a||[];this.sigBytes=c!=s?c:4*a.length},toString:function(a){return(a||u).stringify(this)},concat:function(a){var c=this.words,d=a.words,b=this.sigBytes;a=a.sigBytes;this.clamp();if(b%4)for(var e=0;e<a;e++)c[b+e>>>2]|=(d[e>>>2]>>>24-8*(e%4)&255)<<24-8*((b+e)%4);else if(65535<d.length)for(e=0;e<a;e+=4)c[b+e>>>2]=d[e>>>2];else c.push.apply(c,d);this.sigBytes+=a;return this},clamp:function(){var a=this.words,c=this.sigBytes;a[c>>>2]&=4294967295<<\n32-8*(c%4);a.length=h.ceil(c/4)},clone:function(){var a=j.clone.call(this);a.words=this.words.slice(0);return a},random:function(a){for(var c=[],d=0;d<a;d+=4)c.push(4294967296*h.random()|0);return new q.init(c,a)}}),v=f.enc={},u=v.Hex={stringify:function(a){var c=a.words;a=a.sigBytes;for(var d=[],b=0;b<a;b++){var e=c[b>>>2]>>>24-8*(b%4)&255;d.push((e>>>4).toString(16));d.push((e&15).toString(16))}return d.join(\"\")},parse:function(a){for(var c=a.length,d=[],b=0;b<c;b+=2)d[b>>>3]|=parseInt(a.substr(b,\n2),16)<<24-4*(b%8);return new q.init(d,c/2)}},k=v.Latin1={stringify:function(a){var c=a.words;a=a.sigBytes;for(var d=[],b=0;b<a;b++)d.push(String.fromCharCode(c[b>>>2]>>>24-8*(b%4)&255));return d.join(\"\")},parse:function(a){for(var c=a.length,d=[],b=0;b<c;b++)d[b>>>2]|=(a.charCodeAt(b)&255)<<24-8*(b%4);return new q.init(d,c)}},l=v.Utf8={stringify:function(a){try{return decodeURIComponent(escape(k.stringify(a)))}catch(c){throw Error(\"Malformed UTF-8 data\");}},parse:function(a){return k.parse(unescape(encodeURIComponent(a)))}},\nx=t.BufferedBlockAlgorithm=j.extend({reset:function(){this._data=new q.init;this._nDataBytes=0},_append:function(a){\"string\"==typeof a&&(a=l.parse(a));this._data.concat(a);this._nDataBytes+=a.sigBytes},_process:function(a){var c=this._data,d=c.words,b=c.sigBytes,e=this.blockSize,f=b/(4*e),f=a?h.ceil(f):h.max((f|0)-this._minBufferSize,0);a=f*e;b=h.min(4*a,b);if(a){for(var m=0;m<a;m+=e)this._doProcessBlock(d,m);m=d.splice(0,a);c.sigBytes-=b}return new q.init(m,b)},clone:function(){var a=j.clone.call(this);\na._data=this._data.clone();return a},_minBufferSize:0});t.Hasher=x.extend({cfg:j.extend(),init:function(a){this.cfg=this.cfg.extend(a);this.reset()},reset:function(){x.reset.call(this);this._doReset()},update:function(a){this._append(a);this._process();return this},finalize:function(a){a&&this._append(a);return this._doFinalize()},blockSize:16,_createHelper:function(a){return function(c,d){return(new a.init(d)).finalize(c)}},_createHmacHelper:function(a){return function(c,d){return(new w.HMAC.init(a,\nd)).finalize(c)}}});var w=f.algo={};return f}(Math);\n(function(h){for(var s=CryptoJS,f=s.lib,t=f.WordArray,g=f.Hasher,f=s.algo,j=[],q=[],v=function(a){return 4294967296*(a-(a|0))|0},u=2,k=0;64>k;){var l;a:{l=u;for(var x=h.sqrt(l),w=2;w<=x;w++)if(!(l%w)){l=!1;break a}l=!0}l&&(8>k&&(j[k]=v(h.pow(u,0.5))),q[k]=v(h.pow(u,1/3)),k++);u++}var a=[],f=f.SHA256=g.extend({_doReset:function(){this._hash=new t.init(j.slice(0))},_doProcessBlock:function(c,d){for(var b=this._hash.words,e=b[0],f=b[1],m=b[2],h=b[3],p=b[4],j=b[5],k=b[6],l=b[7],n=0;64>n;n++){if(16>n)a[n]=\nc[d+n]|0;else{var r=a[n-15],g=a[n-2];a[n]=((r<<25|r>>>7)^(r<<14|r>>>18)^r>>>3)+a[n-7]+((g<<15|g>>>17)^(g<<13|g>>>19)^g>>>10)+a[n-16]}r=l+((p<<26|p>>>6)^(p<<21|p>>>11)^(p<<7|p>>>25))+(p&j^~p&k)+q[n]+a[n];g=((e<<30|e>>>2)^(e<<19|e>>>13)^(e<<10|e>>>22))+(e&f^e&m^f&m);l=k;k=j;j=p;p=h+r|0;h=m;m=f;f=e;e=r+g|0}b[0]=b[0]+e|0;b[1]=b[1]+f|0;b[2]=b[2]+m|0;b[3]=b[3]+h|0;b[4]=b[4]+p|0;b[5]=b[5]+j|0;b[6]=b[6]+k|0;b[7]=b[7]+l|0},_doFinalize:function(){var a=this._data,d=a.words,b=8*this._nDataBytes,e=8*a.sigBytes;\nd[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)+15]=b;a.sigBytes=4*d.length;this._process();return this._hash},clone:function(){var a=g.clone.call(this);a._hash=this._hash.clone();return a}});s.SHA256=g._createHelper(f);s.HmacSHA256=g._createHmacHelper(f)})(Math);\n\n/*\nCryptoJS v3.1.2\ncode.google.com/p/crypto-js\n(c) 2009-2013 by Jeff Mott. All rights reserved.\ncode.google.com/p/crypto-js/wiki/License\n*/\n(function () {\n    // Shortcuts\n    var C = CryptoJS;\n    var C_lib = C.lib;\n    var WordArray = C_lib.WordArray;\n    var C_enc = C.enc;\n\n    /**\n     * Base64 encoding strategy.\n     */\n    var Base64 = C_enc.Base64 = {\n        /**\n         * Converts a word array to a Base64 string.\n         *\n         * @param {WordArray} wordArray The word array.\n         *\n         * @return {string} The Base64 string.\n         *\n         * @static\n         *\n         * @example\n         *\n         *     var base64String = CryptoJS.enc.Base64.stringify(wordArray);\n         */\n        stringify: function (wordArray) {\n            // Shortcuts\n            var words = wordArray.words;\n            var sigBytes = wordArray.sigBytes;\n            var map = this._map;\n\n            // Clamp excess bits\n            wordArray.clamp();\n\n            // Convert\n            var base64Chars = [];\n            for (var i = 0; i < sigBytes; i += 3) {\n                var byte1 = (words[i >>> 2]       >>> (24 - (i % 4) * 8))       & 0xff;\n                var byte2 = (words[(i + 1) >>> 2] >>> (24 - ((i + 1) % 4) * 8)) & 0xff;\n                var byte3 = (words[(i + 2) >>> 2] >>> (24 - ((i + 2) % 4) * 8)) & 0xff;\n\n                var triplet = (byte1 << 16) | (byte2 << 8) | byte3;\n\n                for (var j = 0; (j < 4) && (i + j * 0.75 < sigBytes); j++) {\n                    base64Chars.push(map.charAt((triplet >>> (6 * (3 - j))) & 0x3f));\n                }\n            }\n\n            // Add padding\n            var paddingChar = map.charAt(64);\n            if (paddingChar) {\n                while (base64Chars.length % 4) {\n                    base64Chars.push(paddingChar);\n                }\n            }\n\n            return base64Chars.join('');\n        },\n\n        /**\n         * Converts a Base64 string to a word array.\n         *\n         * @param {string} base64Str The Base64 string.\n         *\n         * @return {WordArray} The word array.\n         *\n         * @static\n         *\n         * @example\n         *\n         *     var wordArray = CryptoJS.enc.Base64.parse(base64String);\n         */\n        parse: function (base64Str) {\n            // Shortcuts\n            var base64StrLength = base64Str.length;\n            var map = this._map;\n\n            // Ignore padding\n            var paddingChar = map.charAt(64);\n            if (paddingChar) {\n                var paddingIndex = base64Str.indexOf(paddingChar);\n                if (paddingIndex != -1) {\n                    base64StrLength = paddingIndex;\n                }\n            }\n\n            // Convert\n            var words = [];\n            var nBytes = 0;\n            for (var i = 0; i < base64StrLength; i++) {\n                if (i % 4) {\n                    var bits1 = map.indexOf(base64Str.charAt(i - 1)) << ((i % 4) * 2);\n                    var bits2 = map.indexOf(base64Str.charAt(i)) >>> (6 - (i % 4) * 2);\n                    words[nBytes >>> 2] |= (bits1 | bits2) << (24 - (nBytes % 4) * 8);\n                    nBytes++;\n                }\n            }\n\n            return WordArray.create(words, nBytes);\n        },\n\n        _map: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='\n    };\n}());\n\n/*\nCryptoJS v3.1.2\ncode.google.com/p/crypto-js\n(c) 2009-2013 by Jeff Mott. All rights reserved.\ncode.google.com/p/crypto-js/wiki/License\n*/\n(function () {\r\n    // Check if typed arrays are supported\r\n    if (typeof ArrayBuffer != 'function') {\r\n        return;\r\n    }\r\n\r\n    // Shortcuts\r\n    var C = CryptoJS;\r\n    var C_lib = C.lib;\r\n    var WordArray = C_lib.WordArray;\r\n\r\n    // Reference original init\r\n    var superInit = WordArray.init;\r\n\r\n    // Augment WordArray.init to handle typed arrays\r\n    var subInit = WordArray.init = function (typedArray) {\r\n        // Convert buffers to uint8\r\n        if (typedArray instanceof ArrayBuffer) {\r\n            typedArray = new Uint8Array(typedArray);\r\n        }\r\n\r\n        // Convert other array views to uint8\r\n        if (\r\n            typedArray instanceof Int8Array ||\r\n            typedArray instanceof Uint8ClampedArray ||\r\n            typedArray instanceof Int16Array ||\r\n            typedArray instanceof Uint16Array ||\r\n            typedArray instanceof Int32Array ||\r\n            typedArray instanceof Uint32Array ||\r\n            typedArray instanceof Float32Array ||\r\n            typedArray instanceof Float64Array\r\n        ) {\r\n            typedArray = new Uint8Array(typedArray.buffer, typedArray.byteOffset, typedArray.byteLength);\r\n        }\r\n\r\n        // Handle Uint8Array\r\n        if (typedArray instanceof Uint8Array) {\r\n            // Shortcut\r\n            var typedArrayByteLength = typedArray.byteLength;\r\n\r\n            // Extract bytes\r\n            var words = [];\r\n            for (var i = 0; i < typedArrayByteLength; i++) {\r\n                words[i >>> 2] |= typedArray[i] << (24 - (i % 4) * 8);\r\n            }\r\n\r\n            // Initialize this word array\r\n            superInit.call(this, words, typedArrayByteLength);\r\n        } else {\r\n            // Else call normal init\r\n            superInit.apply(this, arguments);\r\n        }\r\n    };\r\n\r\n    subInit.prototype = WordArray;\r\n}());\r\n\n/*!\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\nTODO:\n\n* Add statement queueing\n\n@module TinCan\n**/\nvar TinCan;\n\n(function () {\n    \"use strict\";\n    var _reservedQSParams = {\n        //\n        // these are TC spec reserved words that may end up in queries to the endpoint\n        //\n        statementId:       true,\n        voidedStatementId: true,\n        verb:              true,\n        object:            true,\n        registration:      true,\n        context:           true,\n        actor:             true,\n        since:             true,\n        until:             true,\n        limit:             true,\n        authoritative:     true,\n        sparse:            true,\n        instructor:        true,\n        ascending:         true,\n        continueToken:     true,\n        agent:             true,\n        activityId:        true,\n        stateId:           true,\n        profileId:         true,\n\n        //\n        // these are suggested by the LMS launch spec addition that TinCanJS consumes\n        //\n        activity_platform: true,\n        grouping:          true,\n        \"Accept-Language\": true\n    };\n\n    /**\n    @class TinCan\n    @constructor\n    @param {Object} [options] Configuration used to initialize.\n        @param {String} [options.url] URL for determining launch provided\n            configuration options\n        @param {Array} [options.recordStores] list of pre-configured LRSes\n        @param {Object|TinCan.Agent} [options.actor] default actor\n        @param {Object|TinCan.Activity} [options.activity] default activity\n        @param {String} [options.registration] default registration\n        @param {Object|TinCan.Context} [options.context] default context\n    **/\n    TinCan = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property recordStores\n        @type Array\n        */\n        this.recordStores = [];\n\n        /**\n        Default actor used when preparing statements that\n        don't yet have an actor set, and for saving state, etc.\n\n        @property actor\n        @type Object\n        */\n        this.actor = null;\n\n        /**\n        Default activity, may be used as a statement 'target'\n        or incorporated into 'context'\n\n        @property activity\n        @type Object\n        */\n        this.activity = null;\n\n        /**\n        Default registration, included in default context when\n        provided, otherwise used in statement queries\n\n        @property registration\n        @type String\n        */\n        this.registration = null;\n\n        /**\n        Default context used when preparing statements that\n        don't yet have a context set, or mixed in when one\n        has been provided, properties do NOT override on mixing\n\n        @property context\n        @type Object\n        */\n        this.context = null;\n\n        this.init(cfg);\n    };\n\n    TinCan.prototype = {\n        LOG_SRC: \"TinCan\",\n\n        /**\n        Safe version of logging, only displays when .DEBUG is true, and console.log\n        is available\n\n        @method log\n        @param {String} msg Message to output\n        */\n        log: function (msg, src) {\n            /* globals console */\n            if (TinCan.DEBUG && typeof console !== \"undefined\" && console.log) {\n                src = src || this.LOG_SRC || \"TinCan\";\n\n                console.log(\"TinCan.\" + src + \": \" + msg);\n            }\n        },\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize (see TinCan constructor).\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i;\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"url\") && cfg.url !== \"\") {\n                this._initFromQueryString(cfg.url);\n            }\n\n            if (cfg.hasOwnProperty(\"recordStores\") && cfg.recordStores !== undefined) {\n                for (i = 0; i < cfg.recordStores.length; i += 1) {\n                    this.addRecordStore(cfg.recordStores[i]);\n                }\n            }\n            if (cfg.hasOwnProperty(\"activity\")) {\n                if (cfg.activity instanceof TinCan.Activity) {\n                    this.activity = cfg.activity;\n                }\n                else {\n                    this.activity = new TinCan.Activity (cfg.activity);\n                }\n            }\n            if (cfg.hasOwnProperty(\"actor\")) {\n                if (cfg.actor instanceof TinCan.Agent) {\n                    this.actor = cfg.actor;\n                }\n                else {\n                    this.actor = new TinCan.Agent (cfg.actor);\n                }\n            }\n            if (cfg.hasOwnProperty(\"context\")) {\n                if (cfg.context instanceof TinCan.Context) {\n                    this.context = cfg.context;\n                }\n                else {\n                    this.context = new TinCan.Context (cfg.context);\n                }\n            }\n            if (cfg.hasOwnProperty(\"registration\")) {\n                this.registration = cfg.registration;\n            }\n        },\n\n        /**\n        @method _initFromQueryString\n        @param {String} url\n        @private\n        */\n        _initFromQueryString: function (url) {\n            this.log(\"_initFromQueryString\");\n\n            var i,\n                prop,\n                qsParams = TinCan.Utils.parseURL(url).params,\n                lrsProps = [\"endpoint\", \"auth\"],\n                lrsCfg = {},\n                contextCfg,\n                extended = null\n            ;\n\n            if (qsParams.hasOwnProperty(\"actor\")) {\n                this.log(\"_initFromQueryString - found actor: \" + qsParams.actor);\n                try {\n                    this.actor = TinCan.Agent.fromJSON(qsParams.actor);\n                    delete qsParams.actor;\n                }\n                catch (ex) {\n                    this.log(\"_initFromQueryString - failed to set actor: \" + ex);\n                }\n            }\n\n            if (qsParams.hasOwnProperty(\"activity_id\")) {\n                this.activity = new TinCan.Activity (\n                    {\n                        id: qsParams.activity_id\n                    }\n                );\n                delete qsParams.activity_id;\n            }\n\n            if (\n                qsParams.hasOwnProperty(\"activity_platform\") ||\n                qsParams.hasOwnProperty(\"registration\") ||\n                qsParams.hasOwnProperty(\"grouping\")\n            ) {\n                contextCfg = {};\n\n                if (qsParams.hasOwnProperty(\"activity_platform\")) {\n                    contextCfg.platform = qsParams.activity_platform;\n                    delete qsParams.activity_platform;\n                }\n                if (qsParams.hasOwnProperty(\"registration\")) {\n                    //\n                    // stored in two locations cause we always want it in the default\n                    // context, but we also want to be able to get to it for Statement\n                    // queries\n                    //\n                    contextCfg.registration = this.registration = qsParams.registration;\n                    delete qsParams.registration;\n                }\n                if (qsParams.hasOwnProperty(\"grouping\")) {\n                    contextCfg.contextActivities = {};\n                    contextCfg.contextActivities.grouping = qsParams.grouping;\n                    delete qsParams.grouping;\n                }\n\n                this.context = new TinCan.Context (contextCfg);\n            }\n\n            //\n            // order matters here, process the URL provided LRS last because it gets\n            // all the remaining parameters so that they get passed through\n            //\n            if (qsParams.hasOwnProperty(\"endpoint\")) {\n                for (i = 0; i < lrsProps.length; i += 1) {\n                    prop = lrsProps[i];\n                    if (qsParams.hasOwnProperty(prop)) {\n                        lrsCfg[prop] = qsParams[prop];\n                        delete qsParams[prop];\n                    }\n                }\n\n                // remove our reserved params so they don't end up  in the extended object\n                for (i in qsParams) {\n                    if (qsParams.hasOwnProperty(i)) {\n                        if (_reservedQSParams.hasOwnProperty(i)) {\n                            delete qsParams[i];\n                        } else {\n                            extended = extended || {};\n                            extended[i] = qsParams[i];\n                        }\n                    }\n                }\n                if (extended !== null) {\n                    lrsCfg.extended = extended;\n                }\n\n                lrsCfg.allowFail = false;\n\n                this.addRecordStore(lrsCfg);\n            }\n        },\n\n        /**\n        @method addRecordStore\n        @param {Object} Configuration data\n\n         * TODO:\n         * check endpoint for trailing '/'\n         * check for unique endpoints\n        */\n        addRecordStore: function (cfg) {\n            this.log(\"addRecordStore\");\n            var lrs;\n            if (cfg instanceof TinCan.LRS) {\n                lrs = cfg;\n            }\n            else {\n                lrs = new TinCan.LRS (cfg);\n            }\n            this.recordStores.push(lrs);\n        },\n\n        /**\n        @method prepareStatement\n        @param {Object|TinCan.Statement} Base statement properties or\n            pre-created TinCan.Statement instance\n        @return {TinCan.Statement}\n        */\n        prepareStatement: function (stmt) {\n            this.log(\"prepareStatement\");\n            if (! (stmt instanceof TinCan.Statement)) {\n                stmt = new TinCan.Statement (stmt);\n            }\n\n            if (stmt.actor === null && this.actor !== null) {\n                stmt.actor = this.actor;\n            }\n            if (stmt.target === null && this.activity !== null) {\n                stmt.target = this.activity;\n            }\n\n            if (this.context !== null) {\n                if (stmt.context === null) {\n                    stmt.context = this.context;\n                }\n                else {\n                    if (stmt.context.registration === null) {\n                        stmt.context.registration = this.context.registration;\n                    }\n                    if (stmt.context.platform === null) {\n                        stmt.context.platform = this.context.platform;\n                    }\n\n                    if (this.context.contextActivities !== null) {\n                        if (stmt.context.contextActivities === null) {\n                            stmt.context.contextActivities = this.context.contextActivities;\n                        }\n                        else {\n                            if (this.context.contextActivities.grouping !== null && stmt.context.contextActivities.grouping === null) {\n                                stmt.context.contextActivities.grouping = this.context.contextActivities.grouping;\n                            }\n                            if (this.context.contextActivities.parent !== null && stmt.context.contextActivities.parent === null) {\n                                stmt.context.contextActivities.parent = this.context.contextActivities.parent;\n                            }\n                            if (this.context.contextActivities.other !== null && stmt.context.contextActivities.other === null) {\n                                stmt.context.contextActivities.other = this.context.contextActivities.other;\n                            }\n                        }\n                    }\n                }\n            }\n\n            return stmt;\n        },\n\n        /**\n        Calls saveStatement on each configured LRS, provide callback to make it asynchronous\n\n        @method sendStatement\n        @param {TinCan.Statement|Object} statement Send statement to LRS\n        @param {Function} [callback] Callback function to execute on completion\n        */\n        sendStatement: function (stmt, callback) {\n            this.log(\"sendStatement\");\n\n            // would prefer to use .bind instead of 'self'\n            var self = this,\n                lrs,\n                statement = this.prepareStatement(stmt),\n                rsCount = this.recordStores.length,\n                i,\n                results = [],\n                callbackWrapper,\n                callbackResults = []\n            ;\n\n            if (rsCount > 0) {\n                /*\n                   if there is a callback that is a function then we need\n                   to wrap that function with a function that becomes\n                   the new callback that reduces a closure count of the\n                   requests that don't have allowFail set to true and\n                   when that number hits zero then the original callback\n                   is executed\n                */\n                if (typeof callback === \"function\") {\n                    callbackWrapper = function (err, xhr) {\n                        var args;\n\n                        self.log(\"sendStatement - callbackWrapper: \" + rsCount);\n                        if (rsCount > 1) {\n                            rsCount -= 1;\n                            callbackResults.push(\n                                {\n                                    err: err,\n                                    xhr: xhr\n                                }\n                            );\n                        }\n                        else if (rsCount === 1) {\n                            callbackResults.push(\n                                {\n                                    err: err,\n                                    xhr: xhr\n                                }\n                            );\n                            args = [\n                                callbackResults,\n                                statement\n                            ];\n                            callback.apply(this, args);\n                        }\n                        else {\n                            self.log(\"sendStatement - unexpected record store count: \" + rsCount);\n                        }\n                    };\n                }\n\n                for (i = 0; i < rsCount; i += 1) {\n                    lrs = this.recordStores[i];\n\n                    results.push(\n                        lrs.saveStatement(statement, { callback: callbackWrapper })\n                    );\n                }\n            }\n            else {\n                this.log(\"[warning] sendStatement: No LRSs added yet (statement not sent)\");\n                if (typeof callback === \"function\") {\n                    callback.apply(this, [ null, statement ]);\n                }\n            }\n\n            return {\n                statement: statement,\n                results: results\n            };\n        },\n\n        /**\n        Calls retrieveStatement on the first LRS, provide callback to make it asynchronous\n\n        @method getStatement\n        @param {String} [stmtId] Statement ID to get\n        @param {Function} [callback] Callback function to execute on completion\n        @param {Object} [cfg] Configuration data\n            @param {Object} [params] Query parameters\n                @param {Boolean} [attachments] Include attachments in multipart response or don't (defualt: false)\n        @return {Array|Result} Array of results, or single result\n\n        TODO: make TinCan track statements it has seen in a local cache to be returned easily\n        */\n        getStatement: function (stmtId, callback, cfg) {\n            this.log(\"getStatement\");\n\n            var lrs;\n\n            cfg = cfg || {};\n            cfg.params = cfg.params || {};\n\n            if (this.recordStores.length > 0) {\n                //\n                // for statements (for now) we only need to read from the first LRS\n                // in the future it may make sense to get all from all LRSes and\n                // compare to remove duplicates or allow inspection of them for differences?\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                return lrs.retrieveStatement(stmtId, { callback: callback, params: cfg.params });\n            }\n\n            this.log(\"[warning] getStatement: No LRSs added yet (statement not retrieved)\");\n        },\n\n        /**\n        Creates a statement used for voiding the passed statement/statement ID and calls\n        send statement with the voiding statement.\n\n        @method voidStatement\n        @param {TinCan.Statement|String} statement Statement or statement ID to void\n        @param {Function} [callback] Callback function to execute on completion\n        @param {Object} [options] Options used to build voiding statement\n            @param {TinCan.Agent} [options.actor] Agent to be used as 'actor' in voiding statement\n        */\n        voidStatement: function (stmt, callback, options) {\n            this.log(\"voidStatement\");\n\n            // would prefer to use .bind instead of 'self'\n            var self = this,\n                lrs,\n                actor,\n                voidingStatement,\n                rsCount = this.recordStores.length,\n                i,\n                results = [],\n                callbackWrapper,\n                callbackResults = []\n            ;\n\n            if (stmt instanceof TinCan.Statement) {\n                stmt = stmt.id;\n            }\n\n            if (typeof options.actor !== \"undefined\") {\n                actor = options.actor;\n            }\n            else if (this.actor !== null) {\n                actor = this.actor;\n            }\n\n            voidingStatement = new TinCan.Statement(\n                {\n                    actor: actor,\n                    verb: {\n                        id: \"http://adlnet.gov/expapi/verbs/voided\"\n                    },\n                    target: {\n                        objectType: \"StatementRef\",\n                        id: stmt\n                    }\n                }\n            );\n\n            if (rsCount > 0) {\n                /*\n                   if there is a callback that is a function then we need\n                   to wrap that function with a function that becomes\n                   the new callback that reduces a closure count of the\n                   requests that don't have allowFail set to true and\n                   when that number hits zero then the original callback\n                   is executed\n                */\n                if (typeof callback === \"function\") {\n                    callbackWrapper = function (err, xhr) {\n                        var args;\n\n                        self.log(\"voidStatement - callbackWrapper: \" + rsCount);\n                        if (rsCount > 1) {\n                            rsCount -= 1;\n                            callbackResults.push(\n                                {\n                                    err: err,\n                                    xhr: xhr\n                                }\n                            );\n                        }\n                        else if (rsCount === 1) {\n                            callbackResults.push(\n                                {\n                                    err: err,\n                                    xhr: xhr\n                                }\n                            );\n                            args = [\n                                callbackResults,\n                                voidingStatement\n                            ];\n                            callback.apply(this, args);\n                        }\n                        else {\n                            self.log(\"voidStatement - unexpected record store count: \" + rsCount);\n                        }\n                    };\n                }\n\n                for (i = 0; i < rsCount; i += 1) {\n                    lrs = this.recordStores[i];\n\n                    results.push(\n                        lrs.saveStatement(voidingStatement, { callback: callbackWrapper })\n                    );\n                }\n            }\n            else {\n                this.log(\"[warning] voidStatement: No LRSs added yet (statement not sent)\");\n                if (typeof callback === \"function\") {\n                    callback.apply(this, [ null, voidingStatement ]);\n                }\n            }\n\n            return {\n                statement: voidingStatement,\n                results: results\n            };\n        },\n\n        /**\n        Calls retrieveVoidedStatement on the first LRS, provide callback to make it asynchronous\n\n        @method getVoidedStatement\n        @param {String} statement Statement ID to get\n        @param {Function} [callback] Callback function to execute on completion\n        @return {Array|Result} Array of results, or single result\n\n        TODO: make TinCan track voided statements it has seen in a local cache to be returned easily\n        */\n        getVoidedStatement: function (stmtId, callback) {\n            this.log(\"getVoidedStatement\");\n\n            var lrs;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for statements (for now) we only need to read from the first LRS\n                // in the future it may make sense to get all from all LRSes and\n                // compare to remove duplicates or allow inspection of them for differences?\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                return lrs.retrieveVoidedStatement(stmtId, { callback: callback });\n            }\n\n            this.log(\"[warning] getVoidedStatement: No LRSs added yet (statement not retrieved)\");\n        },\n\n        /**\n        Calls saveStatements with list of prepared statements\n\n        @method sendStatements\n        @param {Array} Array of statements to send\n        @param {Function} Callback function to execute on completion\n        */\n        sendStatements: function (stmts, callback) {\n            this.log(\"sendStatements\");\n            var self = this,\n                lrs,\n                statements = [],\n                rsCount = this.recordStores.length,\n                i,\n                results = [],\n                callbackWrapper,\n                callbackResults = []\n            ;\n            if (stmts.length === 0) {\n                if (typeof callback === \"function\") {\n                    callback.apply(this, [ null, statements ]);\n                }\n            }\n            else {\n                for (i = 0; i < stmts.length; i += 1) {\n                    statements.push(\n                        this.prepareStatement(stmts[i])\n                    );\n                }\n\n                if (rsCount > 0) {\n                    /*\n                       if there is a callback that is a function then we need\n                       to wrap that function with a function that becomes\n                       the new callback that reduces a closure count of the\n                       requests that don't have allowFail set to true and\n                       when that number hits zero then the original callback\n                       is executed\n                    */\n\n                    if (typeof callback === \"function\") {\n                        callbackWrapper = function (err, xhr) {\n                            var args;\n\n                            self.log(\"sendStatements - callbackWrapper: \" + rsCount);\n                            if (rsCount > 1) {\n                                rsCount -= 1;\n                                callbackResults.push(\n                                    {\n                                        err: err,\n                                        xhr: xhr\n                                    }\n                                );\n                            }\n                            else if (rsCount === 1) {\n                                callbackResults.push(\n                                    {\n                                        err: err,\n                                        xhr: xhr\n                                    }\n                                );\n                                args = [\n                                    callbackResults,\n                                    statements\n                                ];\n                                callback.apply(this, args);\n                            }\n                            else {\n                                self.log(\"sendStatements - unexpected record store count: \" + rsCount);\n                            }\n                        };\n                    }\n\n                    for (i = 0; i < rsCount; i += 1) {\n                        lrs = this.recordStores[i];\n\n                        results.push(\n                            lrs.saveStatements(statements, { callback: callbackWrapper })\n                        );\n                    }\n                }\n                else {\n                    this.log(\"[warning] sendStatements: No LRSs added yet (statements not sent)\");\n                    if (typeof callback === \"function\") {\n                        callback.apply(this, [ null, statements ]);\n                    }\n                }\n            }\n\n            return {\n                statements: statements,\n                results: results\n            };\n        },\n\n        /**\n        @method getStatements\n        @param {Object} [cfg] Configuration for request\n            @param {Boolean} [cfg.sendActor] Include default actor in query params\n            @param {Boolean} [cfg.sendActivity] Include default activity in query params\n            @param {Object} [cfg.params] Parameters used to filter.\n                            These are the same as those accepted by the\n                            <a href=\"TinCan.LRS.html#method_queryStatements\">LRS.queryStatements</a>\n                            method.\n\n            @param {Function} [cfg.callback] Function to run at completion\n\n        TODO: support multiple LRSs and flag to use single\n        */\n        getStatements: function (cfg) {\n            this.log(\"getStatements\");\n            var queryCfg = {},\n                lrs,\n                params\n            ;\n            if (this.recordStores.length > 0) {\n                //\n                // for get (for now) we only get from one (as they should be the same)\n                // but it may make sense to long term try to merge statements, perhaps\n                // by using statementId as unique\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                // TODO: need a clone function?\n                params = cfg.params || {};\n\n                if (cfg.sendActor && this.actor !== null) {\n                    if (lrs.version === \"0.9\" || lrs.version === \"0.95\") {\n                        params.actor = this.actor;\n                    }\n                    else {\n                        params.agent = this.actor;\n                    }\n                }\n                if (cfg.sendActivity && this.activity !== null) {\n                    if (lrs.version === \"0.9\" || lrs.version === \"0.95\") {\n                        params.target = this.activity;\n                    }\n                    else {\n                        params.activity = this.activity;\n                    }\n                }\n                if (typeof params.registration === \"undefined\" && this.registration !== null) {\n                    params.registration = this.registration;\n                }\n\n                queryCfg = {\n                    params: params\n                };\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.queryStatements(queryCfg);\n            }\n\n            this.log(\"[warning] getStatements: No LRSs added yet (statements not read)\");\n        },\n\n        /**\n        @method getState\n        @param {String} key Key to retrieve from the state\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.agent] Agent used in query,\n                defaults to 'actor' property if empty\n            @param {Object} [cfg.activity] Activity used in query,\n                defaults to 'activity' property if empty\n            @param {Object} [cfg.registration] Registration used in query,\n                defaults to 'registration' property if empty\n            @param {Function} [cfg.callback] Function to run with state\n        */\n        getState: function (key, cfg) {\n            this.log(\"getState\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for state (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    agent: (typeof cfg.agent !== \"undefined\" ? cfg.agent : this.actor),\n                    activity: (typeof cfg.activity !== \"undefined\" ? cfg.activity : this.activity)\n                };\n                if (typeof cfg.registration !== \"undefined\") {\n                    queryCfg.registration = cfg.registration;\n                }\n                else if (this.registration !== null) {\n                    queryCfg.registration = this.registration;\n                }\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.retrieveState(key, queryCfg);\n            }\n\n            this.log(\"[warning] getState: No LRSs added yet (state not retrieved)\");\n        },\n\n        /**\n        @method setState\n        @param {String} key Key to store into the state\n        @param {String|Object} val Value to store into the state, objects will be stringified to JSON\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.agent] Agent used in query,\n                defaults to 'actor' property if empty\n            @param {Object} [cfg.activity] Activity used in query,\n                defaults to 'activity' property if empty\n            @param {Object} [cfg.registration] Registration used in query,\n                defaults to 'registration' property if empty\n            @param {String} [cfg.lastSHA1] SHA1 of the previously seen existing state\n            @param {String} [cfg.contentType] Content-Type to specify in headers\n            @param {Boolean} [cfg.overwriteJSON] If the Content-Type is JSON, should a PUT be used? \n            @param {Function} [cfg.callback] Function to run with state\n        */\n        setState: function (key, val, cfg) {\n            this.log(\"setState\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for state (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    agent: (typeof cfg.agent !== \"undefined\" ? cfg.agent : this.actor),\n                    activity: (typeof cfg.activity !== \"undefined\" ? cfg.activity : this.activity)\n                };\n                if (typeof cfg.registration !== \"undefined\") {\n                    queryCfg.registration = cfg.registration;\n                }\n                else if (this.registration !== null) {\n                    queryCfg.registration = this.registration;\n                }\n                if (typeof cfg.lastSHA1 !== \"undefined\") {\n                    queryCfg.lastSHA1 = cfg.lastSHA1;\n                }\n                if (typeof cfg.contentType !== \"undefined\") {\n                    queryCfg.contentType = cfg.contentType;\n                    if ((typeof cfg.overwriteJSON !== \"undefined\") && (! cfg.overwriteJSON) && (TinCan.Utils.isApplicationJSON(cfg.contentType))) {\n                        queryCfg.method = \"POST\";\n                    }\n                }\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.saveState(key, val, queryCfg);\n            }\n\n            this.log(\"[warning] setState: No LRSs added yet (state not saved)\");\n        },\n\n        /**\n        @method deleteState\n        @param {String|null} key Key to remove from the state, or null to clear all\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.agent] Agent used in query,\n                defaults to 'actor' property if empty\n            @param {Object} [cfg.activity] Activity used in query,\n                defaults to 'activity' property if empty\n            @param {Object} [cfg.registration] Registration used in query,\n                defaults to 'registration' property if empty\n            @param {Function} [cfg.callback] Function to run with state\n        */\n        deleteState: function (key, cfg) {\n            this.log(\"deleteState\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for state (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    agent: (typeof cfg.agent !== \"undefined\" ? cfg.agent : this.actor),\n                    activity: (typeof cfg.activity !== \"undefined\" ? cfg.activity : this.activity)\n                };\n                if (typeof cfg.registration !== \"undefined\") {\n                    queryCfg.registration = cfg.registration;\n                }\n                else if (this.registration !== null) {\n                    queryCfg.registration = this.registration;\n                }\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.dropState(key, queryCfg);\n            }\n\n            this.log(\"[warning] deleteState: No LRSs added yet (state not deleted)\");\n        },\n\n        /**\n        @method getActivityProfile\n        @param {String} key Key to retrieve from the profile\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.activity] Activity used in query,\n                defaults to 'activity' property if empty\n            @param {Function} [cfg.callback] Function to run with activity profile\n        */\n        getActivityProfile: function (key, cfg) {\n            this.log(\"getActivityProfile\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for activity profiles (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    activity: (typeof cfg.activity !== \"undefined\" ? cfg.activity : this.activity)\n                };\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.retrieveActivityProfile(key, queryCfg);\n            }\n\n            this.log(\"[warning] getActivityProfile: No LRSs added yet (activity profile not retrieved)\");\n        },\n\n        /**\n        @method setActivityProfile\n        @param {String} key Key to store into the activity profile\n        @param {String|Object} val Value to store into the activity profile, objects will be stringified to JSON\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.activity] Activity used in query,\n                defaults to 'activity' property if empty\n            @param {String} [cfg.lastSHA1] SHA1 of the previously seen existing profile\n            @param {String} [cfg.contentType] Content-Type to specify in headers\n            @param {Boolean} [cfg.overwriteJSON] If the Content-Type is JSON, should a PUT be used?\n            @param {Function} [cfg.callback] Function to run with activity profile\n        */\n        setActivityProfile: function (key, val, cfg) {\n            this.log(\"setActivityProfile\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for activity profile (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    activity: (typeof cfg.activity !== \"undefined\" ? cfg.activity : this.activity)\n                };\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n                if (typeof cfg.lastSHA1 !== \"undefined\") {\n                    queryCfg.lastSHA1 = cfg.lastSHA1;\n                }\n                if (typeof cfg.contentType !== \"undefined\") {\n                    queryCfg.contentType = cfg.contentType;\n                    if ((typeof cfg.overwriteJSON !== \"undefined\") && (! cfg.overwriteJSON) && (TinCan.Utils.isApplicationJSON(cfg.contentType))) {\n                        queryCfg.method = \"POST\";\n                    }\n                }\n\n                return lrs.saveActivityProfile(key, val, queryCfg);\n            }\n\n            this.log(\"[warning] setActivityProfile: No LRSs added yet (activity profile not saved)\");\n        },\n\n        /**\n        @method deleteActivityProfile\n        @param {String|null} key Key to remove from the activity profile, or null to clear all\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.activity] Activity used in query,\n                defaults to 'activity' property if empty\n            @param {Function} [cfg.callback] Function to run with activity profile\n        */\n        deleteActivityProfile: function (key, cfg) {\n            this.log(\"deleteActivityProfile\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for activity profile (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    activity: (typeof cfg.activity !== \"undefined\" ? cfg.activity : this.activity)\n                };\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.dropActivityProfile(key, queryCfg);\n            }\n\n            this.log(\"[warning] deleteActivityProfile: No LRSs added yet (activity profile not deleted)\");\n        },\n\n        /**\n        @method getAgentProfile\n        @param {String} key Key to retrieve from the profile\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.agent] Agent used in query,\n                defaults to 'actor' property if empty\n            @param {Function} [cfg.callback] Function to run with agent profile\n        */\n        getAgentProfile: function (key, cfg) {\n            this.log(\"getAgentProfile\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for agent profiles (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    agent: (typeof cfg.agent !== \"undefined\" ? cfg.agent : this.actor)\n                };\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.retrieveAgentProfile(key, queryCfg);\n            }\n\n            this.log(\"[warning] getAgentProfile: No LRSs added yet (agent profile not retrieved)\");\n        },\n\n        /**\n        @method setAgentProfile\n        @param {String} key Key to store into the agent profile\n        @param {String|Object} val Value to store into the agent profile, objects will be stringified to JSON\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.agent] Agent used in query,\n                defaults to 'actor' property if empty\n            @param {String} [cfg.lastSHA1] SHA1 of the previously seen existing profile\n            @param {String} [cfg.contentType] Content-Type to specify in headers\n            @param {Boolean} [cfg.overwriteJSON] If the Content-Type is JSON, should a PUT be used?\n            @param {Function} [cfg.callback] Function to run with agent profile\n        */\n        setAgentProfile: function (key, val, cfg) {\n            this.log(\"setAgentProfile\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for agent profile (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    agent: (typeof cfg.agent !== \"undefined\" ? cfg.agent : this.actor)\n                };\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n                if (typeof cfg.lastSHA1 !== \"undefined\") {\n                    queryCfg.lastSHA1 = cfg.lastSHA1;\n                }\n                if (typeof cfg.contentType !== \"undefined\") {\n                    queryCfg.contentType = cfg.contentType;\n                    if ((typeof cfg.overwriteJSON !== \"undefined\") && (! cfg.overwriteJSON) && (TinCan.Utils.isApplicationJSON(cfg.contentType))) {\n                        queryCfg.method = \"POST\";\n                    }\n                }\n\n                return lrs.saveAgentProfile(key, val, queryCfg);\n            }\n\n            this.log(\"[warning] setAgentProfile: No LRSs added yet (agent profile not saved)\");\n        },\n\n        /**\n        @method deleteAgentProfile\n        @param {String|null} key Key to remove from the agent profile, or null to clear all\n        @param {Object} [cfg] Configuration for request\n            @param {Object} [cfg.agent] Agent used in query,\n                defaults to 'actor' property if empty\n            @param {Function} [cfg.callback] Function to run with agent profile\n        */\n        deleteAgentProfile: function (key, cfg) {\n            this.log(\"deleteAgentProfile\");\n            var queryCfg,\n                lrs\n            ;\n\n            if (this.recordStores.length > 0) {\n                //\n                // for agent profile (for now) we are only going to store to the first LRS\n                // so only get from there too\n                //\n                // TODO: make this the first non-allowFail LRS but for now it should\n                // be good enough to make it the first since we know the LMS provided\n                // LRS is the first\n                //\n                lrs = this.recordStores[0];\n\n                cfg = cfg || {};\n\n                queryCfg = {\n                    agent: (typeof cfg.agent !== \"undefined\" ? cfg.agent : this.actor)\n                };\n                if (typeof cfg.callback !== \"undefined\") {\n                    queryCfg.callback = cfg.callback;\n                }\n\n                return lrs.dropAgentProfile(key, queryCfg);\n            }\n\n            this.log(\"[warning] deleteAgentProfile: No LRSs added yet (agent profile not deleted)\");\n        }\n    };\n\n    /**\n    @property DEBUG\n    @static\n    @default false\n    */\n    TinCan.DEBUG = false;\n\n    /**\n    Turn on debug logging\n\n    @method enableDebug\n    @static\n    */\n    TinCan.enableDebug = function () {\n        TinCan.DEBUG = true;\n    };\n\n    /**\n    Turn off debug logging\n\n    @method disableDebug\n    @static\n    */\n    TinCan.disableDebug = function () {\n        TinCan.DEBUG = false;\n    };\n\n    /**\n    @method versions\n    @return {Array} Array of supported version numbers\n    @static\n    */\n    TinCan.versions = function () {\n        // newest first so we can use the first as the default\n        return [\n            \"1.0.2\",\n            \"1.0.1\",\n            \"1.0.0\",\n            \"0.95\",\n            \"0.9\"\n        ];\n    };\n\n    /*global module*/\n    // Support the CommonJS method for exporting our single global\n    if (true) {\n        module.exports = TinCan;\n    }\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Utils\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Utils\n    */\n    TinCan.Utils = {\n        defaultEncoding: \"utf8\",\n\n        /**\n        Generates a UUIDv4 compliant string that should be reasonably unique\n\n        @method getUUID\n        @return {String} UUID\n        @static\n\n        Excerpt from: http://www.broofa.com/Tools/Math.uuid.js (v1.4)\n        http://www.broofa.com\n        mailto:robert@broofa.com\n        Copyright (c) 2010 Robert Kieffer\n        Dual licensed under the MIT and GPL licenses.\n        */\n        getUUID: function () {\n            /*jslint bitwise: true, eqeq: true */\n            return \"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\".replace(\n                /[xy]/g,\n                function (c) {\n                    var r = Math.random() * 16|0, v = c == \"x\" ? r : (r&0x3|0x8);\n                    return v.toString(16);\n                }\n            );\n        },\n\n        /**\n        @method getISODateString\n        @static\n        @param {Date} date Date to stringify\n        @return {String} ISO date String\n        */\n        getISODateString: function (d) {\n            function pad (val, n) {\n                var padder,\n                    tempVal;\n                if (typeof val === \"undefined\" || val === null) {\n                    val = 0;\n                }\n                if (typeof n === \"undefined\" || n === null) {\n                    n = 2;\n                }\n                padder = Math.pow(10, n-1);\n                tempVal = val.toString();\n\n                while (val < padder && padder > 1) {\n                    tempVal = \"0\" + tempVal;\n                    padder = padder / 10;\n                }\n\n                return tempVal;\n            }\n\n            return d.getUTCFullYear() + \"-\" +\n                pad(d.getUTCMonth() + 1) + \"-\" +\n                pad(d.getUTCDate()) + \"T\" +\n                pad(d.getUTCHours()) + \":\" +\n                pad(d.getUTCMinutes()) + \":\" +\n                pad(d.getUTCSeconds()) + \".\" +\n                pad(d.getUTCMilliseconds(), 3) + \"Z\";\n        },\n\n        /**\n        @method convertISO8601DurationToMilliseconds\n        @static\n        @param {String} ISO8601Duration Duration in ISO8601 format\n        @return {Int} Duration in milliseconds\n\n        Note: does not handle input strings with years, months and days\n        */\n        convertISO8601DurationToMilliseconds: function (ISO8601Duration) {\n            var isValueNegative = (ISO8601Duration.indexOf(\"-\") >= 0),\n                indexOfT = ISO8601Duration.indexOf(\"T\"),\n                indexOfH = ISO8601Duration.indexOf(\"H\"),\n                indexOfM = ISO8601Duration.indexOf(\"M\"),\n                indexOfS = ISO8601Duration.indexOf(\"S\"),\n                hours,\n                minutes,\n                seconds,\n                durationInMilliseconds;\n\n            if ((indexOfT === -1) || ((indexOfM !== -1) && (indexOfM < indexOfT)) || (ISO8601Duration.indexOf(\"D\") !== -1) || (ISO8601Duration.indexOf(\"Y\") !== -1)) {\n                throw new Error(\"ISO 8601 timestamps including years, months and/or days are not currently supported\");\n            }\n\n            if (indexOfH === -1) {\n                indexOfH = indexOfT;\n                hours = 0;\n            }\n            else {\n                hours = parseInt(ISO8601Duration.slice(indexOfT + 1, indexOfH), 10);\n            }\n\n            if (indexOfM === -1) {\n                indexOfM = indexOfT;\n                minutes = 0;\n            }\n            else {\n                minutes = parseInt(ISO8601Duration.slice(indexOfH + 1, indexOfM), 10);\n            }\n\n            seconds = parseFloat(ISO8601Duration.slice(indexOfM + 1, indexOfS));\n\n            durationInMilliseconds = parseInt((((((hours * 60) + minutes) * 60) + seconds) * 1000), 10);\n            if (isNaN(durationInMilliseconds)){\n                durationInMilliseconds = 0;\n            }\n            if (isValueNegative) {\n                durationInMilliseconds = durationInMilliseconds * -1;\n            }\n\n            return durationInMilliseconds;\n        },\n\n        /**\n        @method convertMillisecondsToISO8601Duration\n        @static\n        @param {Int} inputMilliseconds Duration in milliseconds\n        @return {String} Duration in ISO8601 format\n        */\n        convertMillisecondsToISO8601Duration: function (inputMilliseconds) {\n            var hours,\n                minutes,\n                seconds,\n                i_inputMilliseconds = parseInt(inputMilliseconds, 10),\n                i_inputCentiseconds,\n                inputIsNegative = \"\",\n                rtnStr = \"\";\n\n            //round to nearest 0.01 seconds\n            i_inputCentiseconds = Math.round(i_inputMilliseconds / 10);\n\n            if (i_inputCentiseconds < 0) {\n                inputIsNegative = \"-\";\n                i_inputCentiseconds = i_inputCentiseconds * -1;\n            }\n\n            hours = parseInt(((i_inputCentiseconds) / 360000), 10);\n            minutes = parseInt((((i_inputCentiseconds) % 360000) / 6000), 10);\n            seconds = (((i_inputCentiseconds) % 360000) % 6000) / 100;\n\n            rtnStr = inputIsNegative + \"PT\";\n            if (hours > 0) {\n                rtnStr += hours + \"H\";\n            }\n\n            if (minutes > 0) {\n                rtnStr += minutes + \"M\";\n            }\n\n            rtnStr += seconds + \"S\";\n\n            return rtnStr;\n        },\n\n        /**\n        @method getSHA1String\n        @static\n        @param {String} str Content to hash\n        @return {String} SHA1 for contents\n        */\n        getSHA1String: function (str) {\n            /*global CryptoJS*/\n\n            return CryptoJS.SHA1(str).toString(CryptoJS.enc.Hex);\n        },\n\n        /**\n        @method getSHA256String\n        @static\n        @param {ArrayBuffer|String} content Content to hash\n        @return {String} SHA256 for contents\n        */\n        getSHA256String: function (content) {\n            /*global CryptoJS*/\n\n            if (Object.prototype.toString.call(content) === \"[object ArrayBuffer]\") {\n                content = CryptoJS.lib.WordArray.create(content);\n            }\n            return CryptoJS.SHA256(content).toString(CryptoJS.enc.Hex);\n        },\n\n        /**\n        @method getBase64String\n        @static\n        @param {String} str Content to encode\n        @return {String} Base64 encoded contents\n        */\n        getBase64String: function (str) {\n            /*global CryptoJS*/\n\n            return CryptoJS.enc.Base64.stringify(\n                CryptoJS.enc.Latin1.parse(str)\n            );\n        },\n\n        /**\n        Intended to be inherited by objects with properties that store\n        display values in a language based \"dictionary\"\n\n        @method getLangDictionaryValue\n        @param {String} prop Property name storing the dictionary\n        @param {String} [lang] Language to return\n        @return {String}\n        */\n        getLangDictionaryValue: function (prop, lang) {\n            var langDict = this[prop],\n                key;\n\n            if (typeof lang !== \"undefined\" && typeof langDict[lang] !== \"undefined\") {\n                return langDict[lang];\n            }\n            if (typeof langDict.und !== \"undefined\") {\n                return langDict.und;\n            }\n            if (typeof langDict[\"en-US\"] !== \"undefined\") {\n                return langDict[\"en-US\"];\n            }\n            for (key in langDict) {\n                if (langDict.hasOwnProperty(key)) {\n                    return langDict[key];\n                }\n            }\n\n            return \"\";\n        },\n\n        /**\n        @method parseURL\n        @param {String} url\n        @param {Object} [options]\n            @param {Boolean} [options.allowRelative] Option to allow relative URLs\n        @return {Object} Object of values\n        @private\n        */\n        parseURL: function (url, cfg) {\n            //\n            // see http://stackoverflow.com/a/21553982\n            // and http://stackoverflow.com/a/2880929\n            //\n            var isRelative = url.charAt(0) === \"/\",\n                _reURLInformation = [\n                    \"(/[^?#]*)\", // pathname\n                    \"(\\\\?[^#]*|)\", // search\n                    \"(#.*|)$\" // hash\n                ],\n                reURLInformation,\n                match,\n                result,\n                paramMatch,\n                pl     = /\\+/g,  // Regex for replacing addition symbol with a space\n                search = /([^&=]+)=?([^&]*)/g,\n                decode = function (s) { return decodeURIComponent(s.replace(pl, \" \")); };\n\n            cfg = cfg || {};\n\n            //\n            // this method in an earlier version supported relative URLs, mostly to provide\n            // support to the `LRS.moreStatements` method, that functionality was removed and\n            // subsequently restored but with the addition of the option for allowing relative\n            // URLs to be accepted which is the reason for the \"helpful\" exception message here\n            //\n            if (! isRelative) {\n                //\n                // not relative so make sure they have a scheme, host, etc.\n                //\n                _reURLInformation.unshift(\n                    \"^(https?:)//\", // scheme\n                    \"(([^:/?#]*)(?::([0-9]+))?)\" // host (hostname and port)\n                );\n\n                //\n                // our regex requires there to be a '/' for the detection of the start\n                // of the path, we can detect a '/' using indexOf beyond the part of the\n                // scheme, since we've restricted scheme to 'http' or 'https' and because\n                // a hostname is guaranteed to be there we can detect beyond the '://'\n                // based on position, then tack on a trailing '/' because it can't be\n                // part of the path\n                //\n                if (url.indexOf(\"/\", 8) === -1) {\n                    url = url + \"/\";\n                }\n            }\n            else {\n                //\n                // relative so make sure they allow that explicitly\n                //\n                if (typeof cfg.allowRelative === \"undefined\" || ! cfg.allowRelative) {\n                    throw new Error(\"Refusing to parse relative URL without 'allowRelative' option\");\n                }\n            }\n\n            reURLInformation = new RegExp(_reURLInformation.join(\"\"));\n            match = url.match(reURLInformation);\n            if (match === null) {\n                throw new Error(\"Unable to parse URL regular expression did not match: '\" + url + \"'\");\n            }\n\n            // 'path' is for backwards compatibility\n            if (isRelative) {\n                result = {\n                    protocol: null,\n                    host: null,\n                    hostname: null,\n                    port: null,\n                    path: null,\n                    pathname: match[1],\n                    search: match[2],\n                    hash: match[3],\n                    params: {}\n                };\n\n                result.path = result.pathname;\n            }\n            else {\n                result = {\n                    protocol: match[1],\n                    host: match[2],\n                    hostname: match[3],\n                    port: match[4],\n                    pathname: match[5],\n                    search: match[6],\n                    hash: match[7],\n                    params: {}\n                };\n\n                result.path = result.protocol + \"//\" + result.host + result.pathname;\n            }\n\n            if (result.search !== \"\") {\n                // extra parens to let jshint know this is an expression\n                while ((paramMatch = search.exec(result.search.substring(1)))) {\n                    result.params[decode(paramMatch[1])] = decode(paramMatch[2]);\n                }\n            }\n\n            return result;\n        },\n\n        /**\n        @method getServerRoot\n        @param {String} absoluteUrl\n        @return {String} server root of url\n        @private\n        */\n        getServerRoot: function (absoluteUrl) {\n            var urlParts = absoluteUrl.split(\"/\");\n            return urlParts[0] + \"//\" + urlParts[2];\n        },\n\n        /**\n        @method getContentTypeFromHeader\n        @static\n        @param {String} header Content-Type header value\n        @return {String} Primary value from Content-Type\n        */\n        getContentTypeFromHeader: function (header) {\n            return (String(header).split(\";\"))[0];\n        },\n\n        /**\n        @method isApplicationJSON\n        @static\n        @param {String} header Content-Type header value\n        @return {Boolean} whether \"application/json\" was matched\n        */\n        isApplicationJSON: function (header) {\n            return TinCan.Utils.getContentTypeFromHeader(header).toLowerCase().indexOf(\"application/json\") === 0;\n        },\n\n        /**\n        @method stringToArrayBuffer\n        @static\n        @param {String} content String of content to convert to an ArrayBuffer\n        @param {String} [encoding] Encoding to use for conversion\n        @return {ArrayBuffer} Converted content\n        */\n        stringToArrayBuffer: function () {\n            TinCan.prototype.log(\"stringToArrayBuffer not overloaded - no environment loaded?\");\n        },\n\n        /**\n        @method stringFromArrayBuffer\n        @static\n        @param {ArrayBuffer} content ArrayBuffer of content to convert to a String\n        @param {String} [encoding] Encoding to use for conversion\n        @return {String} Converted content\n        */\n        stringFromArrayBuffer: function () {\n            TinCan.prototype.log(\"stringFromArrayBuffer not overloaded - no environment loaded?\");\n        }\n    };\n}());\n\n/*\n    Copyright 2012-2013 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.LRS\n**/\n(function () {\n    \"use strict\";\n    /**\n    @class TinCan.LRS\n    @constructor\n    */\n    var LRS = TinCan.LRS = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property endpoint\n        @type String\n        */\n        this.endpoint = null;\n\n        /**\n        @property version\n        @type String\n        */\n        this.version = null;\n\n        /**\n        @property auth\n        @type String\n        */\n        this.auth = null;\n\n        /**\n        @property allowFail\n        @type Boolean\n        @default true\n        */\n        this.allowFail = true;\n\n        /**\n        @property extended\n        @type Object\n        */\n        this.extended = null;\n\n        this.init(cfg);\n    };\n    LRS.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"LRS\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            var versions = TinCan.versions(),\n                versionMatch = false,\n                i\n            ;\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"alertOnRequestFailure\")) {\n                this.log(\"'alertOnRequestFailure' is deprecated (alerts have been removed) no need to set it now\");\n            }\n\n            if (! cfg.hasOwnProperty(\"endpoint\") || cfg.endpoint === null || cfg.endpoint === \"\") {\n                this.log(\"[error] LRS invalid: no endpoint\");\n                throw {\n                    code: 3,\n                    mesg: \"LRS invalid: no endpoint\"\n                };\n            }\n\n            this.endpoint = String(cfg.endpoint);\n            if (this.endpoint.slice(-1) !== \"/\") {\n                this.log(\"adding trailing slash to endpoint\");\n                this.endpoint += \"/\";\n            }\n\n            if (cfg.hasOwnProperty(\"allowFail\")) {\n                this.allowFail = cfg.allowFail;\n            }\n\n            if (cfg.hasOwnProperty(\"auth\")) {\n                this.auth = cfg.auth;\n            }\n            else if (cfg.hasOwnProperty(\"username\") && cfg.hasOwnProperty(\"password\")) {\n                this.auth = \"Basic \" + TinCan.Utils.getBase64String(cfg.username + \":\" + cfg.password);\n            }\n\n            if (cfg.hasOwnProperty(\"extended\")) {\n                this.extended = cfg.extended;\n            }\n\n            //\n            // provide a hook method that environments can override\n            // to handle anything necessary in the initialization\n            // process that is customized to them, such as cross domain\n            // setup in browsers, default implementation is empty\n            //\n            // this hook must run prior to version detection so that\n            // request handling can be set up before requesting the\n            // LRS version via the /about resource\n            //\n            this._initByEnvironment(cfg);\n\n            if (typeof cfg.version !== \"undefined\") {\n                this.log(\"version: \" + cfg.version);\n                for (i = 0; i < versions.length; i += 1) {\n                    if (versions[i] === cfg.version) {\n                        versionMatch = true;\n                        break;\n                    }\n                }\n                if (! versionMatch) {\n                    this.log(\"[error] LRS invalid: version not supported (\" + cfg.version + \")\");\n                    throw {\n                        code: 5,\n                        mesg: \"LRS invalid: version not supported (\" + cfg.version + \")\"\n                    };\n                }\n                this.version = cfg.version;\n            }\n            else {\n                //\n                // assume max supported when not specified,\n                // TODO: add detection of LRS from call to endpoint\n                //\n                this.version = versions[0];\n            }\n        },\n\n        /**\n        Creates and returns a boundary for separating parts in\n        requests where the statement has an attachment\n\n        @method _getBoundary\n        @private\n        */\n        _getBoundary: function () {\n            return TinCan.Utils.getUUID().replace(/-/g, \"\");\n        },\n\n        /**\n        Method should be overloaded by an environment to do per\n        environment specifics such that the LRS can make a call\n        to set the version if not provided\n\n        @method _initByEnvironment\n        @private\n        */\n        _initByEnvironment: function () {\n            this.log(\"_initByEnvironment not overloaded - no environment loaded?\");\n        },\n\n        /**\n        Method should be overloaded by an environment to do per\n        environment specifics for sending requests to the LRS\n\n        @method _makeRequest\n        @private\n        */\n        _makeRequest: function () {\n            this.log(\"_makeRequest not overloaded - no environment loaded?\");\n        },\n\n        /**\n        Method should be overloaded by an environment to do per\n        environment specifics for building multipart request data\n\n        @method _getMultipartRequestData\n        @private\n        */\n        _getMultipartRequestData: function () {\n            this.log(\"_getMultipartRequestData not overloaded - no environment loaded?\");\n        },\n\n        /**\n        Method is overloaded by the browser environment in order to test converting an\n        HTTP request that is greater than a defined length\n\n        @method _IEModeConversion\n        @private\n        */\n        _IEModeConversion: function () {\n            this.log(\"_IEModeConversion not overloaded - browser environment not loaded.\");\n        },\n\n        _processGetStatementResult: function (xhr, params) {\n            var boundary,\n                parsedResponse,\n                statement,\n                attachmentMap = {},\n                i;\n\n            if (! params.attachments) {\n                return TinCan.Statement.fromJSON(xhr.responseText);\n            }\n\n            boundary = xhr.getResponseHeader(\"Content-Type\").split(\"boundary=\")[1];\n\n            parsedResponse = this._parseMultipart(boundary, xhr.response);\n            statement = JSON.parse(parsedResponse[0].body);\n            for (i = 1; i < parsedResponse.length; i += 1) {\n                attachmentMap[parsedResponse[i].headers[\"X-Experience-API-Hash\"]] = parsedResponse[i].body;\n            }\n\n            this._assignAttachmentContent([statement], attachmentMap);\n\n            return new TinCan.Statement(statement);\n        },\n\n        /**\n        Method used to send a request via browser objects to the LRS\n\n        @method sendRequest\n        @param {Object} cfg Configuration for request\n            @param {String} cfg.url URL portion to add to endpoint\n            @param {String} [cfg.method] GET, PUT, POST, etc.\n            @param {Object} [cfg.params] Parameters to set on the querystring\n            @param {String|ArrayBuffer} [cfg.data] Body content as a String or ArrayBuffer\n            @param {Object} [cfg.headers] Additional headers to set in the request\n            @param {Function} [cfg.callback] Function to run at completion\n                @param {String|Null} cfg.callback.err If an error occurred, this parameter will contain the HTTP status code.\n                    If the operation succeeded, err will be null.\n                @param {Object} cfg.callback.xhr XHR object\n            @param {Boolean} [cfg.ignore404] Whether 404 status codes should be considered an error\n            @param {Boolean} [cfg.expectMultipart] Whether to expect the response to be a multipart response\n        @return {Object} XHR if called in a synchronous way (in other words no callback)\n        */\n        sendRequest: function (cfg) {\n            this.log(\"sendRequest\");\n            var fullUrl = this.endpoint + cfg.url,\n                headers = {},\n                prop\n            ;\n\n            // respect absolute URLs passed in\n            if (cfg.url.indexOf(\"http\") === 0) {\n                fullUrl = cfg.url;\n            }\n\n            // add extended LMS-specified values to the params\n            if (this.extended !== null) {\n                cfg.params = cfg.params || {};\n\n                for (prop in this.extended) {\n                    if (this.extended.hasOwnProperty(prop)) {\n                        // don't overwrite cfg.params values that have already been added to the request with our extended params\n                        if (! cfg.params.hasOwnProperty(prop)) {\n                            if (this.extended[prop] !== null) {\n                                cfg.params[prop] = this.extended[prop];\n                            }\n                        }\n                    }\n                }\n            }\n\n            // consolidate headers\n            headers.Authorization = this.auth;\n            if (this.version !== \"0.9\") {\n                headers[\"X-Experience-API-Version\"] = this.version;\n            }\n\n            for (prop in cfg.headers) {\n                if (cfg.headers.hasOwnProperty(prop)) {\n                    headers[prop] = cfg.headers[prop];\n                }\n            }\n\n            return this._makeRequest(fullUrl, headers, cfg);\n        },\n\n        /**\n        Method used to determine the LRS version\n\n        @method about\n        @param {Object} cfg Configuration object for the about request\n            @param {Function} [cfg.callback] Callback to execute upon receiving a response\n            @param {Object} [cfg.params] this is needed, but can be empty\n        @return {Object} About which holds the version, or asyncrhonously calls a specified callback\n        */\n        about: function (cfg) {\n            this.log(\"about\");\n            var requestCfg,\n                requestResult,\n                callbackWrapper;\n\n            cfg = cfg || {};\n\n            requestCfg = {\n                url: \"about\",\n                method: \"GET\",\n                params: {}\n            };\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        result = TinCan.About.fromJSON(xhr.responseText);\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n\n            if (callbackWrapper) {\n                return;\n            }\n\n            if (requestResult.err === null) {\n                requestResult.xhr = TinCan.About.fromJSON(requestResult.xhr.responseText);\n            }\n            return requestResult;\n        },\n\n        /**\n        Save a statement, when used from a browser sends to the endpoint using the RESTful interface.\n        Use a callback to make the call asynchronous.\n\n        @method saveStatement\n        @param {TinCan.Statement} statement to send\n        @param {Object} [cfg] Configuration used when saving\n            @param {Function} [cfg.callback] Callback to execute on completion\n        */\n        saveStatement: function (stmt, cfg) {\n            this.log(\"saveStatement\");\n            var requestCfg = {\n                    url: \"statements\",\n                    headers: {}\n                },\n                versionedStatement,\n                requestAttachments = [],\n                boundary,\n                i;\n\n            cfg = cfg || {};\n\n            try {\n                versionedStatement = stmt.asVersion( this.version );\n            }\n            catch (ex) {\n                if (this.allowFail) {\n                    this.log(\"[warning] statement could not be serialized in version (\" + this.version + \"): \" + ex);\n                    if (typeof cfg.callback !== \"undefined\") {\n                        cfg.callback(null, null);\n                        return;\n                    }\n                    return {\n                        err: null,\n                        xhr: null\n                    };\n                }\n\n                this.log(\"[error] statement could not be serialized in version (\" + this.version + \"): \" + ex);\n                if (typeof cfg.callback !== \"undefined\") {\n                    cfg.callback(ex, null);\n                    return;\n                }\n                return {\n                    err: ex,\n                    xhr: null\n                };\n            }\n\n            if (versionedStatement.hasOwnProperty(\"attachments\") && stmt.hasAttachmentWithContent()) {\n                boundary = this._getBoundary();\n\n                requestCfg.headers[\"Content-Type\"] = \"multipart/mixed; boundary=\" + boundary;\n\n                for (i = 0; i < stmt.attachments.length; i += 1) {\n                    if (stmt.attachments[i].content !== null) {\n                        requestAttachments.push(stmt.attachments[i]);\n                    }\n                }\n\n                try {\n                    requestCfg.data = this._getMultipartRequestData(boundary, versionedStatement, requestAttachments);\n                }\n                catch (ex) {\n                    if (this.allowFail) {\n                        this.log(\"[warning] multipart request data could not be created (attachments probably not supported): \" + ex);\n                        if (typeof cfg.callback !== \"undefined\") {\n                            cfg.callback(null, null);\n                            return;\n                        }\n                        return {\n                            err: null,\n                            xhr: null\n                        };\n                    }\n\n                    this.log(\"[error] multipart request data could not be created (attachments probably not supported): \" + ex);\n                    if (typeof cfg.callback !== \"undefined\") {\n                        cfg.callback(ex, null);\n                        return;\n                    }\n                    return {\n                        err: ex,\n                        xhr: null\n                    };\n                }\n            }\n            else {\n                requestCfg.headers[\"Content-Type\"] = \"application/json\";\n                requestCfg.data = JSON.stringify(versionedStatement);\n            }\n            if (stmt.id !== null) {\n                requestCfg.method = \"PUT\";\n                requestCfg.params = {\n                    statementId: stmt.id\n                };\n            }\n            else {\n                requestCfg.method = \"POST\";\n            }\n\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n\n            return this.sendRequest(requestCfg);\n        },\n\n        /**\n        Retrieve a statement, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveStatement\n        @param {String} ID of statement to retrieve\n        @param {Object} [cfg] Configuration options\n            @param {Object} [cfg.params] Query parameters\n                @param {Boolean} [cfg.params.attachments] Include attachments in multipart response or don't (default: false)\n            @param {Function} [cfg.callback] Callback to execute on completion\n        @return {TinCan.Statement} Statement retrieved\n        */\n        retrieveStatement: function (stmtId, cfg) {\n            this.log(\"retrieveStatement\");\n            var requestCfg,\n                requestResult,\n                callbackWrapper,\n                lrs = this;\n\n            cfg = cfg || {};\n            cfg.params = cfg.params || {};\n\n            requestCfg = {\n                url: \"statements\",\n                method: \"GET\",\n                params: {\n                    statementId: stmtId\n                }\n            };\n            if (cfg.params.attachments) {\n                requestCfg.params.attachments = true;\n                requestCfg.expectMultipart = true;\n            }\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        result = lrs._processGetStatementResult(xhr, cfg.params);\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.statement = null;\n                if (requestResult.err === null) {\n                    requestResult.statement = lrs._processGetStatementResult(requestResult.xhr, cfg.params);\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Retrieve a voided statement, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveVoidedStatement\n        @param {String} ID of voided statement to retrieve\n        @param {Object} [cfg] Configuration options\n            @param {Object} [cfg.params] Query parameters\n                @param {Boolean} [cfg.params.attachments] Include attachments in multipart response or don't (default: false)\n            @param {Function} [cfg.callback] Callback to execute on completion\n        @return {TinCan.Statement} Statement retrieved\n        */\n        retrieveVoidedStatement: function (stmtId, cfg) {\n            this.log(\"retrieveVoidedStatement\");\n            var requestCfg,\n                requestResult,\n                callbackWrapper,\n                lrs = this;\n\n            cfg = cfg || {};\n            cfg.params = cfg.params || {};\n\n            requestCfg = {\n                url: \"statements\",\n                method: \"GET\",\n                params: {}\n            };\n            if (this.version === \"0.9\" || this.version === \"0.95\") {\n                requestCfg.params.statementId = stmtId;\n            }\n            else {\n                requestCfg.params.voidedStatementId = stmtId;\n                if (cfg.params.attachments) {\n                    requestCfg.params.attachments = true;\n                    requestCfg.expectMultipart = true;\n                }\n            }\n\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        result = lrs._processGetStatementResult(xhr, cfg.params);\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.statement = null;\n                if (requestResult.err === null) {\n                    requestResult.statement = lrs._processGetStatementResult(requestResult.xhr, cfg.params);\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Save a set of statements, when used from a browser sends to the endpoint using the RESTful interface.\n        Use a callback to make the call asynchronous.\n\n        @method saveStatements\n        @param {Array} Array of statements or objects convertable to statements\n        @param {Object} [cfg] Configuration used when saving\n            @param {Function} [cfg.callback] Callback to execute on completion\n        */\n        saveStatements: function (stmts, cfg) {\n            this.log(\"saveStatements\");\n            var requestCfg = {\n                    url: \"statements\",\n                    method: \"POST\",\n                    headers: {}\n                },\n                versionedStatement,\n                versionedStatements = [],\n                requestAttachments = [],\n                boundary,\n                i,\n                j;\n\n            cfg = cfg || {};\n\n            if (stmts.length === 0) {\n                if (typeof cfg.callback !== \"undefined\") {\n                    cfg.callback(new Error(\"no statements\"), null);\n                    return;\n                }\n                return {\n                    err: new Error(\"no statements\"),\n                    xhr: null\n                };\n            }\n\n            for (i = 0; i < stmts.length; i += 1) {\n                try {\n                    versionedStatement = stmts[i].asVersion( this.version );\n                }\n                catch (ex) {\n                    if (this.allowFail) {\n                        this.log(\"[warning] statement could not be serialized in version (\" + this.version + \"): \" + ex);\n                        if (typeof cfg.callback !== \"undefined\") {\n                            cfg.callback(null, null);\n                            return;\n                        }\n                        return {\n                            err: null,\n                            xhr: null\n                        };\n                    }\n\n                    this.log(\"[error] statement could not be serialized in version (\" + this.version + \"): \" + ex);\n                    if (typeof cfg.callback !== \"undefined\") {\n                        cfg.callback(ex, null);\n                        return;\n                    }\n                    return {\n                        err: ex,\n                        xhr: null\n                    };\n                }\n\n                if (stmts[i].hasAttachmentWithContent()) {\n                    for (j = 0; j < stmts[i].attachments.length; j += 1) {\n                        if (stmts[i].attachments[j].content !== null) {\n                            requestAttachments.push(stmts[i].attachments[j]);\n                        }\n                    }\n                }\n\n                versionedStatements.push(versionedStatement);\n            }\n\n            if (requestAttachments.length !== 0) {\n                boundary = this._getBoundary();\n\n                requestCfg.headers[\"Content-Type\"] = \"multipart/mixed; boundary=\" + boundary;\n\n                try {\n                    requestCfg.data = this._getMultipartRequestData(boundary, versionedStatements, requestAttachments);\n                }\n                catch (ex) {\n                    if (this.allowFail) {\n                        this.log(\"[warning] multipart request data could not be created (attachments probably not supported): \" + ex);\n                        if (typeof cfg.callback !== \"undefined\") {\n                            cfg.callback(null, null);\n                            return;\n                        }\n                        return {\n                            err: null,\n                            xhr: null\n                        };\n                    }\n\n                    this.log(\"[error] multipart request data could not be created (attachments probably not supported): \" + ex);\n                    if (typeof cfg.callback !== \"undefined\") {\n                        cfg.callback(ex, null);\n                        return;\n                    }\n                    return {\n                        err: ex,\n                        xhr: null\n                    };\n                }\n            }\n            else {\n                requestCfg.headers[\"Content-Type\"] = \"application/json\";\n                requestCfg.data = JSON.stringify(versionedStatements);\n            }\n\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n\n            return this.sendRequest(requestCfg);\n        },\n\n        /**\n        Fetch a set of statements, when used from a browser sends to the endpoint using the\n        RESTful interface.  Use a callback to make the call asynchronous.\n\n        @method queryStatements\n        @param {Object} [cfg] Configuration used to query\n            @param {Object} [cfg.params] Query parameters\n                @param {TinCan.Agent|TinCan.Group} [cfg.params.agent] Agent matches 'actor' or 'object'\n                @param {TinCan.Verb|String} [cfg.params.verb] Verb (or verb ID) to query on\n                @param {TinCan.Activity|String} [cfg.params.activity] Activity (or activity ID) to query on\n                @param {String} [cfg.params.registration] Registration UUID\n                @param {Boolean} [cfg.params.related_activities] Match related activities\n                @param {Boolean} [cfg.params.related_agents] Match related agents\n                @param {String} [cfg.params.since] Match statements stored since specified timestamp\n                @param {String} [cfg.params.until] Match statements stored at or before specified timestamp\n                @param {Integer} [cfg.params.limit] Number of results to retrieve\n                @param {String} [cfg.params.format] One of \"ids\", \"exact\", \"canonical\" (default: \"exact\")\n                @param {Boolean} [cfg.params.ascending] Return results in ascending order of stored time\n\n                @param {TinCan.Agent} [cfg.params.actor] (Removed in 1.0.0, use 'agent' instead) Agent matches 'actor'\n                @param {TinCan.Activity|TinCan.Agent|TinCan.Statement} [cfg.params.target] (Removed in 1.0.0, use 'activity' or 'agent' instead) Activity, Agent, or Statement matches 'object'\n                @param {TinCan.Agent} [cfg.params.instructor] (Removed in 1.0.0, use 'agent' + 'related_agents' instead) Agent matches 'context:instructor'\n                @param {Boolean} [cfg.params.context] (Removed in 1.0.0, use 'activity' instead) When filtering on target, include statements with matching context\n                @param {Boolean} [cfg.params.authoritative] (Removed in 1.0.0) Get authoritative results\n                @param {Boolean} [cfg.params.sparse] (Removed in 1.0.0, use 'format' instead) Get sparse results\n\n            @param {Function} [cfg.callback] Callback to execute on completion\n                @param {String|null} cfg.callback.err Error status or null if succcess\n                @param {TinCan.StatementsResult|XHR} cfg.callback.response Receives a StatementsResult argument\n        @return {Object} Request result\n        */\n        queryStatements: function (cfg) {\n            this.log(\"queryStatements\");\n            var requestCfg,\n                requestResult,\n                callbackWrapper,\n                lrs = this;\n\n            cfg = cfg || {};\n            cfg.params = cfg.params || {};\n\n            //\n            // if they misconfigured (possibly due to version mismatches) the\n            // query then don't try to send a request at all, rather than give\n            // them invalid results\n            //\n            try {\n                requestCfg = this._queryStatementsRequestCfg(cfg);\n\n                if (cfg.params.attachments) {\n                    requestCfg.expectMultipart = true;\n                }\n            }\n            catch (ex) {\n                this.log(\"[error] Query statements failed - \" + ex);\n                if (typeof cfg.callback !== \"undefined\") {\n                    cfg.callback(ex, {});\n                }\n\n                return {\n                    err: ex,\n                    statementsResult: null\n                };\n            }\n\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr,\n                        parsedResponse,\n                        boundary,\n                        statements,\n                        attachmentMap = {},\n                        i;\n\n                    if (err === null) {\n                        if (! cfg.params.attachments) {\n                            result = TinCan.StatementsResult.fromJSON(xhr.responseText);\n                        }\n                        else {\n                            boundary = xhr.getResponseHeader(\"Content-Type\").split(\"boundary=\")[1];\n\n                            parsedResponse = lrs._parseMultipart(boundary, xhr.response);\n                            statements = JSON.parse(parsedResponse[0].body);\n                            for (i = 1; i < parsedResponse.length; i += 1) {\n                                attachmentMap[parsedResponse[i].headers[\"X-Experience-API-Hash\"]] = parsedResponse[i].body;\n                            }\n\n                            lrs._assignAttachmentContent(statements.statements, attachmentMap);\n                            result = new TinCan.StatementsResult({ statements: statements.statements });\n\n                            for (i = 0; i < result.statements.length; i += 1) {\n                                if (! (result.statements[i] instanceof TinCan.Statement)) {\n                                    result.statements[i] = new TinCan.Statement(result.statements[i]);\n                                }\n                            }\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            requestResult.config = requestCfg;\n\n            if (! callbackWrapper) {\n                requestResult.statementsResult = null;\n                if (requestResult.err === null) {\n                    requestResult.statementsResult = TinCan.StatementsResult.fromJSON(requestResult.xhr.responseText);\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Build a request config object that can be passed to sendRequest() to make a query request\n\n        @method _queryStatementsRequestCfg\n        @private\n        @param {Object} [cfg] See configuration for {{#crossLink \"TinCan.LRS/queryStatements\"}}{{/crossLink}}\n        @return {Object} Request configuration object\n        */\n        _queryStatementsRequestCfg: function (cfg) {\n            this.log(\"_queryStatementsRequestCfg\");\n            var params = {},\n                returnCfg = {\n                    url: \"statements\",\n                    method: \"GET\",\n                    params: params\n                },\n                jsonProps = [\n                    \"agent\",\n                    \"actor\",\n                    \"object\",\n                    \"instructor\"\n                ],\n                idProps = [\n                    \"verb\",\n                    \"activity\"\n                ],\n                valProps = [\n                    \"registration\",\n                    \"context\",\n                    \"since\",\n                    \"until\",\n                    \"limit\",\n                    \"authoritative\",\n                    \"sparse\",\n                    \"ascending\",\n                    \"related_activities\",\n                    \"related_agents\",\n                    \"format\",\n                    \"attachments\"\n                ],\n                i,\n                prop,\n                //\n                // list of parameters that are supported in all versions (supported by\n                // this library) of the spec\n                //\n                universal = {\n                    verb: true,\n                    registration: true,\n                    since: true,\n                    until: true,\n                    limit: true,\n                    ascending: true\n                },\n                //\n                // future proofing here, \"supported\" is an object so that\n                // in the future we can support a \"deprecated\" list to\n                // throw warnings, hopefully the spec uses deprecation phases\n                // for the removal of these things\n                //\n                compatibility = {\n                    \"0.9\": {\n                        supported: {\n                            actor: true,\n                            instructor: true,\n                            target: true,\n                            object: true,\n                            context: true,\n                            authoritative: true,\n                            sparse: true\n                        }\n                    },\n                    \"1.0.0\": {\n                        supported: {\n                            agent: true,\n                            activity: true,\n                            related_activities: true,\n                            related_agents: true,\n                            format: true,\n                            attachments: true\n                        }\n                    }\n                };\n\n            compatibility[\"0.95\"] = compatibility[\"0.9\"];\n            compatibility[\"1.0.1\"] = compatibility[\"1.0.0\"];\n            compatibility[\"1.0.2\"] = compatibility[\"1.0.0\"];\n\n            if (cfg.params.hasOwnProperty(\"target\")) {\n                cfg.params.object = cfg.params.target;\n            }\n\n            //\n            // check compatibility tables, either the configured parameter is in\n            // the universal list or the specific version, if not then throw an\n            // error which at least for .queryStatements will prevent the request\n            // and potentially alert the user\n            //\n            for (prop in cfg.params) {\n                if (cfg.params.hasOwnProperty(prop)) {\n                    if (typeof universal[prop] === \"undefined\" && typeof compatibility[this.version].supported[prop] === \"undefined\") {\n                        throw \"Unrecognized query parameter configured: \" + prop;\n                    }\n                }\n            }\n\n            //\n            // getting here means that all parameters are valid for this version\n            // to make handling the output formats easier\n            //\n\n            for (i = 0; i < jsonProps.length; i += 1) {\n                if (typeof cfg.params[jsonProps[i]] !== \"undefined\") {\n                    params[jsonProps[i]] = JSON.stringify(cfg.params[jsonProps[i]].asVersion(this.version));\n                }\n            }\n\n            for (i = 0; i < idProps.length; i += 1) {\n                if (typeof cfg.params[idProps[i]] !== \"undefined\") {\n                    if (typeof cfg.params[idProps[i]].id === \"undefined\") {\n                        params[idProps[i]] = cfg.params[idProps[i]];\n                    }\n                    else {\n                        params[idProps[i]] = cfg.params[idProps[i]].id;\n                    }\n                }\n            }\n\n            for (i = 0; i < valProps.length; i += 1) {\n                if (typeof cfg.params[valProps[i]] !== \"undefined\" && cfg.params[valProps[i]] !== null) {\n                    params[valProps[i]] = cfg.params[valProps[i]];\n                }\n            }\n\n            return returnCfg;\n        },\n\n        /**\n        Assigns attachment content to the correct attachment to create a StatementsResult object that is sent\n        to the callback of queryStatements()\n\n        @method _assignAttachmentContent\n        @private\n        @param {Array} [stmts] Array of TinCan.Statement JSON objects\n        @param {Object} [attachmentMap] Map of the content to place into its attachment\n        @return {Array} Array of TinCan.Statement JSON objects with correctly assigned attachment content\n        */\n        _assignAttachmentContent: function (stmts, attachmentMap) {\n            var i,\n                j;\n\n            for (i = 0; i < stmts.length; i += 1) {\n                if (stmts[i].hasOwnProperty(\"attachments\") && stmts[i].attachments !== null) {\n                    for (j = 0; j < stmts[i].attachments.length; j += 1) {\n                        if (attachmentMap.hasOwnProperty(stmts[i].attachments[j].sha2)) {\n                            stmts[i].attachments[j].content = attachmentMap[stmts[i].attachments[j].sha2];\n                        }\n                    }\n                }\n            }\n        },\n\n        /**\n        Parses the different sections of a multipart/mixed response\n\n        @method _parseMultipart\n        @private\n        @param {String} [boundary] Boundary used to mark off the sections of the response\n        @param {ArrayBuffer} [response] Body of the response\n        @return {Array} Array of objects containing the parsed headers and body of each part\n        */\n        _parseMultipart: function (boundary, response) {\n            /* global Uint8Array */\n            var __boundary = \"--\" + boundary,\n                byteArray,\n                bodyEncodedInString,\n                fullBodyEnd,\n                sliceStart,\n                sliceEnd,\n                headerStart,\n                headerEnd,\n                bodyStart,\n                bodyEnd,\n                headers,\n                body,\n                parts = [],\n                CRLF = 2;\n\n            //\n            // treating the reponse as a stream of bytes and assuming that headers\n            // and related mime boundaries are all US-ASCII (which is a safe assumption)\n            // allows us to treat the whole response as a string when looking for offsets\n            // but then slice on the raw array buffer\n            //\n            byteArray = new Uint8Array(response);\n            bodyEncodedInString = this.__uint8ToString(byteArray);\n\n            fullBodyEnd = bodyEncodedInString.indexOf(__boundary + \"--\");\n\n            sliceStart = bodyEncodedInString.indexOf(__boundary);\n            while (sliceStart !== -1) {\n                sliceEnd = bodyEncodedInString.indexOf(__boundary, sliceStart + __boundary.length);\n\n                headerStart = sliceStart + __boundary.length + CRLF;\n                headerEnd = bodyEncodedInString.indexOf(\"\\r\\n\\r\\n\", sliceStart);\n                bodyStart = headerEnd + CRLF + CRLF;\n                bodyEnd = sliceEnd - 2;\n\n                headers = this._parseHeaders(\n                    this.__uint8ToString(\n                        new Uint8Array( response.slice(headerStart, headerEnd) )\n                    )\n                );\n                body = response.slice(bodyStart, bodyEnd);\n\n                //\n                // we know the first slice is the statement, and we know it is a string in UTF-8 (spec requirement)\n                //\n                if (parts.length === 0) {\n                    body = TinCan.Utils.stringFromArrayBuffer(body);\n                }\n\n                parts.push(\n                    {\n                        headers: headers,\n                        body: body\n                    }\n                );\n\n                if (sliceEnd === fullBodyEnd) {\n                    sliceStart = -1;\n                }\n                else {\n                    sliceStart = sliceEnd;\n                }\n            }\n\n            return parts;\n        },\n\n        //\n        // implemented as a function to avoid 'RangeError: Maximum call stack size exceeded'\n        // when calling .fromCharCode on the full byteArray which results in a too long\n        // argument list for large arrays\n        //\n        __uint8ToString: function (byteArray) {\n            var result = \"\",\n                len = byteArray.byteLength,\n                i;\n\n            for (i = 0; i < len; i += 1) {\n                result += String.fromCharCode(byteArray[i]);\n            }\n            return result;\n        },\n\n        /**\n        Parses the headers of a multipart/mixed response section\n\n        @method _parseHeaders\n        @private\n        @param {String} [rawHeaders] String containing all the headers\n        @return {Object} Map of the headers\n        */\n        _parseHeaders: function (rawHeaders) {\n            var headers = {},\n                headerList,\n                key,\n                h,\n                i;\n\n            headerList = rawHeaders.split(\"\\n\");\n            for (i = 0; i < headerList.length; i += 1) {\n                h = headerList[i].split(\":\", 2);\n\n                if (h[1] !== null) {\n                    headers[h[0]] = h[1].replace(/^\\s+|\\s+$/g, \"\");\n\n                    key = h[0];\n                }\n                else {\n                    if (h[0].substring(0, 1) === \"\\t\") {\n                        headers[h[0]] = h[1].replace(/^\\s+|\\s+$/g, \"\");\n                    }\n                }\n            }\n\n            return headers;\n        },\n\n        /**\n        Fetch more statements from a previous query, when used from a browser sends to the endpoint using the\n        RESTful interface.  Use a callback to make the call asynchronous.\n\n        @method moreStatements\n        @param {Object} [cfg] Configuration used to query\n            @param {String} [cfg.url] More URL\n            @param {Function} [cfg.callback] Callback to execute on completion\n                @param {String|null} cfg.callback.err Error status or null if succcess\n                @param {TinCan.StatementsResult|XHR} cfg.callback.response Receives a StatementsResult argument\n        @return {Object} Request result\n        */\n        moreStatements: function (cfg) {\n            this.log(\"moreStatements: \" + cfg.url);\n            var requestCfg,\n                requestResult,\n                callbackWrapper,\n                parsedURL,\n                serverRoot;\n\n            cfg = cfg || {};\n\n            // to support our interface (to support IE) we need to break apart\n            // the more URL query params so that the request can be made properly later\n            parsedURL = TinCan.Utils.parseURL(cfg.url, { allowRelative: true });\n\n            // Respect a more URL that is relative to either the server root\n            // or endpoint (though only the former is allowed in the spec)\n            serverRoot = TinCan.Utils.getServerRoot(this.endpoint);\n            if (parsedURL.path.indexOf(\"/statements\") === 0){\n                parsedURL.path = this.endpoint.replace(serverRoot, \"\") + parsedURL.path;\n                this.log(\"converting non-standard more URL to \" + parsedURL.path);\n            }\n\n            // The more relative URL might not start with a slash, add it if not\n            if (parsedURL.path.indexOf(\"/\") !== 0) {\n                parsedURL.path = \"/\" + parsedURL.path;\n            }\n\n            requestCfg = {\n                method: \"GET\",\n                // For arbitrary more URLs to work, we need to make the URL absolute here\n                url: serverRoot + parsedURL.path,\n                params: parsedURL.params\n            };\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        result = TinCan.StatementsResult.fromJSON(xhr.responseText);\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            requestResult.config = requestCfg;\n\n            if (! callbackWrapper) {\n                requestResult.statementsResult = null;\n                if (requestResult.err === null) {\n                    requestResult.statementsResult = TinCan.StatementsResult.fromJSON(requestResult.xhr.responseText);\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Retrieve a state value, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveState\n        @param {String} key Key of state to retrieve\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {String} [cfg.registration] Registration\n            @param {Function} [cfg.callback] Callback to execute on completion\n                @param {Object|Null} cfg.callback.error\n                @param {TinCan.State|null} cfg.callback.result null if state is 404\n            @param {Object} [cfg.requestHeaders] Object containing additional headers to add to request\n        @return {TinCan.State|Object} TinCan.State retrieved when synchronous, or result from sendRequest\n        */\n        retrieveState: function (key, cfg) {\n            this.log(\"retrieveState\");\n            var requestParams = {},\n                requestCfg = {},\n                requestResult,\n                callbackWrapper,\n                requestHeaders,\n                self = this;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestParams = {\n                stateId: key,\n                activityId: cfg.activity.id\n            };\n            if (this.version === \"0.9\") {\n                requestParams.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestParams.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if ((typeof cfg.registration !== \"undefined\") && (cfg.registration !== null)) {\n                if (this.version === \"0.9\") {\n                    requestParams.registrationId = cfg.registration;\n                }\n                else {\n                    requestParams.registration = cfg.registration;\n                }\n            }\n\n            requestCfg = {\n                url: \"activities/state\",\n                method: \"GET\",\n                params: requestParams,\n                ignore404: true,\n                headers: requestHeaders\n            };\n\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        if (xhr.status === 404) {\n                            result = null;\n                        }\n                        else {\n                            result = new TinCan.State(\n                                {\n                                    id: key,\n                                    contents: xhr.responseText\n                                }\n                            );\n                            if (typeof xhr.getResponseHeader !== \"undefined\" && xhr.getResponseHeader(\"ETag\") !== null && xhr.getResponseHeader(\"ETag\") !== \"\") {\n                                result.etag = xhr.getResponseHeader(\"ETag\");\n                            }\n                            else {\n                                //\n                                // either XHR didn't have getResponseHeader (probably cause it is an IE\n                                // XDomainRequest object which doesn't) or not populated by LRS so create\n                                // the hash ourselves\n                                //\n                                // the LRS is responsible for quoting the Etag value so we need to mimic\n                                // that behavior here as well\n                                //\n                                result.etag = \"\\\"\" + TinCan.Utils.getSHA1String(xhr.responseText) + \"\\\"\";\n                            }\n\n                            if (typeof xhr.contentType !== \"undefined\") {\n                                // most likely an XDomainRequest which has .contentType,\n                                // for the ones that it supports\n                                result.contentType = xhr.contentType;\n                            }\n                            else if (typeof xhr.getResponseHeader !== \"undefined\" && xhr.getResponseHeader(\"Content-Type\") !== null && xhr.getResponseHeader(\"Content-Type\") !== \"\") {\n                                result.contentType = xhr.getResponseHeader(\"Content-Type\");\n                            }\n\n                            if (TinCan.Utils.isApplicationJSON(result.contentType)) {\n                                try {\n                                    result.contents = JSON.parse(result.contents);\n                                } catch (ex) {\n                                    self.log(\"retrieveState - failed to deserialize JSON: \" + ex);\n                                }\n                            }\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.state = null;\n                if (requestResult.err === null && requestResult.xhr.status !== 404) {\n                    requestResult.state = new TinCan.State(\n                        {\n                            id: key,\n                            contents: requestResult.xhr.responseText\n                        }\n                    );\n                    if (typeof requestResult.xhr.getResponseHeader !== \"undefined\" && requestResult.xhr.getResponseHeader(\"ETag\") !== null && requestResult.xhr.getResponseHeader(\"ETag\") !== \"\") {\n                        requestResult.state.etag = requestResult.xhr.getResponseHeader(\"ETag\");\n                    }\n                    else {\n                        //\n                        // either XHR didn't have getResponseHeader (probably cause it is an IE\n                        // XDomainRequest object which doesn't) or not populated by LRS so create\n                        // the hash ourselves\n                        //\n                        // the LRS is responsible for quoting the Etag value so we need to mimic\n                        // that behavior here as well\n                        //\n                        requestResult.state.etag = \"\\\"\" + TinCan.Utils.getSHA1String(requestResult.xhr.responseText) + \"\\\"\";\n                    }\n                    if (typeof requestResult.xhr.contentType !== \"undefined\") {\n                        // most likely an XDomainRequest which has .contentType\n                        // for the ones that it supports\n                        requestResult.state.contentType = requestResult.xhr.contentType;\n                    }\n                    else if (typeof requestResult.xhr.getResponseHeader !== \"undefined\" && requestResult.xhr.getResponseHeader(\"Content-Type\") !== null && requestResult.xhr.getResponseHeader(\"Content-Type\") !== \"\") {\n                        requestResult.state.contentType = requestResult.xhr.getResponseHeader(\"Content-Type\");\n                    }\n                    if (TinCan.Utils.isApplicationJSON(requestResult.state.contentType)) {\n                        try {\n                            requestResult.state.contents = JSON.parse(requestResult.state.contents);\n                        } catch (ex) {\n                            this.log(\"retrieveState - failed to deserialize JSON: \" + ex);\n                        }\n                    }\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Retrieve the list of IDs for a state, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveStateIds\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {String} [cfg.registration] Registration\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {String} [cfg.since] Match activity profiles saved since given timestamp\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        @return {Object} requestResult Request result\n        */\n        retrieveStateIds: function (cfg) {\n            this.log(\"retrieveStateIds\");\n            var requestParams = {},\n                requestCfg,\n                requestHeaders,\n                requestResult,\n                callbackWrapper;\n\n            cfg = cfg || {};\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestParams.activityId = cfg.activity.id;\n            if (this.version === \"0.9\") {\n                requestParams.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestParams.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if ((typeof cfg.registration !== \"undefined\") && (cfg.registration !== null)) {\n                if (this.version === \"0.9\") {\n                    requestParams.registrationId = cfg.registration;\n                }\n                else {\n                    requestParams.registration = cfg.registration;\n                }\n            }\n\n            requestCfg = {\n                url: \"activities/state\",\n                method: \"GET\",\n                params: requestParams,\n                headers: requestHeaders,\n                ignore404: true\n            };\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err !== null) {\n                        cfg.callback(err, result);\n                        return;\n                    }\n\n                    if (xhr.status === 404) {\n                        result = [];\n                    }\n                    else {\n                        try {\n                            result = JSON.parse(xhr.responseText);\n                        }\n                        catch (ex) {\n                            err = \"Response JSON parse error: \" + ex;\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n            if (typeof cfg.since !== \"undefined\") {\n                requestCfg.params.since = cfg.since;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.profileIds = null;\n                if (requestResult.err !== null) {\n                    return requestResult;\n                }\n\n                if (requestResult.xhr.status === 404) {\n                    requestResult.profileIds = [];\n                }\n                else {\n                    try {\n                        requestResult.profileIds = JSON.parse(requestResult.xhr.responseText);\n                    }\n                    catch (ex) {\n                        requestResult.err = \"retrieveStateIds - JSON parse error: \" + ex;\n                    }\n                }\n            }\n            return requestResult;\n        },\n\n        /**\n        Save a state value, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method saveState\n        @param {String} key Key of state to save\n        @param val Value to be stored\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {String} [cfg.registration] Registration\n            @param {String} [cfg.lastSHA1] SHA1 of the previously seen existing state\n            @param {String} [cfg.contentType] Content-Type to specify in headers (defaults to 'application/octet-stream')\n            @param {String} [cfg.method] Method to use. Default: PUT\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        */\n        saveState: function (key, val, cfg) {\n            this.log(\"saveState\");\n            var requestParams,\n                requestCfg,\n                requestHeaders;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            if (typeof cfg.contentType === \"undefined\") {\n                cfg.contentType = \"application/octet-stream\";\n            }\n            requestHeaders[\"Content-Type\"] = cfg.contentType;\n\n            if (typeof val === \"object\" && TinCan.Utils.isApplicationJSON(cfg.contentType)) {\n                val = JSON.stringify(val);\n            }\n\n            if (typeof cfg.method === \"undefined\" || cfg.method !== \"POST\") {\n                cfg.method = \"PUT\";\n            }\n\n            requestParams = {\n                stateId: key,\n                activityId: cfg.activity.id\n            };\n            if (this.version === \"0.9\") {\n                requestParams.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestParams.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if ((typeof cfg.registration !== \"undefined\") && (cfg.registration !== null)) {\n                if (this.version === \"0.9\") {\n                    requestParams.registrationId = cfg.registration;\n                }\n                else {\n                    requestParams.registration = cfg.registration;\n                }\n            }\n\n            requestCfg = {\n                url: \"activities/state\",\n                method: cfg.method,\n                params: requestParams,\n                data: val,\n                headers: requestHeaders\n            };\n\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n            if (typeof cfg.lastSHA1 !== \"undefined\" && cfg.lastSHA1 !== null) {\n                requestCfg.headers[\"If-Match\"] = cfg.lastSHA1;\n            }\n\n            return this.sendRequest(requestCfg);\n        },\n\n        /**\n        Drop a state value or all of the state, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method dropState\n        @param {String|null} key Key of state to delete, or null for all\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {String} [cfg.registration] Registration\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        */\n        dropState: function (key, cfg) {\n            this.log(\"dropState\");\n            var requestParams,\n                requestCfg,\n                requestHeaders;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestParams = {\n                activityId: cfg.activity.id\n            };\n            if (this.version === \"0.9\") {\n                requestParams.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestParams.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if (key !== null) {\n                requestParams.stateId = key;\n            }\n            if ((typeof cfg.registration !== \"undefined\") && (cfg.registration !== null)) {\n                if (this.version === \"0.9\") {\n                    requestParams.registrationId = cfg.registration;\n                }\n                else {\n                    requestParams.registration = cfg.registration;\n                }\n            }\n\n            requestCfg = {\n                url: \"activities/state\",\n                method: \"DELETE\",\n                params: requestParams,\n                headers: requestHeaders\n            };\n\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n\n            return this.sendRequest(requestCfg);\n        },\n\n        /**\n        Retrieve an activity, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveActivity\n        @param {String} activityId id of the Activity to retrieve\n        @param {Object} cfg Configuration options\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        @return {Object} Value retrieved\n        */\n        retrieveActivity: function (activityId, cfg) {\n            this.log(\"retrieveActivity\");\n            var requestCfg = {},\n                requestResult,\n                callbackWrapper,\n                requestHeaders;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestCfg = {\n                url: \"activities\",\n                method: \"GET\",\n                params: {\n                    activityId: activityId\n                },\n                ignore404: true,\n                headers: requestHeaders\n            };\n\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        //\n                        // a 404 really shouldn't happen because the LRS can dynamically\n                        // build the response based on what has been passed to it, but\n                        // don't have the client fail in the condition that it does, because\n                        // we can do the same thing\n                        //\n                        if (xhr.status === 404) {\n                            result = new TinCan.Activity(\n                                {\n                                    id: activityId\n                                }\n                            );\n                        }\n                        else {\n                            result = TinCan.Activity.fromJSON(xhr.responseText);\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.activity = null;\n                if (requestResult.err === null) {\n                    if (requestResult.xhr.status === 404) {\n                        requestResult.activity = new TinCan.Activity(\n                            {\n                                id: activityId\n                            }\n                        );\n                    }\n                    else {\n                        requestResult.activity = TinCan.Activity.fromJSON(requestResult.xhr.responseText);\n                    }\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Retrieve an activity profile value, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveActivityProfile\n        @param {String} key Key of activity profile to retrieve\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        @return {Object} Value retrieved\n        */\n        retrieveActivityProfile: function (key, cfg) {\n            this.log(\"retrieveActivityProfile\");\n            var requestCfg = {},\n                requestResult,\n                callbackWrapper,\n                requestHeaders,\n                self = this;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestCfg = {\n                url: \"activities/profile\",\n                method: \"GET\",\n                params: {\n                    profileId: key,\n                    activityId: cfg.activity.id\n                },\n                ignore404: true,\n                headers: requestHeaders\n            };\n\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        if (xhr.status === 404) {\n                            result = null;\n                        }\n                        else {\n                            result = new TinCan.ActivityProfile(\n                                {\n                                    id: key,\n                                    activity: cfg.activity,\n                                    contents: xhr.responseText\n                                }\n                            );\n                            if (typeof xhr.getResponseHeader !== \"undefined\" && xhr.getResponseHeader(\"ETag\") !== null && xhr.getResponseHeader(\"ETag\") !== \"\") {\n                                result.etag = xhr.getResponseHeader(\"ETag\");\n                            }\n                            else {\n                                //\n                                // either XHR didn't have getResponseHeader (probably cause it is an IE\n                                // XDomainRequest object which doesn't) or not populated by LRS so create\n                                // the hash ourselves\n                                //\n                                // the LRS is responsible for quoting the Etag value so we need to mimic\n                                // that behavior here as well\n                                //\n                                result.etag = \"\\\"\" + TinCan.Utils.getSHA1String(xhr.responseText) + \"\\\"\";\n                            }\n                            if (typeof xhr.contentType !== \"undefined\") {\n                                // most likely an XDomainRequest which has .contentType\n                                // for the ones that it supports\n                                result.contentType = xhr.contentType;\n                            }\n                            else if (typeof xhr.getResponseHeader !== \"undefined\" && xhr.getResponseHeader(\"Content-Type\") !== null && xhr.getResponseHeader(\"Content-Type\") !== \"\") {\n                                result.contentType = xhr.getResponseHeader(\"Content-Type\");\n                            }\n                            if (TinCan.Utils.isApplicationJSON(result.contentType)) {\n                                try {\n                                    result.contents = JSON.parse(result.contents);\n                                } catch (ex) {\n                                    self.log(\"retrieveActivityProfile - failed to deserialize JSON: \" + ex);\n                                }\n                            }\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.profile = null;\n                if (requestResult.err === null && requestResult.xhr.status !== 404) {\n                    requestResult.profile = new TinCan.ActivityProfile(\n                        {\n                            id: key,\n                            activity: cfg.activity,\n                            contents: requestResult.xhr.responseText\n                        }\n                    );\n                    if (typeof requestResult.xhr.getResponseHeader !== \"undefined\" && requestResult.xhr.getResponseHeader(\"ETag\") !== null && requestResult.xhr.getResponseHeader(\"ETag\") !== \"\") {\n                        requestResult.profile.etag = requestResult.xhr.getResponseHeader(\"ETag\");\n                    }\n                    else {\n                        //\n                        // either XHR didn't have getResponseHeader (probably cause it is an IE\n                        // XDomainRequest object which doesn't) or not populated by LRS so create\n                        // the hash ourselves\n                        //\n                        // the LRS is responsible for quoting the Etag value so we need to mimic\n                        // that behavior here as well\n                        //\n                        requestResult.profile.etag = \"\\\"\" + TinCan.Utils.getSHA1String(requestResult.xhr.responseText) + \"\\\"\";\n                    }\n                    if (typeof requestResult.xhr.contentType !== \"undefined\") {\n                        // most likely an XDomainRequest which has .contentType\n                        // for the ones that it supports\n                        requestResult.profile.contentType = requestResult.xhr.contentType;\n                    }\n                    else if (typeof requestResult.xhr.getResponseHeader !== \"undefined\" && requestResult.xhr.getResponseHeader(\"Content-Type\") !== null && requestResult.xhr.getResponseHeader(\"Content-Type\") !== \"\") {\n                        requestResult.profile.contentType = requestResult.xhr.getResponseHeader(\"Content-Type\");\n                    }\n                    if (TinCan.Utils.isApplicationJSON(requestResult.profile.contentType)) {\n                        try {\n                            requestResult.profile.contents = JSON.parse(requestResult.profile.contents);\n                        } catch (ex) {\n                            this.log(\"retrieveActivityProfile - failed to deserialize JSON: \" + ex);\n                        }\n                    }\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Retrieve the list of IDs for an activity profile, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveActivityProfileIds\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {String} [cfg.since] Match activity profiles saved since given timestamp\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        @return {Array} List of ids for this Activity profile\n        */\n        retrieveActivityProfileIds: function (cfg) {\n            this.log(\"retrieveActivityProfileIds\");\n            var requestCfg,\n                requestHeaders,\n                requestResult,\n                callbackWrapper;\n\n            cfg = cfg || {};\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestCfg = {\n                url: \"activities/profile\",\n                method: \"GET\",\n                params: {\n                    activityId: cfg.activity.id\n                },\n                headers: requestHeaders,\n                ignore404: true\n            };\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err !== null) {\n                        cfg.callback(err, result);\n                        return;\n                    }\n\n                    if (xhr.status === 404) {\n                        result = [];\n                    }\n                    else {\n                        try {\n                            result = JSON.parse(xhr.responseText);\n                        }\n                        catch (ex) {\n                            err = \"Response JSON parse error: \" + ex;\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n            if (typeof cfg.since !== \"undefined\") {\n                requestCfg.params.since = cfg.since;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.profileIds = null;\n                if (requestResult.err !== null) {\n                    return requestResult;\n                }\n\n                if (requestResult.xhr.status === 404) {\n                    requestResult.profileIds = [];\n                }\n                else {\n                    try {\n                        requestResult.profileIds = JSON.parse(requestResult.xhr.responseText);\n                    }\n                    catch (ex) {\n                        requestResult.err = \"retrieveActivityProfileIds - JSON parse error: \" + ex;\n                    }\n                }\n            }\n            return requestResult;\n        },\n\n        /**\n        Save an activity profile value, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method saveActivityProfile\n        @param {String} key Key of activity profile to retrieve\n        @param val Value to be stored\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {String} [cfg.lastSHA1] SHA1 of the previously seen existing profile\n            @param {String} [cfg.contentType] Content-Type to specify in headers (defaults to 'application/octet-stream')\n            @param {String} [cfg.method] Method to use. Default: PUT\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        */\n        saveActivityProfile: function (key, val, cfg) {\n            this.log(\"saveActivityProfile\");\n            var requestCfg,\n                requestHeaders;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            if (typeof cfg.contentType === \"undefined\") {\n                cfg.contentType = \"application/octet-stream\";\n            }\n            requestHeaders[\"Content-Type\"] = cfg.contentType;\n\n            if (typeof cfg.method === \"undefined\" || cfg.method !== \"POST\") {\n                cfg.method = \"PUT\";\n            }\n\n            if (typeof val === \"object\" && TinCan.Utils.isApplicationJSON(cfg.contentType)) {\n                val = JSON.stringify(val);\n            }\n\n            requestCfg = {\n                url: \"activities/profile\",\n                method: cfg.method,\n                params: {\n                    profileId: key,\n                    activityId: cfg.activity.id\n                },\n                data: val,\n                headers: requestHeaders\n            };\n\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n            if (typeof cfg.lastSHA1 !== \"undefined\" && cfg.lastSHA1 !== null) {\n                requestCfg.headers[\"If-Match\"] = cfg.lastSHA1;\n            }\n            else {\n                requestCfg.headers[\"If-None-Match\"] = \"*\";\n            }\n\n            return this.sendRequest(requestCfg);\n        },\n\n        /**\n        Drop an activity profile value, when used from a browser sends to the endpoint using the RESTful interface. Full activity profile\n        delete is not supported by the spec.\n\n        @method dropActivityProfile\n        @param {String|null} key Key of activity profile to delete\n        @param {Object} cfg Configuration options\n            @param {TinCan.Activity} cfg.activity Activity in document identifier\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        */\n        dropActivityProfile: function (key, cfg) {\n            this.log(\"dropActivityProfile\");\n            var requestParams,\n                requestCfg,\n                requestHeaders;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestParams = {\n                profileId: key,\n                activityId: cfg.activity.id\n            };\n\n            requestCfg = {\n                url: \"activities/profile\",\n                method: \"DELETE\",\n                params: requestParams,\n                headers: requestHeaders\n            };\n\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n\n            return this.sendRequest(requestCfg);\n        },\n\n        /**\n        Retrieve an agent profile value, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveAgentProfile\n        @param {String} key Key of agent profile to retrieve\n        @param {Object} cfg Configuration options\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        @return {Object} Value retrieved\n        */\n        retrieveAgentProfile: function (key, cfg) {\n            this.log(\"retrieveAgentProfile\");\n            var requestCfg = {},\n                requestResult,\n                callbackWrapper,\n                requestHeaders,\n                self = this;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestCfg = {\n                method: \"GET\",\n                params: {\n                    profileId: key\n                },\n                ignore404: true,\n                headers: requestHeaders\n            };\n\n            if (this.version === \"0.9\") {\n                requestCfg.url = \"actors/profile\";\n                requestCfg.params.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestCfg.url = \"agents/profile\";\n                requestCfg.params.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err === null) {\n                        if (xhr.status === 404) {\n                            result = null;\n                        }\n                        else {\n                            result = new TinCan.AgentProfile(\n                                {\n                                    id: key,\n                                    agent: cfg.agent,\n                                    contents: xhr.responseText\n                                }\n                            );\n                            if (typeof xhr.getResponseHeader !== \"undefined\" && xhr.getResponseHeader(\"ETag\") !== null && xhr.getResponseHeader(\"ETag\") !== \"\") {\n                                result.etag = xhr.getResponseHeader(\"ETag\");\n                            }\n                            else {\n                                //\n                                // either XHR didn't have getResponseHeader (probably cause it is an IE\n                                // XDomainRequest object which doesn't) or not populated by LRS so create\n                                // the hash ourselves\n                                //\n                                // the LRS is responsible for quoting the Etag value so we need to mimic\n                                // that behavior here as well\n                                //\n                                result.etag = \"\\\"\" + TinCan.Utils.getSHA1String(xhr.responseText) + \"\\\"\";\n                            }\n                            if (typeof xhr.contentType !== \"undefined\") {\n                                // most likely an XDomainRequest which has .contentType\n                                // for the ones that it supports\n                                result.contentType = xhr.contentType;\n                            }\n                            else if (typeof xhr.getResponseHeader !== \"undefined\" && xhr.getResponseHeader(\"Content-Type\") !== null && xhr.getResponseHeader(\"Content-Type\") !== \"\") {\n                                result.contentType = xhr.getResponseHeader(\"Content-Type\");\n                            }\n                            if (TinCan.Utils.isApplicationJSON(result.contentType)) {\n                                try {\n                                    result.contents = JSON.parse(result.contents);\n                                } catch (ex) {\n                                    self.log(\"retrieveAgentProfile - failed to deserialize JSON: \" + ex);\n                                }\n                            }\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.profile = null;\n                if (requestResult.err === null && requestResult.xhr.status !== 404) {\n                    requestResult.profile = new TinCan.AgentProfile(\n                        {\n                            id: key,\n                            agent: cfg.agent,\n                            contents: requestResult.xhr.responseText\n                        }\n                    );\n                    if (typeof requestResult.xhr.getResponseHeader !== \"undefined\" && requestResult.xhr.getResponseHeader(\"ETag\") !== null && requestResult.xhr.getResponseHeader(\"ETag\") !== \"\") {\n                        requestResult.profile.etag = requestResult.xhr.getResponseHeader(\"ETag\");\n                    }\n                    else {\n                        //\n                        // either XHR didn't have getResponseHeader (probably cause it is an IE\n                        // XDomainRequest object which doesn't) or not populated by LRS so create\n                        // the hash ourselves\n                        //\n                        // the LRS is responsible for quoting the Etag value so we need to mimic\n                        // that behavior here as well\n                        //\n                        requestResult.profile.etag = \"\\\"\" + TinCan.Utils.getSHA1String(requestResult.xhr.responseText) + \"\\\"\";\n                    }\n                    if (typeof requestResult.xhr.contentType !== \"undefined\") {\n                        // most likely an XDomainRequest which has .contentType\n                        // for the ones that it supports\n                        requestResult.profile.contentType = requestResult.xhr.contentType;\n                    }\n                    else if (typeof requestResult.xhr.getResponseHeader !== \"undefined\" && requestResult.xhr.getResponseHeader(\"Content-Type\") !== null && requestResult.xhr.getResponseHeader(\"Content-Type\") !== \"\") {\n                        requestResult.profile.contentType = requestResult.xhr.getResponseHeader(\"Content-Type\");\n                    }\n                    if (TinCan.Utils.isApplicationJSON(requestResult.profile.contentType)) {\n                        try {\n                            requestResult.profile.contents = JSON.parse(requestResult.profile.contents);\n                        } catch (ex) {\n                            this.log(\"retrieveAgentProfile - failed to deserialize JSON: \" + ex);\n                        }\n                    }\n                }\n            }\n\n            return requestResult;\n        },\n\n        /**\n        Retrieve the list of profileIds for an agent profile, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method retrieveAgentProfileIds\n        @param {Object} cfg Configuration options\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {String} [cfg.since] Match activity profiles saved since given timestamp\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        @return {Array} List of profileIds for this Agent\n\n        */\n        retrieveAgentProfileIds: function (cfg) {\n            this.log(\"retrieveAgentProfileIds\");\n            var requestParams = {},\n                requestCfg,\n                requestHeaders,\n                requestResult,\n                callbackWrapper;\n\n            cfg = cfg || {};\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestCfg = {\n                method: \"GET\",\n                params: requestParams,\n                headers: requestHeaders,\n                ignore404: true\n            };\n\n            if (this.version === \"0.9\") {\n                requestCfg.url = \"actors/profile\";\n                requestParams.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestCfg.url = \"agents/profile\";\n                requestParams.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if (typeof cfg.callback !== \"undefined\") {\n                callbackWrapper = function (err, xhr) {\n                    var result = xhr;\n\n                    if (err !== null) {\n                        cfg.callback(err, result);\n                        return;\n                    }\n\n                    if (xhr.status === 404) {\n                        result = [];\n                    }\n                    else {\n                        try {\n                            result = JSON.parse(xhr.responseText);\n                        }\n                        catch (ex) {\n                            err = \"Response JSON parse error: \" + ex;\n                        }\n                    }\n\n                    cfg.callback(err, result);\n                };\n                requestCfg.callback = callbackWrapper;\n            }\n            if (typeof cfg.since !== \"undefined\") {\n                requestCfg.params.since = cfg.since;\n            }\n\n            requestResult = this.sendRequest(requestCfg);\n            if (! callbackWrapper) {\n                requestResult.profileIds = null;\n                if (requestResult.err !== null) {\n                    return requestResult;\n                }\n\n                if (requestResult.xhr.status === 404) {\n                    requestResult.profileIds = [];\n                }\n                else {\n                    try {\n                        requestResult.profileIds = JSON.parse(requestResult.xhr.responseText);\n                    }\n                    catch (ex) {\n                        requestResult.err = \"retrieveAgentProfileIds - JSON parse error: \" + ex;\n                    }\n                }\n            }\n            return requestResult;\n        },\n\n        /**\n        Save an agent profile value, when used from a browser sends to the endpoint using the RESTful interface.\n\n        @method saveAgentProfile\n        @param {String} key Key of agent profile to retrieve\n        @param val Value to be stored\n        @param {Object} cfg Configuration options\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {String} [cfg.lastSHA1] SHA1 of the previously seen existing profile\n            @param {String} [cfg.contentType] Content-Type to specify in headers (defaults to 'application/octet-stream')\n            @param {String} [cfg.method] Method to use. Default: PUT\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        */\n        saveAgentProfile: function (key, val, cfg) {\n            this.log(\"saveAgentProfile\");\n            var requestCfg,\n                requestHeaders;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            if (typeof cfg.contentType === \"undefined\") {\n                cfg.contentType = \"application/octet-stream\";\n            }\n            requestHeaders[\"Content-Type\"] = cfg.contentType;\n\n            if (typeof cfg.method === \"undefined\" || cfg.method !== \"POST\") {\n                cfg.method = \"PUT\";\n            }\n\n            if (typeof val === \"object\" && TinCan.Utils.isApplicationJSON(cfg.contentType)) {\n                val = JSON.stringify(val);\n            }\n\n            requestCfg = {\n                method: cfg.method,\n                params: {\n                    profileId: key\n                },\n                data: val,\n                headers: requestHeaders\n            };\n\n            if (this.version === \"0.9\") {\n                requestCfg.url = \"actors/profile\";\n                requestCfg.params.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestCfg.url = \"agents/profile\";\n                requestCfg.params.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n            if (typeof cfg.lastSHA1 !== \"undefined\" && cfg.lastSHA1 !== null) {\n                requestCfg.headers[\"If-Match\"] = cfg.lastSHA1;\n            }\n            else {\n                requestCfg.headers[\"If-None-Match\"] = \"*\";\n            }\n\n            return this.sendRequest(requestCfg);\n        },\n\n        /**\n        Drop an agent profile value, when used from a browser sends to the endpoint using the RESTful interface. Full agent profile\n        delete is not supported by the spec.\n\n        @method dropAgentProfile\n        @param {String|null} key Key of agent profile to delete\n        @param {Object} cfg Configuration options\n            @param {TinCan.Agent} cfg.agent Agent in document identifier\n            @param {Function} [cfg.callback] Callback to execute on completion\n            @param {Object} [cfg.requestHeaders] Optional object containing additional headers to add to request\n        */\n        dropAgentProfile: function (key, cfg) {\n            this.log(\"dropAgentProfile\");\n            var requestParams,\n                requestCfg,\n                requestHeaders;\n\n            requestHeaders = cfg.requestHeaders || {};\n\n            requestParams = {\n                profileId: key\n            };\n            requestCfg = {\n                method: \"DELETE\",\n                params: requestParams,\n                headers: requestHeaders\n            };\n\n            if (this.version === \"0.9\") {\n                requestCfg.url = \"actors/profile\";\n                requestParams.actor = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            else {\n                requestCfg.url = \"agents/profile\";\n                requestParams.agent = JSON.stringify(cfg.agent.asVersion(this.version));\n            }\n            if (typeof cfg.callback !== \"undefined\") {\n                requestCfg.callback = cfg.callback;\n            }\n\n            return this.sendRequest(requestCfg);\n        }\n    };\n\n    /**\n    Allows client code to determine whether their environment supports synchronous xhr handling\n    @static this is a static property, set by the environment\n    */\n    LRS.syncEnabled = null;\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.AgentAccount\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.AgentAccount\n    @constructor\n    */\n    var AgentAccount = TinCan.AgentAccount = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property homePage\n        @type String\n        */\n        this.homePage = null;\n\n        /**\n        @property name\n        @type String\n        */\n        this.name = null;\n\n        this.init(cfg);\n    };\n    AgentAccount.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"AgentAccount\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"name\",\n                    \"homePage\"\n                ];\n\n            cfg = cfg || {};\n\n            // handle .9 name changes\n            if (typeof cfg.accountServiceHomePage !== \"undefined\") {\n                cfg.homePage = cfg.accountServiceHomePage;\n            }\n            if (typeof cfg.accountName !== \"undefined\") {\n                cfg.name = cfg.accountName;\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        },\n\n        toString: function () {\n            this.log(\"toString\");\n            var result = \"\";\n\n            if (this.name !== null || this.homePage !== null) {\n                result += this.name !== null ? this.name : \"-\";\n                result += \":\";\n                result += this.homePage !== null ? this.homePage : \"-\";\n            }\n            else {\n                result = \"AgentAccount: unidentified\";\n            }\n\n            return result;\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion: \" + version);\n            var result = {};\n\n            version = version || TinCan.versions()[0];\n\n            if (version === \"0.9\") {\n                result.accountName = this.name;\n                result.accountServiceHomePage = this.homePage;\n            } else {\n                result.name = this.name;\n                result.homePage = this.homePage;\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} AgentAccount\n    @static\n    */\n    AgentAccount.fromJSON = function (acctJSON) {\n        AgentAccount.prototype.log(\"fromJSON\");\n        var _acct = JSON.parse(acctJSON);\n\n        return new AgentAccount(_acct);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Agent\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Agent\n    @constructor\n    */\n    var Agent = TinCan.Agent = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property name\n        @type String\n        */\n        this.name = null;\n\n        /**\n        @property mbox\n        @type String\n        */\n        this.mbox = null;\n\n        /**\n        @property mbox_sha1sum\n        @type String\n        */\n        this.mbox_sha1sum = null;\n\n        /**\n        @property openid\n        @type String\n        */\n        this.openid = null;\n\n        /**\n        @property account\n        @type TinCan.AgentAccount\n        */\n        this.account = null;\n\n        /**\n        @property degraded\n        @type Boolean\n        @default false\n        */\n        this.degraded = false;\n\n        this.init(cfg);\n    };\n    Agent.prototype = {\n        /**\n        @property objectType\n        @type String\n        @default Agent\n        */\n        objectType: \"Agent\",\n\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Agent\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"name\",\n                    \"mbox\",\n                    \"mbox_sha1sum\",\n                    \"openid\"\n                ],\n                val\n            ;\n\n            cfg = cfg || {};\n\n            // handle .9 split names and array properties into single interface\n            if (typeof cfg.lastName !== \"undefined\" || typeof cfg.firstName !== \"undefined\") {\n                cfg.name = \"\";\n                if (typeof cfg.firstName !== \"undefined\" && cfg.firstName.length > 0) {\n                    cfg.name = cfg.firstName[0];\n                    if (cfg.firstName.length > 1) {\n                        this.degraded = true;\n                    }\n                }\n\n                if (cfg.name !== \"\") {\n                    cfg.name += \" \";\n                }\n\n                if (typeof cfg.lastName !== \"undefined\" && cfg.lastName.length > 0) {\n                    cfg.name += cfg.lastName[0];\n                    if (cfg.lastName.length > 1) {\n                        this.degraded = true;\n                    }\n                }\n            } else if (typeof cfg.familyName !== \"undefined\" || typeof cfg.givenName !== \"undefined\") {\n                cfg.name = \"\";\n                if (typeof cfg.givenName !== \"undefined\" && cfg.givenName.length > 0) {\n                    cfg.name = cfg.givenName[0];\n                    if (cfg.givenName.length > 1) {\n                        this.degraded = true;\n                    }\n                }\n\n                if (cfg.name !== \"\") {\n                    cfg.name += \" \";\n                }\n\n                if (typeof cfg.familyName !== \"undefined\" && cfg.familyName.length > 0) {\n                    cfg.name += cfg.familyName[0];\n                    if (cfg.familyName.length > 1) {\n                        this.degraded = true;\n                    }\n                }\n            }\n\n            if (typeof cfg.name === \"object\" && cfg.name !== null) {\n                if (cfg.name.length > 1) {\n                    this.degraded = true;\n                }\n                cfg.name = cfg.name[0];\n            }\n            if (typeof cfg.mbox === \"object\" && cfg.mbox !== null) {\n                if (cfg.mbox.length > 1) {\n                    this.degraded = true;\n                }\n                cfg.mbox = cfg.mbox[0];\n            }\n            if (typeof cfg.mbox_sha1sum === \"object\" && cfg.mbox_sha1sum !== null) {\n                if (cfg.mbox_sha1sum.length > 1) {\n                    this.degraded = true;\n                }\n                cfg.mbox_sha1sum = cfg.mbox_sha1sum[0];\n            }\n            if (typeof cfg.openid === \"object\" && cfg.openid !== null) {\n                if (cfg.openid.length > 1) {\n                    this.degraded = true;\n                }\n                cfg.openid = cfg.openid[0];\n            }\n            if (typeof cfg.account === \"object\" && cfg.account !== null && typeof cfg.account.homePage === \"undefined\" && typeof cfg.account.name === \"undefined\") {\n                if (cfg.account.length === 0) {\n                    delete cfg.account;\n                }\n                else {\n                    if (cfg.account.length > 1) {\n                        this.degraded = true;\n                    }\n                    cfg.account = cfg.account[0];\n                }\n            }\n\n            if (cfg.hasOwnProperty(\"account\")) {\n                if (cfg.account instanceof TinCan.AgentAccount) {\n                    this.account = cfg.account;\n                }\n                else {\n                    this.account = new TinCan.AgentAccount (cfg.account);\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    val = cfg[directProps[i]];\n                    if (directProps[i] === \"mbox\" && val.indexOf(\"mailto:\") === -1) {\n                        val = \"mailto:\" + val;\n                    }\n                    this[directProps[i]] = val;\n                }\n            }\n        },\n\n        toString: function () {\n            this.log(\"toString\");\n\n            if (this.name !== null) {\n                return this.name;\n            }\n            if (this.mbox !== null) {\n                return this.mbox.replace(\"mailto:\", \"\");\n            }\n            if (this.mbox_sha1sum !== null) {\n                return this.mbox_sha1sum;\n            }\n            if (this.openid !== null) {\n                return this.openid;\n            }\n            if (this.account !== null) {\n                return this.account.toString();\n            }\n\n            return this.objectType + \": unidentified\";\n        },\n\n        /**\n        While a TinCan.Agent instance can store more than one inverse functional identifier\n        this method will always only output one to be compliant with the statement sending\n        specification. Order of preference is: mbox, mbox_sha1sum, openid, account\n\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion: \" + version);\n            var result = {\n                objectType: this.objectType\n            };\n\n            version = version || TinCan.versions()[0];\n\n            if (version === \"0.9\") {\n                if (this.mbox !== null) {\n                    result.mbox = [ this.mbox ];\n                }\n                else if (this.mbox_sha1sum !== null) {\n                    result.mbox_sha1sum = [ this.mbox_sha1sum ];\n                }\n                else if (this.openid !== null) {\n                    result.openid = [ this.openid ];\n                }\n                else if (this.account !== null) {\n                    result.account = [ this.account.asVersion(version) ];\n                }\n\n                if (this.name !== null) {\n                    result.name = [ this.name ];\n                }\n            } else {\n                if (this.mbox !== null) {\n                    result.mbox = this.mbox;\n                }\n                else if (this.mbox_sha1sum !== null) {\n                    result.mbox_sha1sum = this.mbox_sha1sum;\n                }\n                else if (this.openid !== null) {\n                    result.openid = this.openid;\n                }\n                else if (this.account !== null) {\n                    result.account = this.account.asVersion(version);\n                }\n\n                if (this.name !== null) {\n                    result.name = this.name;\n                }\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Agent\n    @static\n    */\n    Agent.fromJSON = function (agentJSON) {\n        Agent.prototype.log(\"fromJSON\");\n        var _agent = JSON.parse(agentJSON);\n\n        return new Agent(_agent);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Group\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Group\n    @constructor\n    */\n    var Group = TinCan.Group = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property name\n        @type String\n        */\n        this.name = null;\n\n        /**\n        @property mbox\n        @type String\n        */\n        this.mbox = null;\n\n        /**\n        @property mbox_sha1sum\n        @type String\n        */\n        this.mbox_sha1sum = null;\n\n        /**\n        @property openid\n        @type String\n        */\n        this.openid = null;\n\n        /**\n        @property account\n        @type TinCan.AgentAccount\n        */\n        this.account = null;\n\n        /**\n        @property member\n        @type Array\n        */\n        this.member = [];\n\n        this.init(cfg);\n    };\n    Group.prototype = {\n        /**\n        @property objectType\n        @type String\n        @default \"Group\"\n        @static\n        */\n        objectType: \"Group\",\n\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Group\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i;\n\n            cfg = cfg || {};\n\n            TinCan.Agent.prototype.init.call(this, cfg);\n\n            if (typeof cfg.member !== \"undefined\") {\n                for (i = 0; i < cfg.member.length; i += 1) {\n                    if (cfg.member[i] instanceof TinCan.Agent) {\n                        this.member.push(cfg.member[i]);\n                    }\n                    else {\n                        this.member.push(new TinCan.Agent (cfg.member[i]));\n                    }\n                }\n            }\n        },\n\n        toString: function (lang) {\n            this.log(\"toString\");\n\n            var result = TinCan.Agent.prototype.toString.call(this, lang);\n            if (result !== this.objectType + \": unidentified\") {\n                result = this.objectType + \": \" + result;\n            }\n\n            return result;\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion: \" + version);\n            var result,\n                i\n            ;\n\n            version = version || TinCan.versions()[0];\n\n            result = TinCan.Agent.prototype.asVersion.call(this, version);\n\n            if (this.member.length > 0) {\n                result.member = [];\n                for (i = 0; i < this.member.length; i += 1) {\n                    result.member.push(this.member[i].asVersion(version));\n                }\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Group\n    @static\n    */\n    Group.fromJSON = function (groupJSON) {\n        Group.prototype.log(\"fromJSON\");\n        var _group = JSON.parse(groupJSON);\n\n        return new Group(_group);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Verb\n*/\n(function () {\n    \"use strict\";\n\n    //\n    // this represents the full set of verb values that were\n    // allowed by the .9 spec version, if an object is created with one of\n    // the short forms it will be upconverted to the matching long form,\n    // for local storage and use and if an object is needed in .9 version\n    // consequently down converted\n    //\n    // hopefully this list will never grow (or change) and only the exact\n    // ADL compatible URLs should be matched\n    //\n    var _downConvertMap = {\n        \"http://adlnet.gov/expapi/verbs/experienced\": \"experienced\",\n        \"http://adlnet.gov/expapi/verbs/attended\":    \"attended\",\n        \"http://adlnet.gov/expapi/verbs/attempted\":   \"attempted\",\n        \"http://adlnet.gov/expapi/verbs/completed\":   \"completed\",\n        \"http://adlnet.gov/expapi/verbs/passed\":      \"passed\",\n        \"http://adlnet.gov/expapi/verbs/failed\":      \"failed\",\n        \"http://adlnet.gov/expapi/verbs/answered\":    \"answered\",\n        \"http://adlnet.gov/expapi/verbs/interacted\":  \"interacted\",\n        \"http://adlnet.gov/expapi/verbs/imported\":    \"imported\",\n        \"http://adlnet.gov/expapi/verbs/created\":     \"created\",\n        \"http://adlnet.gov/expapi/verbs/shared\":      \"shared\",\n        \"http://adlnet.gov/expapi/verbs/voided\":      \"voided\"\n    },\n\n    /**\n    @class TinCan.Verb\n    @constructor\n    */\n    Verb = TinCan.Verb = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        /**\n        @property display\n        @type Object\n        */\n        this.display = null;\n\n        this.init(cfg);\n    };\n    Verb.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Verb\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"id\",\n                    \"display\"\n                ],\n                prop\n            ;\n\n            if (typeof cfg === \"string\") {\n                this.id = cfg;\n                this.display = {\n                    und: this.id\n                };\n\n                //If simple string like \"attempted\" was passed in (0.9 verbs), \n                //upconvert the ID to the 0.95 ADL version\n                for (prop in _downConvertMap) {\n                    if (_downConvertMap.hasOwnProperty(prop) && _downConvertMap[prop] === cfg) {\n                        this.id = prop;\n                        break;\n                    }\n                }\n            }\n            else {\n                cfg = cfg || {};\n\n                for (i = 0; i < directProps.length; i += 1) {\n                    if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                        this[directProps[i]] = cfg[directProps[i]];\n                    }\n                }\n\n                if (this.display === null && typeof _downConvertMap[this.id] !== \"undefined\") {\n                    this.display = {\n                        \"und\": _downConvertMap[this.id]\n                    };\n                }\n            }\n        },\n\n        /**\n        @method toString\n        @return {String} String representation of the verb\n        */\n        toString: function (lang) {\n            this.log(\"toString\");\n\n            if (this.display !== null) {\n                return this.getLangDictionaryValue(\"display\", lang);\n            }\n\n            return this.id;\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result;\n\n            version = version || TinCan.versions()[0];\n\n            if (version === \"0.9\") {\n                result = _downConvertMap[this.id];\n            }\n            else {\n                result = {\n                    id: this.id\n                };\n                if (this.display !== null) {\n                    result.display = this.display;\n                }\n            }\n\n            return result;\n        },\n\n        /**\n        See {{#crossLink \"TinCan.Utils/getLangDictionaryValue\"}}{{/crossLink}}\n\n        @method getLangDictionaryValue\n        */\n        getLangDictionaryValue: TinCan.Utils.getLangDictionaryValue\n    };\n\n    /**\n    @method fromJSON\n    @param {String} verbJSON String of JSON representing the verb\n    @return {Object} Verb\n    @static\n    */\n    Verb.fromJSON = function (verbJSON) {\n        Verb.prototype.log(\"fromJSON\");\n        var _verb = JSON.parse(verbJSON);\n\n        return new Verb(_verb);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Result\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Result\n    @constructor\n    */\n    var Result = TinCan.Result = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property score\n        @type TinCan.Score|null\n        */\n        this.score = null;\n\n        /**\n        @property success\n        @type Boolean|null\n        */\n        this.success = null;\n\n        /**\n        @property completion\n        @type Boolean|null\n        */\n        this.completion = null;\n\n        /**\n        @property duration\n        @type String|null\n        */\n        this.duration = null;\n\n        /**\n        @property response\n        @type String|null\n        */\n        this.response = null;\n\n        /**\n        @property extensions\n        @type Object|null\n        */\n        this.extensions = null;\n\n        this.init(cfg);\n    };\n    Result.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Result\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            var i,\n                directProps = [\n                    \"completion\",\n                    \"duration\",\n                    \"extensions\",\n                    \"response\",\n                    \"success\"\n                ]\n            ;\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"score\") && cfg.score !== null) {\n                if (cfg.score instanceof TinCan.Score) {\n                    this.score = cfg.score;\n                }\n                else {\n                    this.score = new TinCan.Score (cfg.score);\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n\n            // 0.9 used a string, store it internally as a bool\n            if (this.completion === \"Completed\") {\n                this.completion = true;\n            }\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {},\n                optionalDirectProps = [\n                    \"success\",\n                    \"duration\",\n                    \"response\",\n                    \"extensions\"\n                ],\n                optionalObjProps = [\n                    \"score\"\n                ],\n                i;\n\n            version = version || TinCan.versions()[0];\n\n            for (i = 0; i < optionalDirectProps.length; i += 1) {\n                if (this[optionalDirectProps[i]] !== null) {\n                    result[optionalDirectProps[i]] = this[optionalDirectProps[i]];\n                }\n            }\n            for (i = 0; i < optionalObjProps.length; i += 1) {\n                if (this[optionalObjProps[i]] !== null) {\n                    result[optionalObjProps[i]] = this[optionalObjProps[i]].asVersion(version);\n                }\n            }\n            if (this.completion !== null) {\n                if (version === \"0.9\") {\n                    if (this.completion) {\n                        result.completion = \"Completed\";\n                    }\n                }\n                else {\n                    result.completion = this.completion;\n                }\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Result\n    @static\n    */\n    Result.fromJSON = function (resultJSON) {\n        Result.prototype.log(\"fromJSON\");\n        var _result = JSON.parse(resultJSON);\n\n        return new Result(_result);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Score\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Score\n    @constructor\n    */\n    var Score = TinCan.Score = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property scaled\n        @type String\n        */\n        this.scaled = null;\n\n        /**\n        @property raw\n        @type String\n        */\n        this.raw = null;\n\n        /**\n        @property min\n        @type String\n        */\n        this.min = null;\n\n        /**\n        @property max\n        @type String\n        */\n        this.max = null;\n\n        this.init(cfg);\n    };\n    Score.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Score\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            var i,\n                directProps = [\n                    \"scaled\",\n                    \"raw\",\n                    \"min\",\n                    \"max\"\n                ]\n            ;\n\n            cfg = cfg || {};\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {},\n                optionalDirectProps = [\n                    \"scaled\",\n                    \"raw\",\n                    \"min\",\n                    \"max\"\n                ],\n                i;\n\n            version = version || TinCan.versions()[0];\n\n            for (i = 0; i < optionalDirectProps.length; i += 1) {\n                if (this[optionalDirectProps[i]] !== null) {\n                    result[optionalDirectProps[i]] = this[optionalDirectProps[i]];\n                }\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Score\n    @static\n    */\n    Score.fromJSON = function (scoreJSON) {\n        Score.prototype.log(\"fromJSON\");\n        var _score = JSON.parse(scoreJSON);\n\n        return new Score(_score);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.InteractionComponent\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.InteractionComponent\n    @constructor\n    */\n    var InteractionComponent = TinCan.InteractionComponent = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        /**\n        @property description\n        @type Object\n        */\n        this.description = null;\n\n        this.init(cfg);\n    };\n    InteractionComponent.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"InteractionComponent\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"id\",\n                    \"description\"\n                ]\n            ;\n\n            cfg = cfg || {};\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {\n                    id: this.id\n                },\n                optionalDirectProps = [\n                    \"description\"\n                ],\n                i,\n                prop;\n\n            version = version || TinCan.versions()[0];\n\n            for (i = 0; i < optionalDirectProps.length; i += 1) {\n                prop = optionalDirectProps[i];\n                if (this[prop] !== null) {\n                    result[prop] = this[prop];\n                }\n            }\n\n            return result;\n        },\n\n        /**\n        See {{#crossLink \"TinCan.Utils/getLangDictionaryValue\"}}{{/crossLink}}\n\n        @method getLangDictionaryValue\n        */\n        getLangDictionaryValue: TinCan.Utils.getLangDictionaryValue\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} InteractionComponent\n    @static\n    */\n    InteractionComponent.fromJSON = function (icJSON) {\n        InteractionComponent.prototype.log(\"fromJSON\");\n        var _ic = JSON.parse(icJSON);\n\n        return new InteractionComponent(_ic);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.ActivityDefinition\n**/\n(function () {\n    \"use strict\";\n\n    //\n    // this represents the full set of activity definition types that were\n    // allowed by the .9 spec version, if an object is created with one of\n    // the short forms it will be upconverted to the matching long form,\n    // for local storage and use and if an object is needed in .9 version\n    // consequently down converted\n    //\n    // hopefully this list will never grow (or change) and only the exact\n    // ADL compatible URLs should be matched\n    //\n    var _downConvertMap = {\n        \"http://adlnet.gov/expapi/activities/course\": \"course\",\n        \"http://adlnet.gov/expapi/activities/module\": \"module\",\n        \"http://adlnet.gov/expapi/activities/meeting\": \"meeting\",\n        \"http://adlnet.gov/expapi/activities/media\": \"media\",\n        \"http://adlnet.gov/expapi/activities/performance\": \"performance\",\n        \"http://adlnet.gov/expapi/activities/simulation\": \"simulation\",\n        \"http://adlnet.gov/expapi/activities/assessment\": \"assessment\",\n        \"http://adlnet.gov/expapi/activities/interaction\": \"interaction\",\n        \"http://adlnet.gov/expapi/activities/cmi.interaction\": \"cmi.interaction\",\n        \"http://adlnet.gov/expapi/activities/question\": \"question\",\n        \"http://adlnet.gov/expapi/activities/objective\": \"objective\",\n        \"http://adlnet.gov/expapi/activities/link\": \"link\"\n    },\n\n    /**\n    @class TinCan.ActivityDefinition\n    @constructor\n    */\n    ActivityDefinition = TinCan.ActivityDefinition = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property name\n        @type Object\n        */\n        this.name = null;\n\n        /**\n        @property description\n        @type Object\n        */\n        this.description = null;\n\n        /**\n        @property type\n        @type String\n        */\n        this.type = null;\n\n        /**\n        @property moreInfo\n        @type String\n        */\n        this.moreInfo = null;\n\n        /**\n        @property extensions\n        @type Object\n        */\n        this.extensions = null;\n\n        /**\n        @property interactionType\n        @type String\n        */\n        this.interactionType = null;\n\n        /**\n        @property correctResponsesPattern\n        @type Array\n        */\n        this.correctResponsesPattern = null;\n\n        /**\n        @property choices\n        @type Array\n        */\n        this.choices = null;\n\n        /**\n        @property scale\n        @type Array\n        */\n        this.scale = null;\n\n        /**\n        @property source\n        @type Array\n        */\n        this.source = null;\n\n        /**\n        @property target\n        @type Array\n        */\n        this.target = null;\n\n        /**\n        @property steps\n        @type Array\n        */\n        this.steps = null;\n\n        this.init(cfg);\n    };\n    ActivityDefinition.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"ActivityDefinition\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            var i,\n                j,\n                prop,\n                directProps = [\n                    \"name\",\n                    \"description\",\n                    \"moreInfo\",\n                    \"extensions\",\n                    \"correctResponsesPattern\"\n                ],\n                interactionComponentProps = []\n            ;\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"type\") && cfg.type !== null) {\n                // TODO: verify type is URI?\n                for (prop in _downConvertMap) {\n                    if (_downConvertMap.hasOwnProperty(prop) && _downConvertMap[prop] === cfg.type) {\n                        cfg.type = _downConvertMap[prop];\n                    }\n                }\n                this.type = cfg.type;\n            }\n\n            if (cfg.hasOwnProperty(\"interactionType\") && cfg.interactionType !== null) {\n                // TODO: verify interaction type in acceptable set?\n                this.interactionType = cfg.interactionType;\n                if (cfg.interactionType === \"choice\" || cfg.interactionType === \"sequencing\") {\n                    interactionComponentProps.push(\"choices\");\n                }\n                else if (cfg.interactionType === \"likert\") {\n                    interactionComponentProps.push(\"scale\");\n                }\n                else if (cfg.interactionType === \"matching\") {\n                    interactionComponentProps.push(\"source\");\n                    interactionComponentProps.push(\"target\");\n                }\n                else if (cfg.interactionType === \"performance\") {\n                    interactionComponentProps.push(\"steps\");\n                }\n\n                if (interactionComponentProps.length > 0) {\n                    for (i = 0; i < interactionComponentProps.length; i += 1) {\n                        prop = interactionComponentProps[i];\n                        if (cfg.hasOwnProperty(prop) && cfg[prop] !== null) {\n                            this[prop] = [];\n                            for (j = 0; j < cfg[prop].length; j += 1) {\n                                if (cfg[prop][j] instanceof TinCan.InteractionComponent) {\n                                    this[prop].push(cfg[prop][j]);\n                                } else {\n                                    this[prop].push(\n                                        new TinCan.InteractionComponent (\n                                            cfg[prop][j]\n                                        )\n                                    );\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        },\n\n        /**\n        @method toString\n        @return {String} String representation of the definition\n        */\n        toString: function (lang) {\n            this.log(\"toString\");\n\n            if (this.name !== null) {\n                return this.getLangDictionaryValue(\"name\", lang);\n            }\n\n            if (this.description !== null) {\n                return this.getLangDictionaryValue(\"description\", lang);\n            }\n\n            return \"\";\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {},\n                directProps = [\n                    \"name\",\n                    \"description\",\n                    \"interactionType\",\n                    \"correctResponsesPattern\",\n                    \"extensions\"\n                ],\n                interactionComponentProps = [\n                    \"choices\",\n                    \"scale\",\n                    \"source\",\n                    \"target\",\n                    \"steps\"\n                ],\n                i,\n                j,\n                prop\n            ;\n\n            version = version || TinCan.versions()[0];\n\n            if (this.type !== null) {\n                if (version === \"0.9\") {\n                    result.type = _downConvertMap[this.type];\n                }\n                else {\n                    result.type = this.type;\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                prop = directProps[i];\n                if (this[prop] !== null) {\n                    result[prop] = this[prop];\n                }\n            }\n\n            for (i = 0; i < interactionComponentProps.length; i += 1) {\n                prop = interactionComponentProps[i];\n                if (this[prop] !== null) {\n                    result[prop] = [];\n                    for (j = 0; j < this[prop].length; j += 1) {\n                        result[prop].push(\n                            this[prop][j].asVersion(version)\n                        );\n                    }\n                }\n            }\n\n            if (version.indexOf(\"0.9\") !== 0) {\n                if (this.moreInfo !== null) {\n                    result.moreInfo = this.moreInfo;\n                }\n            }\n\n            return result;\n        },\n\n        /**\n        See {{#crossLink \"TinCan.Utils/getLangDictionaryValue\"}}{{/crossLink}}\n\n        @method getLangDictionaryValue\n        */\n        getLangDictionaryValue: TinCan.Utils.getLangDictionaryValue\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} ActivityDefinition\n    @static\n    */\n    ActivityDefinition.fromJSON = function (definitionJSON) {\n        ActivityDefinition.prototype.log(\"fromJSON\");\n        var _definition = JSON.parse(definitionJSON);\n\n        return new ActivityDefinition(_definition);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Activity\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Activity\n    @constructor\n    */\n    var Activity = TinCan.Activity = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property objectType\n        @type String\n        @default Activity\n        */\n        this.objectType = \"Activity\";\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        /**\n        @property definition\n        @type TinCan.ActivityDefinition\n        */\n        this.definition = null;\n\n        this.init(cfg);\n    };\n    Activity.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Activity\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            var i,\n                directProps = [\n                    \"id\"\n                ]\n            ;\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"definition\")) {\n                if (cfg.definition instanceof TinCan.ActivityDefinition) {\n                    this.definition = cfg.definition;\n                } else {\n                    this.definition = new TinCan.ActivityDefinition (cfg.definition);\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        },\n\n        /**\n        @method toString\n        @return {String} String representation of the activity\n        */\n        toString: function (lang) {\n            this.log(\"toString\");\n            var defString = \"\";\n\n            if (this.definition !== null) {\n                defString = this.definition.toString(lang);\n                if (defString !== \"\") {\n                    return defString;\n                }\n            }\n\n            if (this.id !== null) {\n                return this.id;\n            }\n\n            return \"Activity: unidentified\";\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {\n                id: this.id,\n                objectType: this.objectType\n            };\n\n            version = version || TinCan.versions()[0];\n\n            if (this.definition !== null) {\n                result.definition = this.definition.asVersion(version);\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Activity\n    @static\n    */\n    Activity.fromJSON = function (activityJSON) {\n        Activity.prototype.log(\"fromJSON\");\n        var _activity = JSON.parse(activityJSON);\n\n        return new Activity(_activity);\n    };\n}());\n\n/*\n    Copyright 2013 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.ContextActivities\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.ContextActivities\n    @constructor\n    */\n    var ContextActivities = TinCan.ContextActivities = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property category\n        @type Array\n        */\n        this.category = null;\n\n        /**\n        @property parent\n        @type Array\n        */\n        this.parent = null;\n\n        /**\n        @property grouping\n        @type Array\n        */\n        this.grouping = null;\n\n        /**\n        @property other\n        @type Array\n        */\n        this.other = null;\n\n        this.init(cfg);\n    };\n    ContextActivities.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"ContextActivities\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            var i,\n                j,\n                objProps = [\n                    \"category\",\n                    \"parent\",\n                    \"grouping\",\n                    \"other\"\n                ],\n                prop,\n                val\n            ;\n\n            cfg = cfg || {};\n\n            for (i = 0; i < objProps.length; i += 1) {\n                prop = objProps[i];\n                if (cfg.hasOwnProperty(prop) && cfg[prop] !== null) {\n                    if (Object.prototype.toString.call(cfg[prop]) === \"[object Array]\") {\n                        for (j = 0; j < cfg[prop].length; j += 1) {\n                            this.add(prop, cfg[prop][j]);\n                        }\n                    }\n                    else {\n                        val = cfg[prop];\n\n                        this.add(prop, val);\n                    }\n                }\n            }\n        },\n\n        /**\n        @method add\n        @param String key Property to add value to one of \"category\", \"parent\", \"grouping\", \"other\"\n        @return Number index where the value was added\n        */\n        add: function (key, val) {\n            if (key !== \"category\" && key !== \"parent\" && key !== \"grouping\" && key !== \"other\") {\n                return;\n            }\n\n            if (this[key] === null) {\n                this[key] = [];\n            }\n\n            if (! (val instanceof TinCan.Activity)) {\n                val = typeof val === \"string\" ? { id: val } : val;\n                val = new TinCan.Activity (val);\n            }\n\n            this[key].push(val);\n\n            return this[key].length - 1;\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {},\n                optionalObjProps = [\n                    \"parent\",\n                    \"grouping\",\n                    \"other\"\n                ],\n                i,\n                j;\n\n            version = version || TinCan.versions()[0];\n\n            for (i = 0; i < optionalObjProps.length; i += 1) {\n                if (this[optionalObjProps[i]] !== null && this[optionalObjProps[i]].length > 0) {\n                    if (version === \"0.9\" || version === \"0.95\") {\n                        if (this[optionalObjProps[i]].length > 1) {\n                            // TODO: exception?\n                            this.log(\"[warning] version does not support multiple values in: \" + optionalObjProps[i]);\n                        }\n\n                        result[optionalObjProps[i]] = this[optionalObjProps[i]][0].asVersion(version);\n                    }\n                    else {\n                        result[optionalObjProps[i]] = [];\n                        for (j = 0; j < this[optionalObjProps[i]].length; j += 1) {\n                            result[optionalObjProps[i]].push(\n                                this[optionalObjProps[i]][j].asVersion(version)\n                            );\n                        }\n                    }\n                }\n            }\n            if (this.category !== null && this.category.length > 0) {\n                if (version === \"0.9\" || version === \"0.95\") {\n                    this.log(\"[error] version does not support the 'category' property: \" + version);\n                    throw new Error(version + \" does not support the 'category' property\");\n                }\n                else {\n                    result.category = [];\n                    for (i = 0; i < this.category.length; i += 1) {\n                        result.category.push(this.category[i].asVersion(version));\n                    }\n                }\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} ContextActivities\n    @static\n    */\n    ContextActivities.fromJSON = function (contextActivitiesJSON) {\n        ContextActivities.prototype.log(\"fromJSON\");\n        var _contextActivities = JSON.parse(contextActivitiesJSON);\n\n        return new ContextActivities(_contextActivities);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Context\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Context\n    @constructor\n    */\n    var Context = TinCan.Context = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property registration\n        @type String|null\n        */\n        this.registration = null;\n\n        /**\n        @property instructor\n        @type TinCan.Agent|TinCan.Group|null\n        */\n        this.instructor = null;\n\n        /**\n        @property team\n        @type TinCan.Agent|TinCan.Group|null\n        */\n        this.team = null;\n\n        /**\n        @property contextActivities\n        @type ContextActivities|null\n        */\n        this.contextActivities = null;\n\n        /**\n        @property revision\n        @type String|null\n        */\n        this.revision = null;\n\n        /**\n        @property platform\n        @type Object|null\n        */\n        this.platform = null;\n\n        /**\n        @property language\n        @type String|null\n        */\n        this.language = null;\n\n        /**\n        @property statement\n        @type StatementRef|null\n        */\n        this.statement = null;\n\n        /**\n        @property extensions\n        @type String\n        */\n        this.extensions = null;\n\n        this.init(cfg);\n    };\n    Context.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Context\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            var i,\n                directProps = [\n                    \"registration\",\n                    \"revision\",\n                    \"platform\",\n                    \"language\",\n                    \"extensions\"\n                ],\n                agentGroupProps = [\n                    \"instructor\",\n                    \"team\"\n                ],\n                prop,\n                val\n            ;\n\n            cfg = cfg || {};\n\n            for (i = 0; i < directProps.length; i += 1) {\n                prop = directProps[i];\n                if (cfg.hasOwnProperty(prop) && cfg[prop] !== null) {\n                    this[prop] = cfg[prop];\n                }\n            }\n            for (i = 0; i < agentGroupProps.length; i += 1) {\n                prop = agentGroupProps[i];\n                if (cfg.hasOwnProperty(prop) && cfg[prop] !== null) {\n                    val = cfg[prop];\n\n                    if (typeof val.objectType === \"undefined\" || val.objectType === \"Person\") {\n                        val.objectType = \"Agent\";\n                    }\n\n                    if (val.objectType === \"Agent\" && ! (val instanceof TinCan.Agent)) {\n                        val = new TinCan.Agent (val);\n                    } else if (val.objectType === \"Group\" && ! (val instanceof TinCan.Group)) {\n                        val = new TinCan.Group (val);\n                    }\n\n                    this[prop] = val;\n                }\n            }\n\n            if (cfg.hasOwnProperty(\"contextActivities\") && cfg.contextActivities !== null) {\n                if (cfg.contextActivities instanceof TinCan.ContextActivities) {\n                    this.contextActivities = cfg.contextActivities;\n                }\n                else {\n                    this.contextActivities = new TinCan.ContextActivities(cfg.contextActivities);\n                }\n            }\n\n            if (cfg.hasOwnProperty(\"statement\") && cfg.statement !== null) {\n                if (cfg.statement instanceof TinCan.StatementRef) {\n                    this.statement = cfg.statement;\n                }\n                else if (cfg.statement instanceof TinCan.SubStatement) {\n                    this.statement = cfg.statement;\n                }\n                else if (cfg.statement.objectType === \"StatementRef\") {\n                    this.statement = new TinCan.StatementRef(cfg.statement);\n                }\n                else if (cfg.statement.objectType === \"SubStatement\") {\n                    this.statement = new TinCan.SubStatement(cfg.statement);\n                }\n                else {\n                    this.log(\"Unable to parse statement.context.statement property.\");\n                }\n            }\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {},\n                optionalDirectProps = [\n                    \"registration\",\n                    \"revision\",\n                    \"platform\",\n                    \"language\",\n                    \"extensions\"\n                ],\n                optionalObjProps = [\n                    \"instructor\",\n                    \"team\",\n                    \"contextActivities\",\n                    \"statement\"\n                ],\n                i;\n\n            version = version || TinCan.versions()[0];\n\n            if (this.statement instanceof TinCan.SubStatement && version !== \"0.9\" && version !== \"0.95\") {\n                this.log(\"[error] version does not support SubStatements in the 'statement' property: \" + version);\n                throw new Error(version + \" does not support SubStatements in the 'statement' property\");\n            }\n\n            for (i = 0; i < optionalDirectProps.length; i += 1) {\n                if (this[optionalDirectProps[i]] !== null) {\n                    result[optionalDirectProps[i]] = this[optionalDirectProps[i]];\n                }\n            }\n            for (i = 0; i < optionalObjProps.length; i += 1) {\n                if (this[optionalObjProps[i]] !== null) {\n                    result[optionalObjProps[i]] = this[optionalObjProps[i]].asVersion(version);\n                }\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Context\n    @static\n    */\n    Context.fromJSON = function (contextJSON) {\n        Context.prototype.log(\"fromJSON\");\n        var _context = JSON.parse(contextJSON);\n\n        return new Context(_context);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.StatementRef\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.StatementRef\n    @constructor\n    @param {Object} [cfg] Configuration used to initialize.\n        @param {Object} [cfg.id] ID of statement to reference\n    **/\n    var StatementRef = TinCan.StatementRef = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        this.init(cfg);\n    };\n\n    StatementRef.prototype = {\n        /**\n        @property objectType\n        @type String\n        @default Agent\n        */\n        objectType: \"StatementRef\",\n\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"StatementRef\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize (see constructor)\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"id\"\n                ];\n\n            cfg = cfg || {};\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        },\n\n        /**\n        @method toString\n        @return {String} String representation of the statement\n        */\n        toString: function () {\n            this.log(\"toString\");\n            return this.id;\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {\n                objectType: this.objectType,\n                id: this.id\n            };\n\n            if (version === \"0.9\") {\n                result.objectType = \"Statement\";\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} StatementRef\n    @static\n    */\n    StatementRef.fromJSON = function (stRefJSON) {\n        StatementRef.prototype.log(\"fromJSON\");\n        var _stRef = JSON.parse(stRefJSON);\n\n        return new StatementRef(_stRef);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.SubStatement\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.SubStatement\n    @constructor\n    @param {Object} [cfg] Configuration used to initialize.\n        @param {TinCan.Agent} [cfg.actor] Actor of statement\n        @param {TinCan.Verb} [cfg.verb] Verb of statement\n        @param {TinCan.Activity|TinCan.Agent} [cfg.object] Alias for 'target'\n        @param {TinCan.Activity|TinCan.Agent} [cfg.target] Object of statement\n        @param {TinCan.Result} [cfg.result] Statement Result\n        @param {TinCan.Context} [cfg.context] Statement Context\n    **/\n    var SubStatement = TinCan.SubStatement = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property actor\n        @type Object\n        */\n        this.actor = null;\n\n        /**\n        @property verb\n        @type Object\n        */\n        this.verb = null;\n\n        /**\n        @property target\n        @type Object\n        */\n        this.target = null;\n\n        /**\n        @property result\n        @type Object\n        */\n        this.result = null;\n\n        /**\n        @property context\n        @type Object\n        */\n        this.context = null;\n\n        /**\n        @property timestamp\n        @type Date\n        */\n        this.timestamp = null;\n\n        this.init(cfg);\n    };\n\n    SubStatement.prototype = {\n        /**\n        @property objectType\n        @type String\n        @default Agent\n        */\n        objectType: \"SubStatement\",\n\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"SubStatement\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize (see constructor)\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"timestamp\"\n                ];\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"object\")) {\n                cfg.target = cfg.object;\n            }\n\n            if (cfg.hasOwnProperty(\"actor\")) {\n                if (typeof cfg.actor.objectType === \"undefined\" || cfg.actor.objectType === \"Person\") {\n                    cfg.actor.objectType = \"Agent\";\n                }\n\n                if (cfg.actor.objectType === \"Agent\") {\n                    if (cfg.actor instanceof TinCan.Agent) {\n                        this.actor = cfg.actor;\n                    } else {\n                        this.actor = new TinCan.Agent (cfg.actor);\n                    }\n                } else if (cfg.actor.objectType === \"Group\") {\n                    if (cfg.actor instanceof TinCan.Group) {\n                        this.actor = cfg.actor;\n                    } else {\n                        this.actor = new TinCan.Group (cfg.actor);\n                    }\n                }\n            }\n            if (cfg.hasOwnProperty(\"verb\")) {\n                if (cfg.verb instanceof TinCan.Verb) {\n                    this.verb = cfg.verb;\n                } else {\n                    this.verb = new TinCan.Verb (cfg.verb);\n                }\n            }\n            if (cfg.hasOwnProperty(\"target\")) {\n                if (cfg.target instanceof TinCan.Activity ||\n                    cfg.target instanceof TinCan.Agent ||\n                    cfg.target instanceof TinCan.Group ||\n                    cfg.target instanceof TinCan.SubStatement ||\n                    cfg.target instanceof TinCan.StatementRef\n                ) {\n                    this.target = cfg.target;\n                } else {\n                    if (typeof cfg.target.objectType === \"undefined\") {\n                        cfg.target.objectType = \"Activity\";\n                    }\n\n                    if (cfg.target.objectType === \"Activity\") {\n                        this.target = new TinCan.Activity (cfg.target);\n                    } else if (cfg.target.objectType === \"Agent\") {\n                        this.target = new TinCan.Agent (cfg.target);\n                    } else if (cfg.target.objectType === \"Group\") {\n                        this.target = new TinCan.Group (cfg.target);\n                    } else if (cfg.target.objectType === \"SubStatement\") {\n                        this.target = new TinCan.SubStatement (cfg.target);\n                    } else if (cfg.target.objectType === \"StatementRef\") {\n                        this.target = new TinCan.StatementRef (cfg.target);\n                    } else {\n                        this.log(\"Unrecognized target type: \" + cfg.target.objectType);\n                    }\n                }\n            }\n            if (cfg.hasOwnProperty(\"result\")) {\n                if (cfg.result instanceof TinCan.Result) {\n                    this.result = cfg.result;\n                } else {\n                    this.result = new TinCan.Result (cfg.result);\n                }\n            }\n            if (cfg.hasOwnProperty(\"context\")) {\n                if (cfg.context instanceof TinCan.Context) {\n                    this.context = cfg.context;\n                } else {\n                    this.context = new TinCan.Context (cfg.context);\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        },\n\n        /**\n        @method toString\n        @return {String} String representation of the statement\n        */\n        toString: function (lang) {\n            this.log(\"toString\");\n            return (this.actor !== null ? this.actor.toString(lang) : \"\") +\n                    \" \" +\n                    (this.verb !== null ? this.verb.toString(lang) : \"\") +\n                    \" \" +\n                    (this.target !== null ? this.target.toString(lang) : \"\");\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result,\n                optionalDirectProps = [\n                    \"timestamp\"\n                ],\n                optionalObjProps = [\n                    \"actor\",\n                    \"verb\",\n                    \"result\",\n                    \"context\"\n                ],\n                i;\n\n            result = {\n                objectType: this.objectType\n            };\n            version = version || TinCan.versions()[0];\n\n            for (i = 0; i < optionalDirectProps.length; i += 1) {\n                if (this[optionalDirectProps[i]] !== null) {\n                    result[optionalDirectProps[i]] = this[optionalDirectProps[i]];\n                }\n            }\n            for (i = 0; i < optionalObjProps.length; i += 1) {\n                if (this[optionalObjProps[i]] !== null) {\n                    result[optionalObjProps[i]] = this[optionalObjProps[i]].asVersion(version);\n                }\n            }\n            if (this.target !== null) {\n                result.object = this.target.asVersion(version);\n            }\n\n            if (version === \"0.9\") {\n                result.objectType = \"Statement\";\n            }\n\n            return result;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} SubStatement\n    @static\n    */\n    SubStatement.fromJSON = function (subStJSON) {\n        SubStatement.prototype.log(\"fromJSON\");\n        var _subSt = JSON.parse(subStJSON);\n\n        return new SubStatement(_subSt);\n    };\n}());\n\n/*\n    Copyright 2012-3 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Statement\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Statement\n    @constructor\n    @param {Object} [cfg] Values to set in properties\n        @param {String} [cfg.id] Statement ID (UUID)\n        @param {TinCan.Agent} [cfg.actor] Actor of statement\n        @param {TinCan.Verb} [cfg.verb] Verb of statement\n        @param {TinCan.Activity|TinCan.Agent|TinCan.Group|TinCan.StatementRef|TinCan.SubStatement} [cfg.object] Alias for 'target'\n        @param {TinCan.Activity|TinCan.Agent|TinCan.Group|TinCan.StatementRef|TinCan.SubStatement} [cfg.target] Object of statement\n        @param {TinCan.Result} [cfg.result] Statement Result\n        @param {TinCan.Context} [cfg.context] Statement Context\n        @param {TinCan.Agent} [cfg.authority] Statement Authority\n        @param {TinCan.Attachment} [cfg.attachments] Statement Attachments\n        @param {String} [cfg.timestamp] ISO8601 Date/time value\n        @param {String} [cfg.stored] ISO8601 Date/time value\n        @param {String} [cfg.version] Version of the statement (post 0.95)\n    @param {Object} [initCfg] Configuration of initialization process\n        @param {Integer} [initCfg.storeOriginal] Whether to store a JSON stringified version\n            of the original options object, pass number of spaces used for indent\n        @param {Boolean} [initCfg.doStamp] Whether to automatically set the 'id' and 'timestamp'\n            properties (default: true)\n    **/\n    var Statement = TinCan.Statement = function (cfg, initCfg) {\n        this.log(\"constructor\");\n\n        // check for true value for API backwards compat\n        if (typeof initCfg === \"number\") {\n            initCfg = {\n                storeOriginal: initCfg\n            };\n        } else {\n            initCfg = initCfg || {};\n        }\n        if (typeof initCfg.storeOriginal === \"undefined\") {\n            initCfg.storeOriginal = null;\n        }\n        if (typeof initCfg.doStamp === \"undefined\") {\n            initCfg.doStamp = true;\n        }\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        /**\n        @property actor\n        @type TinCan.Agent|TinCan.Group|null\n        */\n        this.actor = null;\n\n        /**\n        @property verb\n        @type TinCan.Verb|null\n        */\n        this.verb = null;\n\n        /**\n        @property target\n        @type TinCan.Activity|TinCan.Agent|TinCan.Group|TinCan.StatementRef|TinCan.SubStatement|null\n        */\n        this.target = null;\n\n        /**\n        @property result\n        @type Object\n        */\n        this.result = null;\n\n        /**\n        @property context\n        @type Object\n        */\n        this.context = null;\n\n        /**\n        @property timestamp\n        @type String\n        */\n        this.timestamp = null;\n\n        /**\n        @property stored\n        @type String\n        */\n        this.stored = null;\n\n        /**\n        @property authority\n        @type TinCan.Agent|null\n        */\n        this.authority = null;\n\n        /**\n        @property attachments\n        @type Array of TinCan.Attachment\n        */\n        this.attachments = null;\n\n        /**\n        @property version\n        @type String\n        */\n        this.version = null;\n\n        /**\n        @property degraded\n        @type Boolean\n        @default false\n        */\n        this.degraded = false;\n\n        /**\n        @property voided\n        @type Boolean\n        @default null\n        @deprecated\n        */\n        this.voided = null;\n\n        /**\n        @property inProgress\n        @type Boolean\n        @deprecated\n        */\n        this.inProgress = null;\n\n        /**\n        @property originalJSON\n        @type String\n        */\n        this.originalJSON = null;\n\n        this.init(cfg, initCfg);\n    };\n\n    Statement.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Statement\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [properties] Configuration used to set properties (see constructor)\n        @param {Object} [cfg] Configuration used to initialize (see constructor)\n        */\n        init: function (cfg, initCfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"id\",\n                    \"stored\",\n                    \"timestamp\",\n                    \"version\",\n                    \"inProgress\",\n                    \"voided\"\n                ];\n\n            cfg = cfg || {};\n\n            if (initCfg.storeOriginal) {\n                this.originalJSON = JSON.stringify(cfg, null, initCfg.storeOriginal);\n            }\n\n            if (cfg.hasOwnProperty(\"object\")) {\n                cfg.target = cfg.object;\n            }\n\n            if (cfg.hasOwnProperty(\"actor\")) {\n                if (typeof cfg.actor.objectType === \"undefined\" || cfg.actor.objectType === \"Person\") {\n                    cfg.actor.objectType = \"Agent\";\n                }\n\n                if (cfg.actor.objectType === \"Agent\") {\n                    if (cfg.actor instanceof TinCan.Agent) {\n                        this.actor = cfg.actor;\n                    } else {\n                        this.actor = new TinCan.Agent (cfg.actor);\n                    }\n                } else if (cfg.actor.objectType === \"Group\") {\n                    if (cfg.actor instanceof TinCan.Group) {\n                        this.actor = cfg.actor;\n                    } else {\n                        this.actor = new TinCan.Group (cfg.actor);\n                    }\n                }\n            }\n            if (cfg.hasOwnProperty(\"authority\")) {\n                if (typeof cfg.authority.objectType === \"undefined\" || cfg.authority.objectType === \"Person\") {\n                    cfg.authority.objectType = \"Agent\";\n                }\n\n                if (cfg.authority.objectType === \"Agent\") {\n                    if (cfg.authority instanceof TinCan.Agent) {\n                        this.authority = cfg.authority;\n                    } else {\n                        this.authority = new TinCan.Agent (cfg.authority);\n                    }\n                } else if (cfg.authority.objectType === \"Group\") {\n                    if (cfg.actor instanceof TinCan.Group) {\n                        this.authority = cfg.authority;\n                    } else {\n                        this.authority = new TinCan.Group (cfg.authority);\n                    }\n                }\n            }\n            if (cfg.hasOwnProperty(\"verb\")) {\n                if (cfg.verb instanceof TinCan.Verb) {\n                    this.verb = cfg.verb;\n                } else {\n                    this.verb = new TinCan.Verb (cfg.verb);\n                }\n            }\n            if (cfg.hasOwnProperty(\"target\")) {\n                if (cfg.target instanceof TinCan.Activity ||\n                    cfg.target instanceof TinCan.Agent ||\n                    cfg.target instanceof TinCan.Group ||\n                    cfg.target instanceof TinCan.SubStatement ||\n                    cfg.target instanceof TinCan.StatementRef\n                ) {\n                    this.target = cfg.target;\n                } else {\n                    if (typeof cfg.target.objectType === \"undefined\") {\n                        cfg.target.objectType = \"Activity\";\n                    }\n\n                    if (cfg.target.objectType === \"Activity\") {\n                        this.target = new TinCan.Activity (cfg.target);\n                    } else if (cfg.target.objectType === \"Agent\") {\n                        this.target = new TinCan.Agent (cfg.target);\n                    } else if (cfg.target.objectType === \"Group\") {\n                        this.target = new TinCan.Group (cfg.target);\n                    } else if (cfg.target.objectType === \"SubStatement\") {\n                        this.target = new TinCan.SubStatement (cfg.target);\n                    } else if (cfg.target.objectType === \"StatementRef\") {\n                        this.target = new TinCan.StatementRef (cfg.target);\n                    } else {\n                        this.log(\"Unrecognized target type: \" + cfg.target.objectType);\n                    }\n                }\n            }\n            if (cfg.hasOwnProperty(\"result\")) {\n                if (cfg.result instanceof TinCan.Result) {\n                    this.result = cfg.result;\n                } else {\n                    this.result = new TinCan.Result (cfg.result);\n                }\n            }\n            if (cfg.hasOwnProperty(\"context\")) {\n                if (cfg.context instanceof TinCan.Context) {\n                    this.context = cfg.context;\n                } else {\n                    this.context = new TinCan.Context (cfg.context);\n                }\n            }\n            if (cfg.hasOwnProperty(\"attachments\") && cfg.attachments !== null) {\n                this.attachments = [];\n                for (i = 0; i < cfg.attachments.length; i += 1) {\n                    if (! (cfg.attachments[i] instanceof TinCan.Attachment)) {\n                        this.attachments.push(new TinCan.Attachment (cfg.attachments[i]));\n                    }\n                    else {\n                        this.attachments.push(cfg.attachments[i]);\n                    }\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n\n            if (initCfg.doStamp) {\n                this.stamp();\n            }\n        },\n\n        /**\n        @method toString\n        @return {String} String representation of the statement\n        */\n        toString: function (lang) {\n            this.log(\"toString\");\n            return (this.actor !== null ? this.actor.toString(lang) : \"\") +\n                    \" \" +\n                    (this.verb !== null ? this.verb.toString(lang) : \"\") +\n                    \" \" +\n                    (this.target !== null ? this.target.toString(lang) : \"\");\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result = {},\n                optionalDirectProps = [\n                    \"id\",\n                    \"timestamp\"\n                ],\n                optionalObjProps = [\n                    \"actor\",\n                    \"verb\",\n                    \"result\",\n                    \"context\",\n                    \"authority\"\n                ],\n                i;\n\n            version = version || TinCan.versions()[0];\n\n            for (i = 0; i < optionalDirectProps.length; i += 1) {\n                if (this[optionalDirectProps[i]] !== null) {\n                    result[optionalDirectProps[i]] = this[optionalDirectProps[i]];\n                }\n            }\n            for (i = 0; i < optionalObjProps.length; i += 1) {\n                if (this[optionalObjProps[i]] !== null) {\n                    result[optionalObjProps[i]] = this[optionalObjProps[i]].asVersion(version);\n                }\n            }\n            if (this.target !== null) {\n                result.object = this.target.asVersion(version);\n            }\n\n            if (version === \"0.9\" || version === \"0.95\") {\n                if (this.voided !== null) {\n                    result.voided = this.voided;\n                }\n            }\n            if (version === \"0.9\" && this.inProgress !== null) {\n                result.inProgress = this.inProgress;\n            }\n            if (this.attachments !== null) {\n                if (! (version === \"0.9\" || version === \"0.95\")) {\n                    result.attachments = [];\n                    for (i = 0; i < this.attachments.length; i += 1) {\n                        if (this.attachments[i] instanceof TinCan.Attachment) {\n                            result.attachments.push(this.attachments[i].asVersion(version));\n                        }\n                        else {\n                            result.attachments.push(new TinCan.Attachment(this.attachments[i]).asVersion(version));\n                        }\n                    }\n                }\n            }\n\n            return result;\n        },\n\n        /**\n        Sets 'id' and 'timestamp' properties if not already set\n\n        @method stamp\n        */\n        stamp: function () {\n            this.log(\"stamp\");\n            if (this.id === null) {\n                this.id = TinCan.Utils.getUUID();\n            }\n            if (this.timestamp === null) {\n                this.timestamp = TinCan.Utils.getISODateString(new Date());\n            }\n        },\n\n        /**\n        Checks if the Statement has at least one attachment with content\n\n        @method hasAttachmentsWithContent\n        */\n        hasAttachmentWithContent: function () {\n            this.log(\"hasAttachmentWithContent\");\n            var i;\n\n            if (this.attachments === null) {\n                return false;\n            }\n\n            for (i = 0; i < this.attachments.length; i += 1) {\n                if (this.attachments[i].content !== null) {\n                    return true;\n                }\n            }\n\n            return false;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Statement\n    @static\n    */\n    Statement.fromJSON = function (stJSON) {\n        Statement.prototype.log(\"fromJSON\");\n        var _st = JSON.parse(stJSON);\n\n        return new Statement(_st);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.StatementsResult\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.StatementsResult\n    @constructor\n    @param {Object} options Configuration used to initialize.\n        @param {Array} options.statements Actor of statement\n        @param {String} options.more URL to fetch more data\n    **/\n    var StatementsResult = TinCan.StatementsResult = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property statements\n        @type Array\n        */\n        this.statements = null;\n\n        /**\n        @property more\n        @type String\n        */\n        this.more = null;\n\n        this.init(cfg);\n    };\n\n    StatementsResult.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"StatementsResult\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"statements\")) {\n                this.statements = cfg.statements;\n            }\n            if (cfg.hasOwnProperty(\"more\")) {\n                this.more = cfg.more;\n            }\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Agent\n    @static\n    */\n    StatementsResult.fromJSON = function (resultJSON) {\n        StatementsResult.prototype.log(\"fromJSON\");\n        var _result,\n            stmts = [],\n            stmt,\n            i\n        ;\n\n        try {\n            _result = JSON.parse(resultJSON);\n        } catch (parseError) {\n            StatementsResult.prototype.log(\"fromJSON - JSON.parse error: \" + parseError);\n        }\n\n        if (_result) {\n            for (i = 0; i < _result.statements.length; i += 1) {\n                try {\n                    stmt = new TinCan.Statement (_result.statements[i], 4);\n                } catch (error) {\n                    StatementsResult.prototype.log(\"fromJSON - statement instantiation failed: \" + error + \" (\" + JSON.stringify(_result.statements[i]) + \")\");\n\n                    stmt = new TinCan.Statement (\n                        {\n                            id: _result.statements[i].id\n                        },\n                        4\n                    );\n                }\n\n                stmts.push(stmt);\n            }\n            _result.statements = stmts;\n        }\n\n        return new StatementsResult (_result);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.State\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.State\n    @constructor\n    */\n    var State = TinCan.State = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        /**\n        @property updated\n        @type Boolean\n        */\n        this.updated = null;\n\n        /**\n        @property contents\n        @type String\n        */\n        this.contents = null;\n\n        /**\n        @property etag\n        @type String\n        */\n        this.etag = null;\n\n        /**\n        @property contentType\n        @type String\n        */\n        this.contentType = null;\n\n        this.init(cfg);\n    };\n    State.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"State\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"id\",\n                    \"contents\",\n                    \"etag\",\n                    \"contentType\"\n                ];\n\n            cfg = cfg || {};\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n\n            this.updated = false;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} State\n    @static\n    */\n    State.fromJSON = function (stateJSON) {\n        State.prototype.log(\"fromJSON\");\n        var _state = JSON.parse(stateJSON);\n\n        return new State(_state);\n    };\n}());\n\n/*\n    Copyright 2012 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.ActivityProfile\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.ActivityProfile\n    @constructor\n    */\n    var ActivityProfile = TinCan.ActivityProfile = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        /**\n        @property activity\n        @type TinCan.Activity\n        */\n        this.activity = null;\n\n        /**\n        @property updated\n        @type String\n        */\n        this.updated = null;\n\n        /**\n        @property contents\n        @type String\n        */\n        this.contents = null;\n\n        /**\n        SHA1 of contents as provided by the server during last fetch,\n        this should be passed through to saveActivityProfile\n\n        @property etag\n        @type String\n        */\n        this.etag = null;\n\n        /**\n        @property contentType\n        @type String\n        */\n        this.contentType = null;\n\n        this.init(cfg);\n    };\n    ActivityProfile.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"ActivityProfile\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"id\",\n                    \"contents\",\n                    \"etag\",\n                    \"contentType\"\n                ];\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"activity\")) {\n                if (cfg.activity instanceof TinCan.Activity) {\n                    this.activity = cfg.activity;\n                }\n                else {\n                    this.activity = new TinCan.Activity (cfg.activity);\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n\n            this.updated = false;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} ActivityProfile\n    @static\n    */\n    ActivityProfile.fromJSON = function (stateJSON) {\n        ActivityProfile.prototype.log(\"fromJSON\");\n        var _state = JSON.parse(stateJSON);\n\n        return new ActivityProfile(_state);\n    };\n}());\n\n/*\n    Copyright 2013 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.AgentProfile\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.AgentProfile\n    @constructor\n    */\n    var AgentProfile = TinCan.AgentProfile = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property id\n        @type String\n        */\n        this.id = null;\n\n        /**\n        @property agent\n        @type TinCan.Agent\n        */\n        this.agent = null;\n\n        /**\n        @property updated\n        @type String\n        */\n        this.updated = null;\n\n        /**\n        @property contents\n        @type String\n        */\n        this.contents = null;\n\n        /**\n        SHA1 of contents as provided by the server during last fetch,\n        this should be passed through to saveAgentProfile\n\n        @property etag\n        @type String\n        */\n        this.etag = null;\n\n        /**\n        @property contentType\n        @type String\n        */\n        this.contentType = null;\n\n        this.init(cfg);\n    };\n    AgentProfile.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"AgentProfile\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"id\",\n                    \"contents\",\n                    \"etag\",\n                    \"contentType\"\n                ];\n\n            cfg = cfg || {};\n\n            if (cfg.hasOwnProperty(\"agent\")) {\n                if (cfg.agent instanceof TinCan.Agent) {\n                    this.agent = cfg.agent;\n                }\n                else {\n                    this.agent = new TinCan.Agent (cfg.agent);\n                }\n            }\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n\n            this.updated = false;\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} AgentProfile\n    @static\n    */\n    AgentProfile.fromJSON = function (stateJSON) {\n        AgentProfile.prototype.log(\"fromJSON\");\n        var _state = JSON.parse(stateJSON);\n\n        return new AgentProfile(_state);\n    };\n}());\n\n/*\n    Copyright 2014 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.About\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.About\n    @constructor\n    */\n    var About = TinCan.About = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property version\n        @type {String[]}\n        */\n        this.version = null;\n\n        this.init(cfg);\n    };\n    About.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"About\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"version\"\n                ];\n\n            cfg = cfg || {};\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} About\n    @static\n    */\n    About.fromJSON = function (aboutJSON) {\n        About.prototype.log(\"fromJSON\");\n        var _about = JSON.parse(aboutJSON);\n\n        return new About(_about);\n    };\n}());\n\n/*\n    Copyright 2016 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Attachment\n**/\n(function () {\n    \"use strict\";\n\n    /**\n    @class TinCan.Attachment\n    @constructor\n    */\n    var Attachment = TinCan.Attachment = function (cfg) {\n        this.log(\"constructor\");\n\n        /**\n        @property usageType\n        @type String\n        */\n        this.usageType = null;\n\n        /**\n        @property display\n        @type Object\n        */\n        this.display = null;\n\n        /**\n        @property contentType\n        @type String\n        */\n        this.contentType = null;\n\n        /**\n        @property length\n        @type int\n        */\n        this.length = null;\n\n        /**\n        @property sha2\n        @type String\n        */\n        this.sha2 = null;\n\n        /**\n        @property description\n        @type Object\n        */\n        this.description = null;\n\n        /**\n        @property fileUrl\n        @type String\n        */\n        this.fileUrl = null;\n\n        /**\n        @property content\n        @type ArrayBuffer\n        */\n        this.content = null;\n\n        this.init(cfg);\n    };\n    Attachment.prototype = {\n        /**\n        @property LOG_SRC\n        */\n        LOG_SRC: \"Attachment\",\n\n        /**\n        @method log\n        */\n        log: TinCan.prototype.log,\n\n        /**\n        @method init\n        @param {Object} [options] Configuration used to initialize\n        */\n        init: function (cfg) {\n            this.log(\"init\");\n            var i,\n                directProps = [\n                    \"contentType\",\n                    \"length\",\n                    \"sha2\",\n                    \"usageType\",\n                    \"display\",\n                    \"description\",\n                    \"fileUrl\"\n                ]\n            ;\n\n            cfg = cfg || {};\n\n            for (i = 0; i < directProps.length; i += 1) {\n                if (cfg.hasOwnProperty(directProps[i]) && cfg[directProps[i]] !== null) {\n                    this[directProps[i]] = cfg[directProps[i]];\n                }\n            }\n\n            if (cfg.hasOwnProperty(\"content\") && cfg.content !== null) {\n                if (typeof cfg.content === \"string\") {\n                    this.setContentFromString(cfg.content);\n                }\n                else {\n                    this.setContent(cfg.content);\n                }\n            }\n        },\n\n        /**\n        @method asVersion\n        @param {String} [version] Version to return (defaults to newest supported)\n        */\n        asVersion: function (version) {\n            this.log(\"asVersion\");\n            var result;\n\n            version = version || TinCan.versions()[0];\n\n            if (version === \"0.9\" || version === \"0.95\") {\n                result = null;\n            }\n            else {\n                result = {\n                    contentType: this.contentType,\n                    display: this.display,\n                    length: this.length,\n                    sha2: this.sha2,\n                    usageType: this.usageType\n                };\n\n                if (this.fileUrl !== null) {\n                    result.fileUrl = this.fileUrl;\n                }\n                if (this.description !== null) {\n                    result.description = this.description;\n                }\n            }\n\n            return result;\n        },\n\n        /**\n        See {{#crossLink \"TinCan.Utils/getLangDictionaryValue\"}}{{/crossLink}}\n\n        @method getLangDictionaryValue\n        */\n        getLangDictionaryValue: TinCan.Utils.getLangDictionaryValue,\n\n        /**\n        @method setContent\n        @param {ArrayBuffer} content Sets content from ArrayBuffer\n        */\n        setContent: function (content) {\n            this.content = content;\n            this.length = content.byteLength;\n            this.sha2 = TinCan.Utils.getSHA256String(content);\n        },\n\n        /**\n        @method setContentFromString\n        @param {String} content Sets the content property of the attachment from a string\n        */\n        setContentFromString: function (content) {\n            var _content = content;\n\n            _content = TinCan.Utils.stringToArrayBuffer(content);\n\n            this.setContent(_content);\n        },\n\n        /**\n        @method getContentAsString\n        @return {String} Value of content property as a string\n        */\n        getContentAsString: function () {\n            return TinCan.Utils.stringFromArrayBuffer(this.content);\n        }\n    };\n\n    /**\n    @method fromJSON\n    @return {Object} Attachment\n    @static\n    */\n    Attachment.fromJSON = function (attachmentJSON) {\n        Attachment.prototype.log(\"fromJSON\");\n        var _attachment = JSON.parse(attachmentJSON);\n\n        return new Attachment(_attachment);\n    };\n\n    Attachment._defaultEncoding = \"utf-8\";\n}());\n\n/*\n    Copyright 2012-2013 Rustici Software\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n*/\n\n/**\nTinCan client library\n\n@module TinCan\n@submodule TinCan.Environment.Node\n**/\n(function () {\n    /* globals require,Buffer,ArrayBuffer,Uint8Array */\n    \"use strict\";\n    var LOG_SRC = \"Environment.Node\",\n        log = TinCan.prototype.log,\n        querystring = __webpack_require__(/*! querystring */ \"./node_modules/querystring-es3/index.js\"),\n        XMLHttpRequest = __webpack_require__(/*! xhr2 */ \"./node_modules/xhr2/lib/xhr2.js\"),\n        requestComplete,\n        __createJSONSegment,\n        __createAttachmentSegment;\n\n    requestComplete = function (xhr, cfg) {\n        log(\"requestComplete - xhr.status: \" + xhr.status, LOG_SRC);\n        log(\"requestComplete - xhr.responseText: \" + xhr.responseText, LOG_SRC);\n        var requestCompleteResult,\n            httpStatus = xhr.status,\n            notFoundOk = (cfg.ignore404 && httpStatus === 404);\n\n        if ((httpStatus >= 200 && httpStatus < 400) || notFoundOk) {\n            if (cfg.callback) {\n                cfg.callback(null, xhr);\n                return;\n            }\n\n            requestCompleteResult = {\n                err: null,\n                xhr: xhr\n            };\n            return requestCompleteResult;\n        }\n\n        requestCompleteResult = {\n            err: httpStatus,\n            xhr: xhr\n        };\n        if (httpStatus === 0) {\n            log(\"[warning] There was a problem communicating with the Learning Record Store. Aborted, offline, or invalid CORS endpoint (\" + httpStatus + \")\", LOG_SRC);\n        }\n        else {\n            log(\"[warning] There was a problem communicating with the Learning Record Store. (\" + httpStatus + \" | \" + xhr.responseText+ \")\", LOG_SRC);\n        }\n        if (cfg.callback) {\n            cfg.callback(httpStatus, xhr);\n        }\n        return requestCompleteResult;\n    };\n\n    //\n    // Override LRS' init method to set up our request handling\n    // capabilities, basically empty implementation here so that\n    // we don't get a no-env loaded message\n    //\n    TinCan.LRS.prototype._initByEnvironment = function () {};\n\n    //\n    // use XMLHttpRequest module instead of standard Node.js http/https\n    // modules since we have to support both, and because the callbacks\n    // provided via the methods calling _makeRequest expect the xhr to\n    // have a certain interface, that interface happens to be the browser\n    // version of XHR since that's where it started, so rather than\n    // changing them to use a different wrapped request/response object\n    // set just use a wrapped version of the node objects which is what\n    // XMLHttpRequest module provides\n    //\n    TinCan.LRS.prototype._makeRequest = function (fullUrl, headers, cfg) {\n        log(\"_makeRequest using http/https\", LOG_SRC);\n        var xhr,\n            url = fullUrl,\n            async = typeof cfg.callback !== \"undefined\",\n            prop\n        ;\n        if (typeof cfg.params !== \"undefined\" && Object.keys(cfg.params).length > 0) {\n            url += \"?\" + querystring.stringify(cfg.params);\n        }\n\n        xhr = new XMLHttpRequest();\n        xhr.open(cfg.method, url, async);\n\n        if (cfg.expectMultipart) {\n            xhr.responseType = \"arraybuffer\";\n        }\n\n        for (prop in headers) {\n            if (headers.hasOwnProperty(prop)) {\n                xhr.setRequestHeader(prop, headers[prop]);\n            }\n        }\n\n        if (typeof cfg.data !== \"undefined\") {\n            cfg.data += \"\";\n        }\n\n        if (async) {\n            xhr.onreadystatechange = function () {\n                log(\"xhr.onreadystatechange - xhr.readyState: \" + xhr.readyState, LOG_SRC);\n                if (xhr.readyState === 4) {\n                    requestComplete(xhr, cfg);\n                }\n            };\n        }\n\n        xhr.send(cfg.data);\n\n        if (async) {\n            return xhr;\n        }\n\n        return requestComplete(xhr, cfg);\n    };\n\n    //\n    // Synchronos xhr handling is unsupported in node\n    //\n    TinCan.LRS.syncEnabled = false;\n\n    TinCan.LRS.prototype._getMultipartRequestData = function (boundary, jsonContent, requestAttachments) {\n        var parts = [],\n            i;\n\n        parts.push(\n            __createJSONSegment(\n                boundary,\n                jsonContent\n            )\n        );\n        for (i = 0; i < requestAttachments.length; i += 1) {\n            if (requestAttachments[i].content !== null) {\n                parts.push(\n                    __createAttachmentSegment(\n                        boundary,\n                        requestAttachments[i].content,\n                        requestAttachments[i].sha2,\n                        requestAttachments[i].contentType\n                    )\n                );\n            }\n        }\n        if (typeof Buffer.from === \"undefined\") {\n            parts.push( new Buffer(\"\\r\\n--\" + boundary + \"--\\r\\n\") );\n        }\n        else {\n            parts.push( Buffer.from(\"\\r\\n--\" + boundary + \"--\\r\\n\") );\n        }\n\n        return Buffer.concat(parts);\n    };\n\n    __createJSONSegment = function (boundary, jsonContent) {\n        var content = [\n                \"--\" + boundary,\n                \"Content-Type: application/json\",\n                \"\",\n                JSON.stringify(jsonContent)\n            ].join(\"\\r\\n\");\n\n        content += \"\\r\\n\";\n\n        if (typeof Buffer.from === \"undefined\") {\n            return new Buffer(content);\n        }\n        return Buffer.from(content);\n    };\n\n    __createAttachmentSegment = function (boundary, content, sha2, contentType) {\n        var bufferParts = [],\n            header = [\n                \"--\" + boundary,\n                \"Content-Type: \" + contentType,\n                \"Content-Transfer-Encoding: binary\",\n                \"X-Experience-API-Hash: \" + sha2\n            ].join(\"\\r\\n\");\n\n        header += \"\\r\\n\\r\\n\";\n\n        if (typeof Buffer.from === \"undefined\") {\n            bufferParts.push( new Buffer(header) );\n            bufferParts.push( new Buffer(content) );\n        }\n        else {\n            bufferParts.push(Buffer.from(header));\n            bufferParts.push(Buffer.from(content));\n        }\n\n        return Buffer.concat(bufferParts);\n    };\n\n    TinCan.Utils.stringToArrayBuffer = function (content, encoding) {\n        var b,\n            ab,\n            view,\n            i;\n\n        if (! encoding) {\n            encoding = TinCan.Utils.defaultEncoding;\n        }\n\n        if (typeof Buffer.from === \"undefined\") {\n            // for Node.js prior to v4.x\n            b = new Buffer(content, encoding);\n\n            ab = new ArrayBuffer(b.length);\n            view = new Uint8Array(ab);\n            for (i = 0; i < b.length; i += 1) {\n                view[i] = b[i];\n            }\n\n            return ab;\n        }\n\n        b = Buffer.from(content, encoding);\n        ab = b.buffer;\n\n        //\n        // this .slice is required because of the internals of how Buffer is\n        // implemented, it uses a shared ArrayBuffer underneath for small buffers\n        // see http://stackoverflow.com/a/31394257/1464957\n        //\n        return ab.slice(b.byteOffset, b.byteOffset + b.byteLength);\n    };\n\n    TinCan.Utils.stringFromArrayBuffer = function (content, encoding) {\n        var b,\n            view,\n            i;\n\n        if (! encoding) {\n            encoding = TinCan.Utils.defaultEncoding;\n        }\n\n        if (typeof Buffer.from === \"undefined\") {\n            // for Node.js prior to v4.x\n            b = new Buffer(content.byteLength);\n\n            view = new Uint8Array(content);\n            for (i = 0; i < b.length; i += 1) {\n                b[i] = view[i];\n            }\n        }\n        else {\n            b = Buffer.from(content);\n        }\n\n        return b.toString(encoding);\n    };\n}());\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../buffer/index.js */ \"./node_modules/buffer/index.js\").Buffer))\n\n//# sourceURL=webpack:///./node_modules/tincanjs/build/tincan-node.js?");
-
-/***/ }),
-
-/***/ "./node_modules/to-arraybuffer/index.js":
-/*!**********************************************!*\
-  !*** ./node_modules/to-arraybuffer/index.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("var Buffer = __webpack_require__(/*! buffer */ \"./node_modules/buffer/index.js\").Buffer\n\nmodule.exports = function (buf) {\n\t// If the buffer is backed by a Uint8Array, a faster version will work\n\tif (buf instanceof Uint8Array) {\n\t\t// If the buffer isn't a subarray, return the underlying ArrayBuffer\n\t\tif (buf.byteOffset === 0 && buf.byteLength === buf.buffer.byteLength) {\n\t\t\treturn buf.buffer\n\t\t} else if (typeof buf.buffer.slice === 'function') {\n\t\t\t// Otherwise we need to get a proper copy\n\t\t\treturn buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)\n\t\t}\n\t}\n\n\tif (Buffer.isBuffer(buf)) {\n\t\t// This is the slow version that will work with any Buffer\n\t\t// implementation (even in old browsers)\n\t\tvar arrayCopy = new Uint8Array(buf.length)\n\t\tvar len = buf.length\n\t\tfor (var i = 0; i < len; i++) {\n\t\t\tarrayCopy[i] = buf[i]\n\t\t}\n\t\treturn arrayCopy.buffer\n\t} else {\n\t\tthrow new Error('Argument must be a Buffer')\n\t}\n}\n\n\n//# sourceURL=webpack:///./node_modules/to-arraybuffer/index.js?");
-
-/***/ }),
-
-/***/ "./node_modules/url/url.js":
-/*!*********************************!*\
-  !*** ./node_modules/url/url.js ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("// Copyright Joyent, Inc. and other Node contributors.\n//\n// Permission is hereby granted, free of charge, to any person obtaining a\n// copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to permit\n// persons to whom the Software is furnished to do so, subject to the\n// following conditions:\n//\n// The above copyright notice and this permission notice shall be included\n// in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n// USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\n\nvar punycode = __webpack_require__(/*! punycode */ \"./node_modules/node-libs-browser/node_modules/punycode/punycode.js\");\nvar util = __webpack_require__(/*! ./util */ \"./node_modules/url/util.js\");\n\nexports.parse = urlParse;\nexports.resolve = urlResolve;\nexports.resolveObject = urlResolveObject;\nexports.format = urlFormat;\n\nexports.Url = Url;\n\nfunction Url() {\n  this.protocol = null;\n  this.slashes = null;\n  this.auth = null;\n  this.host = null;\n  this.port = null;\n  this.hostname = null;\n  this.hash = null;\n  this.search = null;\n  this.query = null;\n  this.pathname = null;\n  this.path = null;\n  this.href = null;\n}\n\n// Reference: RFC 3986, RFC 1808, RFC 2396\n\n// define these here so at least they only have to be\n// compiled once on the first module load.\nvar protocolPattern = /^([a-z0-9.+-]+:)/i,\n    portPattern = /:[0-9]*$/,\n\n    // Special case for a simple path URL\n    simplePathPattern = /^(\\/\\/?(?!\\/)[^\\?\\s]*)(\\?[^\\s]*)?$/,\n\n    // RFC 2396: characters reserved for delimiting URLs.\n    // We actually just auto-escape these.\n    delims = ['<', '>', '\"', '`', ' ', '\\r', '\\n', '\\t'],\n\n    // RFC 2396: characters not allowed for various reasons.\n    unwise = ['{', '}', '|', '\\\\', '^', '`'].concat(delims),\n\n    // Allowed by RFCs, but cause of XSS attacks.  Always escape these.\n    autoEscape = ['\\''].concat(unwise),\n    // Characters that are never ever allowed in a hostname.\n    // Note that any invalid chars are also handled, but these\n    // are the ones that are *expected* to be seen, so we fast-path\n    // them.\n    nonHostChars = ['%', '/', '?', ';', '#'].concat(autoEscape),\n    hostEndingChars = ['/', '?', '#'],\n    hostnameMaxLen = 255,\n    hostnamePartPattern = /^[+a-z0-9A-Z_-]{0,63}$/,\n    hostnamePartStart = /^([+a-z0-9A-Z_-]{0,63})(.*)$/,\n    // protocols that can allow \"unsafe\" and \"unwise\" chars.\n    unsafeProtocol = {\n      'javascript': true,\n      'javascript:': true\n    },\n    // protocols that never have a hostname.\n    hostlessProtocol = {\n      'javascript': true,\n      'javascript:': true\n    },\n    // protocols that always contain a // bit.\n    slashedProtocol = {\n      'http': true,\n      'https': true,\n      'ftp': true,\n      'gopher': true,\n      'file': true,\n      'http:': true,\n      'https:': true,\n      'ftp:': true,\n      'gopher:': true,\n      'file:': true\n    },\n    querystring = __webpack_require__(/*! querystring */ \"./node_modules/querystring-es3/index.js\");\n\nfunction urlParse(url, parseQueryString, slashesDenoteHost) {\n  if (url && util.isObject(url) && url instanceof Url) return url;\n\n  var u = new Url;\n  u.parse(url, parseQueryString, slashesDenoteHost);\n  return u;\n}\n\nUrl.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {\n  if (!util.isString(url)) {\n    throw new TypeError(\"Parameter 'url' must be a string, not \" + typeof url);\n  }\n\n  // Copy chrome, IE, opera backslash-handling behavior.\n  // Back slashes before the query string get converted to forward slashes\n  // See: https://code.google.com/p/chromium/issues/detail?id=25916\n  var queryIndex = url.indexOf('?'),\n      splitter =\n          (queryIndex !== -1 && queryIndex < url.indexOf('#')) ? '?' : '#',\n      uSplit = url.split(splitter),\n      slashRegex = /\\\\/g;\n  uSplit[0] = uSplit[0].replace(slashRegex, '/');\n  url = uSplit.join(splitter);\n\n  var rest = url;\n\n  // trim before proceeding.\n  // This is to support parse stuff like \"  http://foo.com  \\n\"\n  rest = rest.trim();\n\n  if (!slashesDenoteHost && url.split('#').length === 1) {\n    // Try fast path regexp\n    var simplePath = simplePathPattern.exec(rest);\n    if (simplePath) {\n      this.path = rest;\n      this.href = rest;\n      this.pathname = simplePath[1];\n      if (simplePath[2]) {\n        this.search = simplePath[2];\n        if (parseQueryString) {\n          this.query = querystring.parse(this.search.substr(1));\n        } else {\n          this.query = this.search.substr(1);\n        }\n      } else if (parseQueryString) {\n        this.search = '';\n        this.query = {};\n      }\n      return this;\n    }\n  }\n\n  var proto = protocolPattern.exec(rest);\n  if (proto) {\n    proto = proto[0];\n    var lowerProto = proto.toLowerCase();\n    this.protocol = lowerProto;\n    rest = rest.substr(proto.length);\n  }\n\n  // figure out if it's got a host\n  // user@server is *always* interpreted as a hostname, and url\n  // resolution will treat //foo/bar as host=foo,path=bar because that's\n  // how the browser resolves relative URLs.\n  if (slashesDenoteHost || proto || rest.match(/^\\/\\/[^@\\/]+@[^@\\/]+/)) {\n    var slashes = rest.substr(0, 2) === '//';\n    if (slashes && !(proto && hostlessProtocol[proto])) {\n      rest = rest.substr(2);\n      this.slashes = true;\n    }\n  }\n\n  if (!hostlessProtocol[proto] &&\n      (slashes || (proto && !slashedProtocol[proto]))) {\n\n    // there's a hostname.\n    // the first instance of /, ?, ;, or # ends the host.\n    //\n    // If there is an @ in the hostname, then non-host chars *are* allowed\n    // to the left of the last @ sign, unless some host-ending character\n    // comes *before* the @-sign.\n    // URLs are obnoxious.\n    //\n    // ex:\n    // http://a@b@c/ => user:a@b host:c\n    // http://a@b?@c => user:a host:c path:/?@c\n\n    // v0.12 TODO(isaacs): This is not quite how Chrome does things.\n    // Review our test case against browsers more comprehensively.\n\n    // find the first instance of any hostEndingChars\n    var hostEnd = -1;\n    for (var i = 0; i < hostEndingChars.length; i++) {\n      var hec = rest.indexOf(hostEndingChars[i]);\n      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))\n        hostEnd = hec;\n    }\n\n    // at this point, either we have an explicit point where the\n    // auth portion cannot go past, or the last @ char is the decider.\n    var auth, atSign;\n    if (hostEnd === -1) {\n      // atSign can be anywhere.\n      atSign = rest.lastIndexOf('@');\n    } else {\n      // atSign must be in auth portion.\n      // http://a@b/c@d => host:b auth:a path:/c@d\n      atSign = rest.lastIndexOf('@', hostEnd);\n    }\n\n    // Now we have a portion which is definitely the auth.\n    // Pull that off.\n    if (atSign !== -1) {\n      auth = rest.slice(0, atSign);\n      rest = rest.slice(atSign + 1);\n      this.auth = decodeURIComponent(auth);\n    }\n\n    // the host is the remaining to the left of the first non-host char\n    hostEnd = -1;\n    for (var i = 0; i < nonHostChars.length; i++) {\n      var hec = rest.indexOf(nonHostChars[i]);\n      if (hec !== -1 && (hostEnd === -1 || hec < hostEnd))\n        hostEnd = hec;\n    }\n    // if we still have not hit it, then the entire thing is a host.\n    if (hostEnd === -1)\n      hostEnd = rest.length;\n\n    this.host = rest.slice(0, hostEnd);\n    rest = rest.slice(hostEnd);\n\n    // pull out port.\n    this.parseHost();\n\n    // we've indicated that there is a hostname,\n    // so even if it's empty, it has to be present.\n    this.hostname = this.hostname || '';\n\n    // if hostname begins with [ and ends with ]\n    // assume that it's an IPv6 address.\n    var ipv6Hostname = this.hostname[0] === '[' &&\n        this.hostname[this.hostname.length - 1] === ']';\n\n    // validate a little.\n    if (!ipv6Hostname) {\n      var hostparts = this.hostname.split(/\\./);\n      for (var i = 0, l = hostparts.length; i < l; i++) {\n        var part = hostparts[i];\n        if (!part) continue;\n        if (!part.match(hostnamePartPattern)) {\n          var newpart = '';\n          for (var j = 0, k = part.length; j < k; j++) {\n            if (part.charCodeAt(j) > 127) {\n              // we replace non-ASCII char with a temporary placeholder\n              // we need this to make sure size of hostname is not\n              // broken by replacing non-ASCII by nothing\n              newpart += 'x';\n            } else {\n              newpart += part[j];\n            }\n          }\n          // we test again with ASCII char only\n          if (!newpart.match(hostnamePartPattern)) {\n            var validParts = hostparts.slice(0, i);\n            var notHost = hostparts.slice(i + 1);\n            var bit = part.match(hostnamePartStart);\n            if (bit) {\n              validParts.push(bit[1]);\n              notHost.unshift(bit[2]);\n            }\n            if (notHost.length) {\n              rest = '/' + notHost.join('.') + rest;\n            }\n            this.hostname = validParts.join('.');\n            break;\n          }\n        }\n      }\n    }\n\n    if (this.hostname.length > hostnameMaxLen) {\n      this.hostname = '';\n    } else {\n      // hostnames are always lower case.\n      this.hostname = this.hostname.toLowerCase();\n    }\n\n    if (!ipv6Hostname) {\n      // IDNA Support: Returns a punycoded representation of \"domain\".\n      // It only converts parts of the domain name that\n      // have non-ASCII characters, i.e. it doesn't matter if\n      // you call it with a domain that already is ASCII-only.\n      this.hostname = punycode.toASCII(this.hostname);\n    }\n\n    var p = this.port ? ':' + this.port : '';\n    var h = this.hostname || '';\n    this.host = h + p;\n    this.href += this.host;\n\n    // strip [ and ] from the hostname\n    // the host field still retains them, though\n    if (ipv6Hostname) {\n      this.hostname = this.hostname.substr(1, this.hostname.length - 2);\n      if (rest[0] !== '/') {\n        rest = '/' + rest;\n      }\n    }\n  }\n\n  // now rest is set to the post-host stuff.\n  // chop off any delim chars.\n  if (!unsafeProtocol[lowerProto]) {\n\n    // First, make 100% sure that any \"autoEscape\" chars get\n    // escaped, even if encodeURIComponent doesn't think they\n    // need to be.\n    for (var i = 0, l = autoEscape.length; i < l; i++) {\n      var ae = autoEscape[i];\n      if (rest.indexOf(ae) === -1)\n        continue;\n      var esc = encodeURIComponent(ae);\n      if (esc === ae) {\n        esc = escape(ae);\n      }\n      rest = rest.split(ae).join(esc);\n    }\n  }\n\n\n  // chop off from the tail first.\n  var hash = rest.indexOf('#');\n  if (hash !== -1) {\n    // got a fragment string.\n    this.hash = rest.substr(hash);\n    rest = rest.slice(0, hash);\n  }\n  var qm = rest.indexOf('?');\n  if (qm !== -1) {\n    this.search = rest.substr(qm);\n    this.query = rest.substr(qm + 1);\n    if (parseQueryString) {\n      this.query = querystring.parse(this.query);\n    }\n    rest = rest.slice(0, qm);\n  } else if (parseQueryString) {\n    // no query string, but parseQueryString still requested\n    this.search = '';\n    this.query = {};\n  }\n  if (rest) this.pathname = rest;\n  if (slashedProtocol[lowerProto] &&\n      this.hostname && !this.pathname) {\n    this.pathname = '/';\n  }\n\n  //to support http.request\n  if (this.pathname || this.search) {\n    var p = this.pathname || '';\n    var s = this.search || '';\n    this.path = p + s;\n  }\n\n  // finally, reconstruct the href based on what has been validated.\n  this.href = this.format();\n  return this;\n};\n\n// format a parsed object into a url string\nfunction urlFormat(obj) {\n  // ensure it's an object, and not a string url.\n  // If it's an obj, this is a no-op.\n  // this way, you can call url_format() on strings\n  // to clean up potentially wonky urls.\n  if (util.isString(obj)) obj = urlParse(obj);\n  if (!(obj instanceof Url)) return Url.prototype.format.call(obj);\n  return obj.format();\n}\n\nUrl.prototype.format = function() {\n  var auth = this.auth || '';\n  if (auth) {\n    auth = encodeURIComponent(auth);\n    auth = auth.replace(/%3A/i, ':');\n    auth += '@';\n  }\n\n  var protocol = this.protocol || '',\n      pathname = this.pathname || '',\n      hash = this.hash || '',\n      host = false,\n      query = '';\n\n  if (this.host) {\n    host = auth + this.host;\n  } else if (this.hostname) {\n    host = auth + (this.hostname.indexOf(':') === -1 ?\n        this.hostname :\n        '[' + this.hostname + ']');\n    if (this.port) {\n      host += ':' + this.port;\n    }\n  }\n\n  if (this.query &&\n      util.isObject(this.query) &&\n      Object.keys(this.query).length) {\n    query = querystring.stringify(this.query);\n  }\n\n  var search = this.search || (query && ('?' + query)) || '';\n\n  if (protocol && protocol.substr(-1) !== ':') protocol += ':';\n\n  // only the slashedProtocols get the //.  Not mailto:, xmpp:, etc.\n  // unless they had them to begin with.\n  if (this.slashes ||\n      (!protocol || slashedProtocol[protocol]) && host !== false) {\n    host = '//' + (host || '');\n    if (pathname && pathname.charAt(0) !== '/') pathname = '/' + pathname;\n  } else if (!host) {\n    host = '';\n  }\n\n  if (hash && hash.charAt(0) !== '#') hash = '#' + hash;\n  if (search && search.charAt(0) !== '?') search = '?' + search;\n\n  pathname = pathname.replace(/[?#]/g, function(match) {\n    return encodeURIComponent(match);\n  });\n  search = search.replace('#', '%23');\n\n  return protocol + host + pathname + search + hash;\n};\n\nfunction urlResolve(source, relative) {\n  return urlParse(source, false, true).resolve(relative);\n}\n\nUrl.prototype.resolve = function(relative) {\n  return this.resolveObject(urlParse(relative, false, true)).format();\n};\n\nfunction urlResolveObject(source, relative) {\n  if (!source) return relative;\n  return urlParse(source, false, true).resolveObject(relative);\n}\n\nUrl.prototype.resolveObject = function(relative) {\n  if (util.isString(relative)) {\n    var rel = new Url();\n    rel.parse(relative, false, true);\n    relative = rel;\n  }\n\n  var result = new Url();\n  var tkeys = Object.keys(this);\n  for (var tk = 0; tk < tkeys.length; tk++) {\n    var tkey = tkeys[tk];\n    result[tkey] = this[tkey];\n  }\n\n  // hash is always overridden, no matter what.\n  // even href=\"\" will remove it.\n  result.hash = relative.hash;\n\n  // if the relative url is empty, then there's nothing left to do here.\n  if (relative.href === '') {\n    result.href = result.format();\n    return result;\n  }\n\n  // hrefs like //foo/bar always cut to the protocol.\n  if (relative.slashes && !relative.protocol) {\n    // take everything except the protocol from relative\n    var rkeys = Object.keys(relative);\n    for (var rk = 0; rk < rkeys.length; rk++) {\n      var rkey = rkeys[rk];\n      if (rkey !== 'protocol')\n        result[rkey] = relative[rkey];\n    }\n\n    //urlParse appends trailing / to urls like http://www.example.com\n    if (slashedProtocol[result.protocol] &&\n        result.hostname && !result.pathname) {\n      result.path = result.pathname = '/';\n    }\n\n    result.href = result.format();\n    return result;\n  }\n\n  if (relative.protocol && relative.protocol !== result.protocol) {\n    // if it's a known url protocol, then changing\n    // the protocol does weird things\n    // first, if it's not file:, then we MUST have a host,\n    // and if there was a path\n    // to begin with, then we MUST have a path.\n    // if it is file:, then the host is dropped,\n    // because that's known to be hostless.\n    // anything else is assumed to be absolute.\n    if (!slashedProtocol[relative.protocol]) {\n      var keys = Object.keys(relative);\n      for (var v = 0; v < keys.length; v++) {\n        var k = keys[v];\n        result[k] = relative[k];\n      }\n      result.href = result.format();\n      return result;\n    }\n\n    result.protocol = relative.protocol;\n    if (!relative.host && !hostlessProtocol[relative.protocol]) {\n      var relPath = (relative.pathname || '').split('/');\n      while (relPath.length && !(relative.host = relPath.shift()));\n      if (!relative.host) relative.host = '';\n      if (!relative.hostname) relative.hostname = '';\n      if (relPath[0] !== '') relPath.unshift('');\n      if (relPath.length < 2) relPath.unshift('');\n      result.pathname = relPath.join('/');\n    } else {\n      result.pathname = relative.pathname;\n    }\n    result.search = relative.search;\n    result.query = relative.query;\n    result.host = relative.host || '';\n    result.auth = relative.auth;\n    result.hostname = relative.hostname || relative.host;\n    result.port = relative.port;\n    // to support http.request\n    if (result.pathname || result.search) {\n      var p = result.pathname || '';\n      var s = result.search || '';\n      result.path = p + s;\n    }\n    result.slashes = result.slashes || relative.slashes;\n    result.href = result.format();\n    return result;\n  }\n\n  var isSourceAbs = (result.pathname && result.pathname.charAt(0) === '/'),\n      isRelAbs = (\n          relative.host ||\n          relative.pathname && relative.pathname.charAt(0) === '/'\n      ),\n      mustEndAbs = (isRelAbs || isSourceAbs ||\n                    (result.host && relative.pathname)),\n      removeAllDots = mustEndAbs,\n      srcPath = result.pathname && result.pathname.split('/') || [],\n      relPath = relative.pathname && relative.pathname.split('/') || [],\n      psychotic = result.protocol && !slashedProtocol[result.protocol];\n\n  // if the url is a non-slashed url, then relative\n  // links like ../.. should be able\n  // to crawl up to the hostname, as well.  This is strange.\n  // result.protocol has already been set by now.\n  // Later on, put the first path part into the host field.\n  if (psychotic) {\n    result.hostname = '';\n    result.port = null;\n    if (result.host) {\n      if (srcPath[0] === '') srcPath[0] = result.host;\n      else srcPath.unshift(result.host);\n    }\n    result.host = '';\n    if (relative.protocol) {\n      relative.hostname = null;\n      relative.port = null;\n      if (relative.host) {\n        if (relPath[0] === '') relPath[0] = relative.host;\n        else relPath.unshift(relative.host);\n      }\n      relative.host = null;\n    }\n    mustEndAbs = mustEndAbs && (relPath[0] === '' || srcPath[0] === '');\n  }\n\n  if (isRelAbs) {\n    // it's absolute.\n    result.host = (relative.host || relative.host === '') ?\n                  relative.host : result.host;\n    result.hostname = (relative.hostname || relative.hostname === '') ?\n                      relative.hostname : result.hostname;\n    result.search = relative.search;\n    result.query = relative.query;\n    srcPath = relPath;\n    // fall through to the dot-handling below.\n  } else if (relPath.length) {\n    // it's relative\n    // throw away the existing file, and take the new path instead.\n    if (!srcPath) srcPath = [];\n    srcPath.pop();\n    srcPath = srcPath.concat(relPath);\n    result.search = relative.search;\n    result.query = relative.query;\n  } else if (!util.isNullOrUndefined(relative.search)) {\n    // just pull out the search.\n    // like href='?foo'.\n    // Put this after the other two cases because it simplifies the booleans\n    if (psychotic) {\n      result.hostname = result.host = srcPath.shift();\n      //occationaly the auth can get stuck only in host\n      //this especially happens in cases like\n      //url.resolveObject('mailto:local1@domain1', 'local2@domain2')\n      var authInHost = result.host && result.host.indexOf('@') > 0 ?\n                       result.host.split('@') : false;\n      if (authInHost) {\n        result.auth = authInHost.shift();\n        result.host = result.hostname = authInHost.shift();\n      }\n    }\n    result.search = relative.search;\n    result.query = relative.query;\n    //to support http.request\n    if (!util.isNull(result.pathname) || !util.isNull(result.search)) {\n      result.path = (result.pathname ? result.pathname : '') +\n                    (result.search ? result.search : '');\n    }\n    result.href = result.format();\n    return result;\n  }\n\n  if (!srcPath.length) {\n    // no path at all.  easy.\n    // we've already handled the other stuff above.\n    result.pathname = null;\n    //to support http.request\n    if (result.search) {\n      result.path = '/' + result.search;\n    } else {\n      result.path = null;\n    }\n    result.href = result.format();\n    return result;\n  }\n\n  // if a url ENDs in . or .., then it must get a trailing slash.\n  // however, if it ends in anything else non-slashy,\n  // then it must NOT get a trailing slash.\n  var last = srcPath.slice(-1)[0];\n  var hasTrailingSlash = (\n      (result.host || relative.host || srcPath.length > 1) &&\n      (last === '.' || last === '..') || last === '');\n\n  // strip single dots, resolve double dots to parent dir\n  // if the path tries to go above the root, `up` ends up > 0\n  var up = 0;\n  for (var i = srcPath.length; i >= 0; i--) {\n    last = srcPath[i];\n    if (last === '.') {\n      srcPath.splice(i, 1);\n    } else if (last === '..') {\n      srcPath.splice(i, 1);\n      up++;\n    } else if (up) {\n      srcPath.splice(i, 1);\n      up--;\n    }\n  }\n\n  // if the path is allowed to go above the root, restore leading ..s\n  if (!mustEndAbs && !removeAllDots) {\n    for (; up--; up) {\n      srcPath.unshift('..');\n    }\n  }\n\n  if (mustEndAbs && srcPath[0] !== '' &&\n      (!srcPath[0] || srcPath[0].charAt(0) !== '/')) {\n    srcPath.unshift('');\n  }\n\n  if (hasTrailingSlash && (srcPath.join('/').substr(-1) !== '/')) {\n    srcPath.push('');\n  }\n\n  var isAbsolute = srcPath[0] === '' ||\n      (srcPath[0] && srcPath[0].charAt(0) === '/');\n\n  // put the host back\n  if (psychotic) {\n    result.hostname = result.host = isAbsolute ? '' :\n                                    srcPath.length ? srcPath.shift() : '';\n    //occationaly the auth can get stuck only in host\n    //this especially happens in cases like\n    //url.resolveObject('mailto:local1@domain1', 'local2@domain2')\n    var authInHost = result.host && result.host.indexOf('@') > 0 ?\n                     result.host.split('@') : false;\n    if (authInHost) {\n      result.auth = authInHost.shift();\n      result.host = result.hostname = authInHost.shift();\n    }\n  }\n\n  mustEndAbs = mustEndAbs || (result.host && srcPath.length);\n\n  if (mustEndAbs && !isAbsolute) {\n    srcPath.unshift('');\n  }\n\n  if (!srcPath.length) {\n    result.pathname = null;\n    result.path = null;\n  } else {\n    result.pathname = srcPath.join('/');\n  }\n\n  //to support request.http\n  if (!util.isNull(result.pathname) || !util.isNull(result.search)) {\n    result.path = (result.pathname ? result.pathname : '') +\n                  (result.search ? result.search : '');\n  }\n  result.auth = relative.auth || result.auth;\n  result.slashes = result.slashes || relative.slashes;\n  result.href = result.format();\n  return result;\n};\n\nUrl.prototype.parseHost = function() {\n  var host = this.host;\n  var port = portPattern.exec(host);\n  if (port) {\n    port = port[0];\n    if (port !== ':') {\n      this.port = port.substr(1);\n    }\n    host = host.substr(0, host.length - port.length);\n  }\n  if (host) this.hostname = host;\n};\n\n\n//# sourceURL=webpack:///./node_modules/url/url.js?");
-
-/***/ }),
-
-/***/ "./node_modules/url/util.js":
-/*!**********************************!*\
-  !*** ./node_modules/url/util.js ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\n\nmodule.exports = {\n  isString: function(arg) {\n    return typeof(arg) === 'string';\n  },\n  isObject: function(arg) {\n    return typeof(arg) === 'object' && arg !== null;\n  },\n  isNull: function(arg) {\n    return arg === null;\n  },\n  isNullOrUndefined: function(arg) {\n    return arg == null;\n  }\n};\n\n\n//# sourceURL=webpack:///./node_modules/url/util.js?");
-
-/***/ }),
-
-/***/ "./node_modules/util-deprecate/browser.js":
-/*!************************************************!*\
-  !*** ./node_modules/util-deprecate/browser.js ***!
-  \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(global) {\n/**\n * Module exports.\n */\n\nmodule.exports = deprecate;\n\n/**\n * Mark that a method should not be used.\n * Returns a modified function which warns once by default.\n *\n * If `localStorage.noDeprecation = true` is set, then it is a no-op.\n *\n * If `localStorage.throwDeprecation = true` is set, then deprecated functions\n * will throw an Error when invoked.\n *\n * If `localStorage.traceDeprecation = true` is set, then deprecated functions\n * will invoke `console.trace()` instead of `console.error()`.\n *\n * @param {Function} fn - the function to deprecate\n * @param {String} msg - the string to print to the console when `fn` is invoked\n * @returns {Function} a new \"deprecated\" version of `fn`\n * @api public\n */\n\nfunction deprecate (fn, msg) {\n  if (config('noDeprecation')) {\n    return fn;\n  }\n\n  var warned = false;\n  function deprecated() {\n    if (!warned) {\n      if (config('throwDeprecation')) {\n        throw new Error(msg);\n      } else if (config('traceDeprecation')) {\n        console.trace(msg);\n      } else {\n        console.warn(msg);\n      }\n      warned = true;\n    }\n    return fn.apply(this, arguments);\n  }\n\n  return deprecated;\n}\n\n/**\n * Checks `localStorage` for boolean values for the given `name`.\n *\n * @param {String} name\n * @returns {Boolean}\n * @api private\n */\n\nfunction config (name) {\n  // accessing global.localStorage can trigger a DOMException in sandboxed iframes\n  try {\n    if (!global.localStorage) return false;\n  } catch (_) {\n    return false;\n  }\n  var val = global.localStorage[name];\n  if (null == val) return false;\n  return String(val).toLowerCase() === 'true';\n}\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ \"./node_modules/webpack/buildin/global.js\")))\n\n//# sourceURL=webpack:///./node_modules/util-deprecate/browser.js?");
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn this;\n})();\n\ntry {\n\t// This works if eval is allowed (see CSP)\n\tg = g || new Function(\"return this\")();\n} catch (e) {\n\t// This works if the window reference is available\n\tif (typeof window === \"object\") g = window;\n}\n\n// g can still be undefined, but nothing to do about it...\n// We return undefined, instead of nothing here, so it's\n// easier to handle this case. if(!global) { ...}\n\nmodule.exports = g;\n\n\n//# sourceURL=webpack:///(webpack)/buildin/global.js?");
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/module.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = function(module) {\n\tif (!module.webpackPolyfill) {\n\t\tmodule.deprecate = function() {};\n\t\tmodule.paths = [];\n\t\t// module.parent = undefined by default\n\t\tif (!module.children) module.children = [];\n\t\tObject.defineProperty(module, \"loaded\", {\n\t\t\tenumerable: true,\n\t\t\tget: function() {\n\t\t\t\treturn module.l;\n\t\t\t}\n\t\t});\n\t\tObject.defineProperty(module, \"id\", {\n\t\t\tenumerable: true,\n\t\t\tget: function() {\n\t\t\t\treturn module.i;\n\t\t\t}\n\t\t});\n\t\tmodule.webpackPolyfill = 1;\n\t}\n\treturn module;\n};\n\n\n//# sourceURL=webpack:///(webpack)/buildin/module.js?");
-
-/***/ }),
-
-/***/ "./node_modules/xhr2/lib/xhr2.js":
-/*!***************************************!*\
-  !*** ./node_modules/xhr2/lib/xhr2.js ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-eval("/* WEBPACK VAR INJECTION */(function(process, Buffer) {// Generated by CoffeeScript 1.6.3\n(function() {\n  var InvalidStateError, NetworkError, SecurityError, XMLHttpRequest, XMLHttpRequestEventTarget, XMLHttpRequestProgressEvent, XMLHttpRequestUpload, http, https, os, url, _ref,\n    __hasProp = {}.hasOwnProperty,\n    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };\n\n  XMLHttpRequestEventTarget = (function() {\n    function XMLHttpRequestEventTarget() {\n      this.onloadstart = null;\n      this.onprogress = null;\n      this.onabort = null;\n      this.onerror = null;\n      this.onload = null;\n      this.ontimeout = null;\n      this.onloadend = null;\n      this._listeners = {};\n    }\n\n    XMLHttpRequestEventTarget.prototype.onloadstart = null;\n\n    XMLHttpRequestEventTarget.prototype.onprogress = null;\n\n    XMLHttpRequestEventTarget.prototype.onabort = null;\n\n    XMLHttpRequestEventTarget.prototype.onerror = null;\n\n    XMLHttpRequestEventTarget.prototype.onload = null;\n\n    XMLHttpRequestEventTarget.prototype.ontimeout = null;\n\n    XMLHttpRequestEventTarget.prototype.onloadend = null;\n\n    XMLHttpRequestEventTarget.prototype.addEventListener = function(eventType, listener) {\n      var _base;\n      eventType = eventType.toLowerCase();\n      (_base = this._listeners)[eventType] || (_base[eventType] = []);\n      this._listeners[eventType].push(listener);\n      return void 0;\n    };\n\n    XMLHttpRequestEventTarget.prototype.removeEventListener = function(eventType, listener) {\n      var index;\n      eventType = eventType.toLowerCase();\n      if (this._listeners[eventType]) {\n        index = this._listeners[eventType].indexOf(listener);\n        if (index !== -1) {\n          this._listeners.splice(index, 1);\n        }\n      }\n      return void 0;\n    };\n\n    XMLHttpRequestEventTarget.prototype.dispatchEvent = function(event) {\n      var eventType, listener, listeners, _i, _len;\n      eventType = event.type;\n      if (listeners = this._listeners[eventType]) {\n        for (_i = 0, _len = listeners.length; _i < _len; _i++) {\n          listener = listeners[_i];\n          listener(event);\n        }\n      }\n      if (listener = this[\"on\" + eventType]) {\n        listener(event);\n      }\n      return void 0;\n    };\n\n    return XMLHttpRequestEventTarget;\n\n  })();\n\n  http = __webpack_require__(/*! http */ \"./node_modules/stream-http/index.js\");\n\n  https = __webpack_require__(/*! https */ \"./node_modules/https-browserify/index.js\");\n\n  os = __webpack_require__(/*! os */ \"./node_modules/os-browserify/browser.js\");\n\n  url = __webpack_require__(/*! url */ \"./node_modules/url/url.js\");\n\n  XMLHttpRequest = (function(_super) {\n    __extends(XMLHttpRequest, _super);\n\n    function XMLHttpRequest(options) {\n      XMLHttpRequest.__super__.constructor.call(this);\n      this.onreadystatechange = null;\n      this._anonymous = options && options.anon;\n      this.readyState = XMLHttpRequest.UNSENT;\n      this.response = null;\n      this.responseText = '';\n      this.responseType = '';\n      this.status = 0;\n      this.statusText = '';\n      this.timeout = 0;\n      this.upload = new XMLHttpRequestUpload(this);\n      this._method = null;\n      this._url = null;\n      this._sync = false;\n      this._headers = null;\n      this._loweredHeaders = null;\n      this._mimeOverride = null;\n      this._request = null;\n      this._response = null;\n      this._responseParts = null;\n      this._responseHeaders = null;\n      this._aborting = null;\n      this._error = null;\n      this._loadedBytes = 0;\n      this._totalBytes = 0;\n      this._lengthComputable = false;\n    }\n\n    XMLHttpRequest.prototype.onreadystatechange = null;\n\n    XMLHttpRequest.prototype.readyState = null;\n\n    XMLHttpRequest.prototype.response = null;\n\n    XMLHttpRequest.prototype.responseText = null;\n\n    XMLHttpRequest.prototype.responseType = null;\n\n    XMLHttpRequest.prototype.status = null;\n\n    XMLHttpRequest.prototype.timeout = null;\n\n    XMLHttpRequest.prototype.upload = null;\n\n    XMLHttpRequest.prototype.open = function(method, url, async, user, password) {\n      var xhrUrl;\n      method = method.toUpperCase();\n      if (method in this._restrictedMethods) {\n        throw new SecurityError(\"HTTP method \" + method + \" is not allowed in XHR\");\n      }\n      xhrUrl = this._parseUrl(url);\n      if (async === void 0) {\n        async = true;\n      }\n      switch (this.readyState) {\n        case XMLHttpRequest.UNSENT:\n        case XMLHttpRequest.OPENED:\n        case XMLHttpRequest.DONE:\n          null;\n          break;\n        case XMLHttpRequest.HEADERS_RECEIVED:\n        case XMLHttpRequest.LOADING:\n          null;\n      }\n      this._method = method;\n      this._url = xhrUrl;\n      this._sync = !async;\n      this._headers = {};\n      this._loweredHeaders = {};\n      this._mimeOverride = null;\n      this._setReadyState(XMLHttpRequest.OPENED);\n      this._request = null;\n      this._response = null;\n      this.status = 0;\n      this.statusText = '';\n      this._responseParts = [];\n      this._responseHeaders = null;\n      this._loadedBytes = 0;\n      this._totalBytes = 0;\n      this._lengthComputable = false;\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype.setRequestHeader = function(name, value) {\n      var loweredName;\n      if (this.readyState !== XMLHttpRequest.OPENED) {\n        throw new InvalidStateError(\"XHR readyState must be OPENED\");\n      }\n      loweredName = name.toLowerCase();\n      if (this._restrictedHeaders[loweredName] || /^sec\\-/.test(loweredName) || /^proxy-/.test(loweredName)) {\n        console.warn(\"Refused to set unsafe header \\\"\" + name + \"\\\"\");\n        return void 0;\n      }\n      value = value.toString();\n      if (loweredName in this._loweredHeaders) {\n        name = this._loweredHeaders[loweredName];\n        this._headers[name] = this._headers[name] + ', ' + value;\n      } else {\n        this._loweredHeaders[loweredName] = name;\n        this._headers[name] = value;\n      }\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype.send = function(data) {\n      if (this.readyState !== XMLHttpRequest.OPENED) {\n        throw new InvalidStateError(\"XHR readyState must be OPENED\");\n      }\n      if (this._request) {\n        throw new InvalidStateError(\"send() already called\");\n      }\n      switch (this._url.protocol) {\n        case 'file:':\n          this._sendFile(data);\n          break;\n        case 'http:':\n        case 'https:':\n          this._sendHttp(data);\n          break;\n        default:\n          throw new NetworkError(\"Unsupported protocol \" + this._url.protocol);\n      }\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype.abort = function() {\n      if (!this._request) {\n        return;\n      }\n      this._request.abort();\n      this._setError();\n      this._dispatchProgress('abort');\n      this._dispatchProgress('loadend');\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype.getResponseHeader = function(name) {\n      var loweredName;\n      if (!this._responseHeaders) {\n        return null;\n      }\n      loweredName = name.toLowerCase();\n      if (loweredName in this._responseHeaders) {\n        return this._responseHeaders[loweredName];\n      } else {\n        return null;\n      }\n    };\n\n    XMLHttpRequest.prototype.getAllResponseHeaders = function() {\n      var lines, name, value;\n      if (!this._responseHeaders) {\n        return '';\n      }\n      lines = (function() {\n        var _ref, _results;\n        _ref = this._responseHeaders;\n        _results = [];\n        for (name in _ref) {\n          value = _ref[name];\n          _results.push(\"\" + name + \": \" + value);\n        }\n        return _results;\n      }).call(this);\n      return lines.join(\"\\r\\n\");\n    };\n\n    XMLHttpRequest.prototype.overrideMimeType = function(newMimeType) {\n      if (this.readyState === XMLHttpRequest.LOADING || this.readyState === XMLHttpRequest.DONE) {\n        throw new InvalidStateError(\"overrideMimeType() not allowed in LOADING or DONE\");\n      }\n      this._mimeOverride = newMimeType.toLowerCase();\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype.nodejsSet = function(options) {\n      if ('httpAgent' in options) {\n        this.nodejsHttpAgent = options.httpAgent;\n      }\n      if ('httpsAgent' in options) {\n        this.nodejsHttpsAgent = options.httpsAgent;\n      }\n      return void 0;\n    };\n\n    XMLHttpRequest.nodejsSet = function(options) {\n      XMLHttpRequest.prototype.nodejsSet(options);\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype.UNSENT = 0;\n\n    XMLHttpRequest.UNSENT = 0;\n\n    XMLHttpRequest.prototype.OPENED = 1;\n\n    XMLHttpRequest.OPENED = 1;\n\n    XMLHttpRequest.prototype.HEADERS_RECEIVED = 2;\n\n    XMLHttpRequest.HEADERS_RECEIVED = 2;\n\n    XMLHttpRequest.prototype.LOADING = 3;\n\n    XMLHttpRequest.LOADING = 3;\n\n    XMLHttpRequest.prototype.DONE = 4;\n\n    XMLHttpRequest.DONE = 4;\n\n    XMLHttpRequest.prototype.nodejsHttpAgent = http.globalAgent;\n\n    XMLHttpRequest.prototype.nodejsHttpsAgent = https.globalAgent;\n\n    XMLHttpRequest.prototype._restrictedMethods = {\n      CONNECT: true,\n      TRACE: true,\n      TRACK: true\n    };\n\n    XMLHttpRequest.prototype._restrictedHeaders = {\n      'accept-charset': true,\n      'accept-encoding': true,\n      'access-control-request-headers': true,\n      'access-control-request-method': true,\n      connection: true,\n      'content-length': true,\n      cookie: true,\n      cookie2: true,\n      date: true,\n      dnt: true,\n      expect: true,\n      host: true,\n      'keep-alive': true,\n      origin: true,\n      referer: true,\n      te: true,\n      trailer: true,\n      'transfer-encoding': true,\n      upgrade: true,\n      'user-agent': true,\n      via: true\n    };\n\n    XMLHttpRequest.prototype._privateHeaders = {\n      'set-cookie': true,\n      'set-cookie2': true\n    };\n\n    XMLHttpRequest.prototype._userAgent = (\"Mozilla/5.0 (\" + (os.type()) + \" \" + (os.arch()) + \") \") + (\"node.js/\" + process.versions.node + \" v8/\" + process.versions.v8);\n\n    XMLHttpRequest.prototype._setReadyState = function(newReadyState) {\n      var event;\n      this.readyState = newReadyState;\n      event = new XMLHttpRequestProgressEvent('readystatechange', this);\n      this.dispatchEvent(event);\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._sendFile = function() {\n      if (this._url.method !== 'GET') {\n        throw new NetworkError('The file protocol only supports GET');\n      }\n      throw new Error(\"Protocol file: not implemented\");\n    };\n\n    XMLHttpRequest.prototype._sendHttp = function(data) {\n      if (this._sync) {\n        throw new Error(\"Synchronous XHR processing not implemented\");\n      }\n      if ((data != null) && (this._method === 'GET' || this._method === 'HEAD')) {\n        console.warn(\"Discarding entity body for \" + this._method + \" requests\");\n        data = null;\n      } else {\n        data || (data = '');\n      }\n      this.upload._setData(data);\n      this._finalizeHeaders();\n      this._sendHxxpRequest();\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._sendHxxpRequest = function() {\n      var agent, hxxp, request,\n        _this = this;\n      if (this._url.protocol === 'http:') {\n        hxxp = http;\n        agent = this.nodejsHttpAgent;\n      } else {\n        hxxp = https;\n        agent = this.nodejsHttpsAgent;\n      }\n      request = hxxp.request({\n        hostname: this._url.hostname,\n        port: this._url.port,\n        path: this._url.path,\n        auth: this._url.auth,\n        method: this._method,\n        headers: this._headers,\n        agent: agent\n      });\n      this._request = request;\n      if (this.timeout) {\n        request.setTimeout(this.timeout, function() {\n          return _this._onHttpTimeout(request);\n        });\n      }\n      request.on('response', function(response) {\n        return _this._onHttpResponse(request, response);\n      });\n      request.on('error', function(error) {\n        return _this._onHttpRequestError(request, error);\n      });\n      this.upload._startUpload(request);\n      if (this._request === request) {\n        this._dispatchProgress('loadstart');\n      }\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._finalizeHeaders = function() {\n      this._headers['Connection'] = 'keep-alive';\n      this._headers['Host'] = this._url.host;\n      if (this._anonymous) {\n        this._headers['Referer'] = 'about:blank';\n      }\n      this._headers['User-Agent'] = this._userAgent;\n      this.upload._finalizeHeaders(this._headers, this._loweredHeaders);\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._onHttpResponse = function(request, response) {\n      var lengthString,\n        _this = this;\n      if (this._request !== request) {\n        return;\n      }\n      switch (response.statusCode) {\n        case 301:\n        case 302:\n        case 303:\n        case 307:\n        case 308:\n          this._url = this._parseUrl(response.headers['location']);\n          this._method = 'GET';\n          if ('content-type' in this._loweredHeaders) {\n            delete this._headers[this._loweredHeaders['content-type']];\n            delete this._loweredHeaders['content-type'];\n          }\n          if ('Content-Type' in this._headers) {\n            delete this._headers['Content-Type'];\n          }\n          delete this._headers['Content-Length'];\n          this.upload._reset();\n          this._finalizeHeaders();\n          this._sendHxxpRequest();\n          return;\n      }\n      this._response = response;\n      this._response.on('data', function(data) {\n        return _this._onHttpResponseData(response, data);\n      });\n      this._response.on('end', function() {\n        return _this._onHttpResponseEnd(response);\n      });\n      this._response.on('close', function() {\n        return _this._onHttpResponseClose(response);\n      });\n      this.status = this._response.statusCode;\n      this.statusText = http.STATUS_CODES[this.status];\n      this._parseResponseHeaders(response);\n      if (lengthString = this._responseHeaders['content-length']) {\n        this._totalBytes = parseInt(lengthString);\n        this._lengthComputable = true;\n      } else {\n        this._lengthComputable = false;\n      }\n      return this._setReadyState(XMLHttpRequest.HEADERS_RECEIVED);\n    };\n\n    XMLHttpRequest.prototype._onHttpResponseData = function(response, data) {\n      if (this._response !== response) {\n        return;\n      }\n      this._responseParts.push(data);\n      this._loadedBytes += data.length;\n      if (this.readyState !== XMLHttpRequest.LOADING) {\n        this._setReadyState(XMLHttpRequest.LOADING);\n      }\n      return this._dispatchProgress('progress');\n    };\n\n    XMLHttpRequest.prototype._onHttpResponseEnd = function(response) {\n      if (this._response !== response) {\n        return;\n      }\n      this._parseResponse();\n      this._request = null;\n      this._response = null;\n      this._setReadyState(XMLHttpRequest.DONE);\n      this._dispatchProgress('load');\n      return this._dispatchProgress('loadend');\n    };\n\n    XMLHttpRequest.prototype._onHttpResponseClose = function(response) {\n      var request;\n      if (this._response !== response) {\n        return;\n      }\n      request = this._request;\n      this._setError();\n      request.abort();\n      this._setReadyState(XMLHttpRequest.DONE);\n      this._dispatchProgress('error');\n      return this._dispatchProgress('loadend');\n    };\n\n    XMLHttpRequest.prototype._onHttpTimeout = function(request) {\n      if (this._request !== request) {\n        return;\n      }\n      this._setError();\n      request.abort();\n      this._setReadyState(XMLHttpRequest.DONE);\n      this._dispatchProgress('timeout');\n      return this._dispatchProgress('loadend');\n    };\n\n    XMLHttpRequest.prototype._onHttpRequestError = function(request, error) {\n      if (this._request !== request) {\n        return;\n      }\n      this._setError();\n      request.abort();\n      this._setReadyState(XMLHttpRequest.DONE);\n      this._dispatchProgress('error');\n      return this._dispatchProgress('loadend');\n    };\n\n    XMLHttpRequest.prototype._dispatchProgress = function(eventType) {\n      var event;\n      event = new XMLHttpRequestProgressEvent(eventType, this);\n      event.lengthComputable = this._lengthComputable;\n      event.loaded = this._loadedBytes;\n      event.total = this._totalBytes;\n      this.dispatchEvent(event);\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._setError = function() {\n      this._request = null;\n      this._response = null;\n      this._responseHeaders = null;\n      this._responseParts = null;\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._parseUrl = function(urlString) {\n      var index, password, user, xhrUrl;\n      xhrUrl = url.parse(urlString, false, true);\n      xhrUrl.hash = null;\n      if (xhrUrl.auth && ((typeof user !== \"undefined\" && user !== null) || (typeof password !== \"undefined\" && password !== null))) {\n        index = xhrUrl.auth.indexOf(':');\n        if (index === -1) {\n          if (!user) {\n            user = xhrUrl.auth;\n          }\n        } else {\n          if (!user) {\n            user = xhrUrl.substring(0, index);\n          }\n          if (!password) {\n            password = xhrUrl.substring(index + 1);\n          }\n        }\n      }\n      if (user || password) {\n        xhrUrl.auth = \"\" + user + \":\" + password;\n      }\n      return xhrUrl;\n    };\n\n    XMLHttpRequest.prototype._parseResponseHeaders = function(response) {\n      var loweredName, name, value, _ref;\n      this._responseHeaders = {};\n      _ref = response.headers;\n      for (name in _ref) {\n        value = _ref[name];\n        loweredName = name.toLowerCase();\n        if (this._privateHeaders[loweredName]) {\n          continue;\n        }\n        if (this._mimeOverride !== null && loweredName === 'content-type') {\n          value = this._mimeOverride;\n        }\n        this._responseHeaders[loweredName] = value;\n      }\n      if (this._mimeOverride !== null && !('content-type' in this._responseHeaders)) {\n        this._responseHeaders['content-type'] = this._mimeOverride;\n      }\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._parseResponse = function() {\n      var arrayBuffer, buffer, i, jsonError, view, _i, _ref;\n      if (Buffer.concat) {\n        buffer = Buffer.concat(this._responseParts);\n      } else {\n        buffer = this._concatBuffers(this._responseParts);\n      }\n      this._responseParts = null;\n      switch (this.responseType) {\n        case 'text':\n          this._parseTextResponse(buffer);\n          break;\n        case 'json':\n          this.responseText = null;\n          try {\n            this.response = JSON.parse(buffer.toString('utf-8'));\n          } catch (_error) {\n            jsonError = _error;\n            this.response = null;\n          }\n          break;\n        case 'buffer':\n          this.responseText = null;\n          this.response = buffer;\n          break;\n        case 'arraybuffer':\n          this.responseText = null;\n          arrayBuffer = new ArrayBuffer(buffer.length);\n          view = new Uint8Array(arrayBuffer);\n          for (i = _i = 0, _ref = buffer.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {\n            view[i] = buffer[i];\n          }\n          this.response = arrayBuffer;\n          break;\n        default:\n          this._parseTextResponse(buffer);\n      }\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._parseTextResponse = function(buffer) {\n      var e;\n      try {\n        this.responseText = buffer.toString(this._parseResponseEncoding());\n      } catch (_error) {\n        e = _error;\n        this.responseText = buffer.toString('binary');\n      }\n      this.response = this.responseText;\n      return void 0;\n    };\n\n    XMLHttpRequest.prototype._parseResponseEncoding = function() {\n      var contentType, encoding, match;\n      encoding = null;\n      if (contentType = this._responseHeaders['content-type']) {\n        if (match = /\\;\\s*charset\\=(.*)$/.exec(contentType)) {\n          return match[1];\n        }\n      }\n      return 'utf-8';\n    };\n\n    XMLHttpRequest.prototype._concatBuffers = function(buffers) {\n      var buffer, length, target, _i, _j, _len, _len1;\n      if (buffers.length === 0) {\n        return new Buffer(0);\n      }\n      if (buffers.length === 1) {\n        return buffers[0];\n      }\n      length = 0;\n      for (_i = 0, _len = buffers.length; _i < _len; _i++) {\n        buffer = buffers[_i];\n        length += buffer.length;\n      }\n      target = new Buffer(length);\n      length = 0;\n      for (_j = 0, _len1 = buffers.length; _j < _len1; _j++) {\n        buffer = buffers[_j];\n        buffer.copy(target, length);\n        length += buffer.length;\n      }\n      return target;\n    };\n\n    return XMLHttpRequest;\n\n  })(XMLHttpRequestEventTarget);\n\n  module.exports = XMLHttpRequest;\n\n  XMLHttpRequest.XMLHttpRequest = XMLHttpRequest;\n\n  SecurityError = (function(_super) {\n    __extends(SecurityError, _super);\n\n    function SecurityError() {\n      SecurityError.__super__.constructor.apply(this, arguments);\n    }\n\n    return SecurityError;\n\n  })(Error);\n\n  XMLHttpRequest.SecurityError = SecurityError;\n\n  InvalidStateError = (function(_super) {\n    __extends(InvalidStateError, _super);\n\n    function InvalidStateError() {\n      InvalidStateError.__super__.constructor.apply(this, arguments);\n    }\n\n    return InvalidStateError;\n\n  })(Error);\n\n  InvalidStateError = (function(_super) {\n    __extends(InvalidStateError, _super);\n\n    function InvalidStateError() {\n      _ref = InvalidStateError.__super__.constructor.apply(this, arguments);\n      return _ref;\n    }\n\n    return InvalidStateError;\n\n  })(Error);\n\n  XMLHttpRequest.InvalidStateError = InvalidStateError;\n\n  NetworkError = (function(_super) {\n    __extends(NetworkError, _super);\n\n    function NetworkError() {\n      NetworkError.__super__.constructor.apply(this, arguments);\n    }\n\n    return NetworkError;\n\n  })(Error);\n\n  XMLHttpRequest.NetworkError = NetworkError;\n\n  XMLHttpRequestProgressEvent = (function() {\n    function XMLHttpRequestProgressEvent(type, target) {\n      this.type = type;\n      this.target = target;\n      this.currentTarget = this.target;\n      this.lengthComputable = false;\n      this.loaded = 0;\n      this.total = 0;\n    }\n\n    XMLHttpRequestProgressEvent.prototype.bubbles = false;\n\n    XMLHttpRequestProgressEvent.prototype.cancelable = false;\n\n    XMLHttpRequestProgressEvent.prototype.target = null;\n\n    XMLHttpRequestProgressEvent.prototype.loaded = null;\n\n    XMLHttpRequestProgressEvent.prototype.lengthComputable = null;\n\n    XMLHttpRequestProgressEvent.prototype.total = null;\n\n    return XMLHttpRequestProgressEvent;\n\n  })();\n\n  XMLHttpRequest.XMLHttpRequestProgressEvent = XMLHttpRequestProgressEvent;\n\n  XMLHttpRequestUpload = (function(_super) {\n    __extends(XMLHttpRequestUpload, _super);\n\n    function XMLHttpRequestUpload(request) {\n      XMLHttpRequestUpload.__super__.constructor.call(this);\n      this._request = request;\n      this._reset();\n    }\n\n    XMLHttpRequestUpload.prototype._reset = function() {\n      this._contentType = null;\n      this._body = null;\n      return void 0;\n    };\n\n    XMLHttpRequestUpload.prototype._setData = function(data) {\n      var body, i, offset, view, _i, _j, _ref1, _ref2;\n      if (typeof data === 'undefined' || data === null) {\n        return;\n      }\n      if (typeof data === 'string') {\n        if (data.length !== 0) {\n          this._contentType = 'text/plain;charset=UTF-8';\n        }\n        this._body = new Buffer(data, 'utf8');\n      } else if (Buffer.isBuffer(data)) {\n        this._body = data;\n      } else if (data instanceof ArrayBuffer) {\n        body = new Buffer(data.byteLength);\n        view = new Uint8Array(data);\n        for (i = _i = 0, _ref1 = data.byteLength; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {\n          body[i] = view[i];\n        }\n        this._body = body;\n      } else if (data.buffer && data.buffer instanceof ArrayBuffer) {\n        body = new Buffer(data.byteLength);\n        offset = data.byteOffset;\n        view = new Uint8Array(data.buffer);\n        for (i = _j = 0, _ref2 = data.byteLength; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; i = 0 <= _ref2 ? ++_j : --_j) {\n          body[i] = view[i + offset];\n        }\n        this._body = body;\n      } else {\n        throw new Error(\"Unsupported send() data \" + data);\n      }\n      return void 0;\n    };\n\n    XMLHttpRequestUpload.prototype._finalizeHeaders = function(headers, loweredHeaders) {\n      if (this._contentType) {\n        if (!('content-type' in loweredHeaders)) {\n          headers['Content-Type'] = this._contentType;\n        }\n      }\n      if (this._body) {\n        headers['Content-Length'] = this._body.length.toString();\n      }\n      return void 0;\n    };\n\n    XMLHttpRequestUpload.prototype._startUpload = function(request) {\n      if (this._body) {\n        request.write(this._body);\n      }\n      request.end();\n      return void 0;\n    };\n\n    return XMLHttpRequestUpload;\n\n  })(XMLHttpRequestEventTarget);\n\n  XMLHttpRequest.XMLHttpRequestUpload = XMLHttpRequestUpload;\n\n}).call(this);\n\n/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ \"./node_modules/process/browser.js\"), __webpack_require__(/*! ./../../buffer/index.js */ \"./node_modules/buffer/index.js\").Buffer))\n\n//# sourceURL=webpack:///./node_modules/xhr2/lib/xhr2.js?");
-
-/***/ }),
-
-/***/ "./node_modules/xtend/immutable.js":
-/*!*****************************************!*\
-  !*** ./node_modules/xtend/immutable.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = extend\n\nvar hasOwnProperty = Object.prototype.hasOwnProperty;\n\nfunction extend() {\n    var target = {}\n\n    for (var i = 0; i < arguments.length; i++) {\n        var source = arguments[i]\n\n        for (var key in source) {\n            if (hasOwnProperty.call(source, key)) {\n                target[key] = source[key]\n            }\n        }\n    }\n\n    return target\n}\n\n\n//# sourceURL=webpack:///./node_modules/xtend/immutable.js?");
-
-/***/ }),
-
-/***/ "./src/cmi5.js":
-/*!*********************!*\
-  !*** ./src/cmi5.js ***!
-  \*********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\n/*\nGovernment Purpose Rights (“GPR”)\nContract No.  W911NF-14-D-0005\nContractor Name:   University of Southern California\nContractor Address:  3720 S. Flower Street, 3rd Floor, Los Angeles, CA 90089-0001\nExpiration Date:  Restrictions do not expire, GPR is perpetual\nRestrictions Notice/Marking: The Government's rights to use, modify, reproduce, release, perform, display, or disclose this software are restricted by paragraph (b)(2) of the Rights in Noncommercial Computer Software and Noncommercial Computer Software Documentation clause contained in the above identified contract.  No restrictions apply after the expiration date shown above. Any reproduction of the software or portions thereof marked with this legend must also reproduce the markings. (see: DFARS 252.227-7014(f)(2)) \n\nNo Commercial Use: This software shall be used for government purposes only and shall not, without the express written permission of the party whose name appears in the restrictive legend, be used, modified, reproduced, released, performed, or displayed for any commercial purpose or disclosed to a person other than subcontractors, suppliers, or prospective subcontractors or suppliers, who require the software to submit offers for, or perform, government contracts.  Prior to disclosing the software, the Contractor shall require the persons to whom disclosure will be made to complete and sign the non-disclosure agreement at 227.7103-7.  (see DFARS 252.227-7025(b)(2))\n*/\nvar _url = null;\nvar _cmi = null;\n\nfunction sleep(ms) {\n  return new Promise(function (resolve) {\n    return setTimeout(resolve, ms);\n  });\n}\n/**\n * Singleton wrapper for a cmi service.\n */\n\n\nvar Cmi5 = /*#__PURE__*/function () {\n  function Cmi5() {\n    _classCallCheck(this, Cmi5);\n  }\n\n  _createClass(Cmi5, null, [{\n    key: \"_tryCreateWithTimeout\",\n\n    /**\n     * Try to create an instance of the Cmi5 class downloaded from the script lib.\n     * Since the lib may take some time to download, typically safer/easier\n     * to wait and retry if the class is not yet set on `window.Cmi5`\n     *\n     * @param {Number} timeoutMs\n     * @param {Number} retryIntervalMs\n     * @param {Number} timerMs\n     */\n    value: function _tryCreateWithTimeout() {\n      var timeoutMs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 20000;\n      var retryIntervalMs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 250;\n      var timerMs = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;\n      return new Promise(function (resolve, reject) {\n        if (typeof window !== \"undefined\" && typeof window.Cmi5 === \"function\") {\n          _cmi = new window.Cmi5(Cmi5.url);\n          return resolve(_cmi);\n        }\n\n        if (timerMs >= timeoutMs) {\n          return reject(\"Cmi5 timeout: failed to create a Cmi5 instance in \".concat(timeoutMs, \" (constructor not loaded on window)\"));\n        }\n\n        sleep(retryIntervalMs).then(function (_) {\n          return Cmi5._tryCreateWithTimeout(timeoutMs, retryIntervalMs, timerMs + retryIntervalMs);\n        }).then(function (cmi) {\n          return resolve(cmi);\n        })[\"catch\"](function (err) {\n          return reject(err);\n        });\n      });\n    }\n    /**\n     * Create an instance of the Cmi5 class downloaded from the script lib.\n     * Since the lib may take some time to download, typically safer/easier\n     * to wait and retry if the class is not yet set on `window.Cmi5`\n     *\n     * If you want to use the return type, you need to extract it from the promise, e.g.\n     *\n     * `const cmi = await Cmi5.create(myUrl);`\n     *\n     * or\n     *\n     * `Cmi5.create(myUrl).then(cmi => // do something w cmi obj)`\n     *\n     * @returns {Promise} that resolves an instance of (downloaded) Cmi5 class (which is not the same as this class)\n     */\n\n  }, {\n    key: \"create\",\n    value: function create(url) {\n      _url = url || Cmi5.url;\n      var timeoutMs = 5000;\n      var retryIntervalMs = 250;\n      return this._tryCreateWithTimeout(timeoutMs, retryIntervalMs, 0);\n    }\n  }, {\n    key: \"STATUS\",\n    get: function get() {\n      return {\n        NONE: 0,\n        START_IN_PROGRESS: 1,\n        STARTED: 2,\n        START_FAILED: 3,\n        COMPLETE_IN_PROGRESS: 4,\n        COMPLETED: 5,\n        COMPLETE_FAILED: 6,\n        TERMINATE_IN_PROGRESS: 6,\n        TERMINATED: 7,\n        TERMINATE_FAILED: 8\n      };\n    }\n    /**\n     * Cmi is only available if the required query params are on the url string\n     */\n\n  }, {\n    key: \"isCmiAvailable\",\n    get: function get() {\n      if (Cmi5.instanceExists) {\n        return true;\n      }\n\n      if (!window || (typeof window === \"undefined\" ? \"undefined\" : _typeof(window)) !== \"object\") {\n        return false;\n      }\n\n      if (!window.location || typeof window.location.search !== \"string\") {\n        return false;\n      }\n\n      var p = new URLSearchParams(window.location.search);\n      return Boolean( // true if has all required cmi5 query params\n      p.get(\"fetch\") && p.get(\"endpoint\") && p.get(\"actor\") && p.get(\"registration\") && p.get(\"activityId\"));\n    }\n  }, {\n    key: \"url\",\n    get: function get() {\n      return _url || typeof window !== \"undefined\" ? window.location.href : null;\n    },\n    set: function set(value) {\n      _url = value;\n    }\n  }, {\n    key: \"instanceExists\",\n    get: function get() {\n      return _cmi ? true : false;\n    }\n  }, {\n    key: \"instance\",\n    get: function get() {\n      if (_cmi) {\n        return _cmi;\n      }\n\n      try {\n        return Cmi5.create();\n      } catch (err) {\n        console.error(err);\n        return null;\n      }\n    }\n  }]);\n\n  return Cmi5;\n}();\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Cmi5);\n\n//# sourceURL=webpack:///./src/cmi5.js?");
-
-/***/ }),
-
-/***/ "./src/context.js":
-/*!************************!*\
-  !*** ./src/context.js ***!
-  \************************/
-/*! exports provided: Context, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Context\", function() { return Context; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _cmi5__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cmi5 */ \"./src/cmi5.js\");\n/*\nGovernment Purpose Rights (“GPR”)\nContract No.  W911NF-14-D-0005\nContractor Name:   University of Southern California\nContractor Address:  3720 S. Flower Street, 3rd Floor, Los Angeles, CA 90089-0001\nExpiration Date:  Restrictions do not expire, GPR is perpetual\nRestrictions Notice/Marking: The Government's rights to use, modify, reproduce, release, perform, display, or disclose this software are restricted by paragraph (b)(2) of the Rights in Noncommercial Computer Software and Noncommercial Computer Software Documentation clause contained in the above identified contract.  No restrictions apply after the expiration date shown above. Any reproduction of the software or portions thereof marked with this legend must also reproduce the markings. (see: DFARS 252.227-7014(f)(2)) \n\nNo Commercial Use: This software shall be used for government purposes only and shall not, without the express written permission of the party whose name appears in the restrictive legend, be used, modified, reproduced, released, performed, or displayed for any commercial purpose or disclosed to a person other than subcontractors, suppliers, or prospective subcontractors or suppliers, who require the software to submit offers for, or perform, government contracts.  Prior to disclosing the software, the Contractor shall require the persons to whom disclosure will be made to complete and sign the non-disclosure agreement at 227.7103-7.  (see DFARS 252.227-7025(b)(2))\n*/\n\n\nvar Context = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({\n  cmi5_status: _cmi5__WEBPACK_IMPORTED_MODULE_1__[\"default\"].STATUS.NONE,\n  completed: function completed(score, failed, extensions) {\n    var terminate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;\n    var verbose = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;\n  },\n  sendStatement: function sendStatement(verb, activityExtensions, contextExtensions, result) {},\n  start: function start(_start) {},\n  terminate: function terminate() {}\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (Context);\n\n//# sourceURL=webpack:///./src/context.js?");
-
-/***/ }),
-
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/*! exports provided: Context, Provider, Cmi5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./context */ \"./src/context.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Context\", function() { return _context__WEBPACK_IMPORTED_MODULE_0__[\"Context\"]; });\n\n/* harmony import */ var _provider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./provider */ \"./src/provider.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Provider\", function() { return _provider__WEBPACK_IMPORTED_MODULE_1__[\"Provider\"]; });\n\n/* harmony import */ var _cmi5__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./cmi5 */ \"./src/cmi5.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"Cmi5\", function() { return _cmi5__WEBPACK_IMPORTED_MODULE_2__[\"default\"]; });\n\n/*\nGovernment Purpose Rights (“GPR”)\nContract No.  W911NF-14-D-0005\nContractor Name:   University of Southern California\nContractor Address:  3720 S. Flower Street, 3rd Floor, Los Angeles, CA 90089-0001\nExpiration Date:  Restrictions do not expire, GPR is perpetual\nRestrictions Notice/Marking: The Government's rights to use, modify, reproduce, release, perform, display, or disclose this software are restricted by paragraph (b)(2) of the Rights in Noncommercial Computer Software and Noncommercial Computer Software Documentation clause contained in the above identified contract.  No restrictions apply after the expiration date shown above. Any reproduction of the software or portions thereof marked with this legend must also reproduce the markings. (see: DFARS 252.227-7014(f)(2)) \n\nNo Commercial Use: This software shall be used for government purposes only and shall not, without the express written permission of the party whose name appears in the restrictive legend, be used, modified, reproduced, released, performed, or displayed for any commercial purpose or disclosed to a person other than subcontractors, suppliers, or prospective subcontractors or suppliers, who require the software to submit offers for, or perform, government contracts.  Prior to disclosing the software, the Contractor shall require the persons to whom disclosure will be made to complete and sign the non-disclosure agreement at 227.7103-7.  (see DFARS 252.227-7025(b)(2))\n*/\n\n\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
-
-/***/ }),
-
-/***/ "./src/provider.js":
-/*!*************************!*\
-  !*** ./src/provider.js ***!
-  \*************************/
-/*! exports provided: Provider, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"Provider\", function() { return Provider; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var tincanjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tincanjs */ \"./node_modules/tincanjs/build/tincan-node.js\");\n/* harmony import */ var tincanjs__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(tincanjs__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./context */ \"./src/context.js\");\n/* harmony import */ var _cmi5__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./cmi5 */ \"./src/cmi5.js\");\nfunction ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }\n\nfunction _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nfunction _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }\n\nfunction _nonIterableRest() { throw new TypeError(\"Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nfunction _iterableToArrayLimit(arr, i) { if (typeof Symbol === \"undefined\" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i[\"return\"] != null) _i[\"return\"](); } finally { if (_d) throw _e; } } return _arr; }\n\nfunction _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }\n\n/*\nGovernment Purpose Rights (“GPR”)\nContract No.  W911NF-14-D-0005\nContractor Name:   University of Southern California\nContractor Address:  3720 S. Flower Street, 3rd Floor, Los Angeles, CA 90089-0001\nExpiration Date:  Restrictions do not expire, GPR is perpetual\nRestrictions Notice/Marking: The Government's rights to use, modify, reproduce, release, perform, display, or disclose this software are restricted by paragraph (b)(2) of the Rights in Noncommercial Computer Software and Noncommercial Computer Software Documentation clause contained in the above identified contract.  No restrictions apply after the expiration date shown above. Any reproduction of the software or portions thereof marked with this legend must also reproduce the markings. (see: DFARS 252.227-7014(f)(2)) \n\nNo Commercial Use: This software shall be used for government purposes only and shall not, without the express written permission of the party whose name appears in the restrictive legend, be used, modified, reproduced, released, performed, or displayed for any commercial purpose or disclosed to a person other than subcontractors, suppliers, or prospective subcontractors or suppliers, who require the software to submit offers for, or perform, government contracts.  Prior to disclosing the software, the Contractor shall require the persons to whom disclosure will be made to complete and sign the non-disclosure agreement at 227.7103-7.  (see DFARS 252.227-7025(b)(2))\n*/\n\n/*\nGovernment Purpose Rights (“GPR”)\nContract No.  W911NF-14-D-0005\nContractor Name:   University of Southern California\nContractor Address:  3720 S. Flower Street, 3rd Floor, Los Angeles, CA 90089-0001\nExpiration Date:  Restrictions do not expire, GPR is perpetual\nRestrictions Notice/Marking: The Government's rights to use, modify, reproduce, release, perform, display, or disclose this software are restricted by paragraph (b)(2) of the Rights in Noncommercial Computer Software and Noncommercial Computer Software Documentation clause contained in the above identified contract.  No restrictions apply after the expiration date shown above. Any reproduction of the software or portions thereof marked with this legend must also reproduce the markings. (see: DFARS 252.227-7014(f)(2))\n\nNo Commercial Use: This software shall be used for government purposes only and shall not, without the express written permission of the party whose name appears in the restrictive legend, be used, modified, reproduced, released, performed, or displayed for any commercial purpose or disclosed to a person other than subcontractors, suppliers, or prospective subcontractors or suppliers, who require the software to submit offers for, or perform, government contracts.  Prior to disclosing the software, the Contractor shall require the persons to whom disclosure will be made to complete and sign the non-disclosure agreement at 227.7103-7.  (see DFARS 252.227-7025(b)(2))\n*/\n\n\n\n\nvar Provider = function Provider(_ref) {\n  var children = _ref.children;\n\n  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.NONE),\n      _React$useState2 = _slicedToArray(_React$useState, 2),\n      status = _React$useState2[0],\n      setStatus = _React$useState2[1];\n  /**\n   * Mark the lesson as completed with a score (or no score if non assement),\n   * and then (by default) terminate the cmi5 session.\n   *\n   * Generally safer to use the combined 'complete then terminate'\n   * to more safely manage that the two events are published correctly in order.\n   *\n   * In CMI5 protocol, one of complete/pass/failed should be called once (and only once).\n   * This single 'completed' function will send a result with a completion verb as follows:\n   *   - COMPLETED (https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#verbs_completed)\n   *       If no `score` is passed\n   *   - PASSED (https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#verbs_passed)\n   *       If a `score` is passed and `failed` is *not* passed or anything other then `true\n   *   - FAILED (https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#verbs_failed)\n   *       If a `score` is passed and `failed` is `true`\n   * (COMPLETED, PASSED, FAILED)\n   *\n   * @params {Number} [score] - the score for PASSED or FAILED or leave undefined for non-assessment resources\n   * @params {Boolean} [failed] - pass `true` *only* with a failing score\n   * @params {Object} [extensions] - a XAPI extensions object to pass with result\n   *     (https://github.com/adlnet/xAPI-Spec/blob/master/xAPI-Data.md#result)\n   * @params {Boolean} terminate - if TRUE, terminates the cmi5 session after\n   *      submitting 'completed'. Default is TRUE\n   * @params {Boolean} verbose - if TRUE, logs more events to console. Default is FALSE\n   */\n\n\n  var completed = function completed(score, failed, extensions) {\n    var terminate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;\n    var verbose = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;\n\n    if (!_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].isCmiAvailable) {\n      return;\n    }\n\n    if (verbose) {\n      console.log(\"cmi5 sending COMPLETED and will follow with TERMINATE...\");\n    }\n\n    if (status !== _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.STARTED && status !== _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.COMPLETE_FAILED) {\n      console.error(\"complete called from invalid state (you need to call start action before complete and complete can be called only ONE time)\", status);\n      return;\n    }\n\n    var cmi = _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].instance;\n\n    if (!cmi) {\n      /**\n       * the cmi instance will be null if initialization failed with an error\n       * e.g. because this web-app was launched using a url\n       * that didn't have cmi5's expected query params:\n       * https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#content_launch\n       */\n      console.error(\"complete called having no cmi instance (you need to call start action before complete)\");\n      return;\n    }\n\n    setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.COMPLETE_IN_PROGRESS);\n\n    var onCompleteCallback = function onCompleteCallback(err) {\n      if (err) {\n        console.error(\"completion call failed with error:\", err);\n        setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.COMPLETE_FAILED);\n      } else {\n        setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.COMPLETED);\n      }\n\n      if (!terminate) {\n        if (verbose) {\n          console.log(\"after COMPLETED, skipping TERMINATE...\");\n        }\n\n        return;\n      }\n\n      setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.TERMINATE_IN_PROGRESS);\n      cmi.terminate(function (err) {\n        if (err) {\n          console.error(\"completion call failed with error:\", err);\n          setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.TERMINATE_FAILED);\n          return;\n        }\n\n        setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.TERMINATED);\n      });\n    };\n\n    if (isNaN(Number(score))) {\n      /**\n       * if no score is passed, then we will complete with\n       * the COMPLETED verb (as opposed to PASSED or FAILED)\n       * https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#verbs_completed\n       */\n      extensions = score;\n      cmi.completed(extensions, onCompleteCallback);\n      return;\n    }\n    /**\n     * A score was passed, so we will complete with\n     * the either verb PASSED\n     * (https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#verbs_passed)\n     * or FAILED\n     * https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#verbs_failed)\n     */\n\n\n    failed = typeof failed === \"boolean\" ? failed : false;\n\n    if (failed) {\n      cmi.failed(score, extensions, onCompleteCallback);\n    } else {\n      cmi.passed(score, extensions, onCompleteCallback);\n    }\n  };\n\n  var sendStatement = function sendStatement(verb, activityExtensions, contextExtensions, result) {\n    console.log(\"CALLED sendStatement...\");\n\n    if (!_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].isCmiAvailable) {\n      return;\n    }\n\n    if (status !== _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.STARTED) {\n      console.error(\"Send statement called when status is not STARTED.\", status);\n      return;\n    }\n\n    var cmi = _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].instance;\n\n    if (!cmi) {\n      /**\n       * the cmi instance will be null if initialization failed with an error\n       * e.g. because this web-app was launched using a url\n       * that didn't have cmi5's expected query params:\n       * https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#content_launch\n       */\n      console.error(\"sendStatement called having no cmi instance (you need to call start action before sendStatement)\");\n      return;\n    }\n\n    var st = cmi.prepareStatement(verb);\n\n    if (activityExtensions) {\n      var curDefinition = st.target.definition ? st.target.definition.asVersion() : {};\n      st.target.definition = new tincanjs__WEBPACK_IMPORTED_MODULE_1___default.a.ActivityDefinition(_objectSpread(_objectSpread({}, curDefinition), {}, {\n        extensions: curDefinition.extensions ? _objectSpread(_objectSpread({}, curDefinition.extensions), activityExtensions) : activityExtensions\n      }));\n    }\n\n    if (contextExtensions) {\n      st.context.extensions = st.context.extensions ? _objectSpread(_objectSpread({}, st.context.extensions), contextExtensions) : contextExtensions;\n    }\n\n    if (result) {\n      st.result = result instanceof tincanjs__WEBPACK_IMPORTED_MODULE_1___default.a.Result ? result : new tincanjs__WEBPACK_IMPORTED_MODULE_1___default.a.Result(result);\n    }\n\n    cmi.sendStatement(st, function (err) {\n      if (err) {\n        console.error(\"sendStatement call failed with error:\", err);\n        return;\n      }\n    });\n  };\n  /**\n   * As early  as possible you must initialize cmi5 by calling the start action.\n   * No completion or termination can be called unless start has completed successfully.\n   * Under the covers of start, the full cmi5 launch sequence is executed:\n   * https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#content_launch\n   */\n\n\n  var start = function start(url) {\n    if (!_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].isCmiAvailable) {\n      return;\n    }\n\n    setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.START_IN_PROGRESS);\n    _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].create(url).then(function (cmi) {\n      cmi.start(function (startErr) {\n        if (startErr) {\n          setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.START_FAILED);\n          console.error(\"CMI error: \".concat(startErr));\n          return;\n        }\n\n        setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.STARTED);\n      });\n    })[\"catch\"](function (err) {\n      setStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.START_FAILED);\n    });\n  };\n  /**\n   * In CMI5 protocol, a statement with verb TERMINATED\n   * (https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#938-terminated)\n   * should be called once (and only once) to end the session.\n   */\n\n\n  var terminate = function terminate() {\n    if (!_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].isCmiAvailable) {\n      return;\n    }\n\n    if (status !== _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.COMPLETED && status !== _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.TERMINATE_FAILED) {\n      console.error('Terminate called when status is not COMPLETED. Generally safer to use \"completeAndTerminate\" action', status);\n    }\n\n    var cmi = _cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].instance;\n\n    if (!cmi) {\n      /**\n       * the cmi instance will be null if initialization failed with an error\n       * e.g. because this web-app was launched using a url\n       * that didn't have cmi5's expected query params:\n       * https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#content_launch\n       */\n      console.error(\"complete called having no cmi instance (you need to call start action before complete)\");\n      return;\n    }\n\n    sendStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.TERMINATE_IN_PROGRESS);\n    cmi.terminate(function (err) {\n      if (err) {\n        console.error(\"completion call failed with error:\", err);\n        sendStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.TERMINATE_FAILED);\n        return;\n      }\n\n      sendStatus(_cmi5__WEBPACK_IMPORTED_MODULE_3__[\"default\"].STATUS.TERMINATED);\n    });\n  };\n\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_context__WEBPACK_IMPORTED_MODULE_2__[\"Context\"].Provider, {\n    value: {\n      cmi5_status: status,\n      completed: completed,\n      sendStatement: sendStatement,\n      start: start,\n      terminate: terminate\n    }\n  }, children);\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (Provider);\n\n//# sourceURL=webpack:///./src/provider.js?");
-
-/***/ }),
-
-/***/ 0:
-/*!**********************!*\
-  !*** util (ignored) ***!
-  \**********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/* (ignored) */\n\n//# sourceURL=webpack:///util_(ignored)?");
-
-/***/ }),
-
-/***/ 1:
-/*!**********************!*\
-  !*** util (ignored) ***!
-  \**********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("/* (ignored) */\n\n//# sourceURL=webpack:///util_(ignored)?");
-
-/***/ }),
-
-/***/ "react":
-/*!************************!*\
-  !*** external "react" ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"react\");\n\n//# sourceURL=webpack:///external_%22react%22?");
-
-/***/ })
-
-/******/ })));
+Object.defineProperty(exports, "__esModule", { value: true });
+
+var http = require("http");
+var https = require("https");
+var url = require("url");
+var require$$0 = require("stream");
+var assert = require("assert");
+var tty = require("tty");
+var util = require("util");
+var os = require("os");
+var zlib = require("zlib");
+
+function _interopDefaultLegacy(e) {
+  return e && typeof e === "object" && "default" in e ? e : { default: e };
+}
+
+var http__default = /*#__PURE__*/ _interopDefaultLegacy(http);
+var https__default = /*#__PURE__*/ _interopDefaultLegacy(https);
+var url__default = /*#__PURE__*/ _interopDefaultLegacy(url);
+var require$$0__default = /*#__PURE__*/ _interopDefaultLegacy(require$$0);
+var assert__default = /*#__PURE__*/ _interopDefaultLegacy(assert);
+var tty__default = /*#__PURE__*/ _interopDefaultLegacy(tty);
+var util__default = /*#__PURE__*/ _interopDefaultLegacy(util);
+var os__default = /*#__PURE__*/ _interopDefaultLegacy(os);
+var zlib__default = /*#__PURE__*/ _interopDefaultLegacy(zlib);
+
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function (d, b) {
+  extendStatics =
+    Object.setPrototypeOf ||
+    ({ __proto__: [] } instanceof Array &&
+      function (d, b) {
+        d.__proto__ = b;
+      }) ||
+    function (d, b) {
+      for (var p in b)
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+    };
+  return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+  extendStatics(d, b);
+  function __() {
+    this.constructor = d;
+  }
+  d.prototype =
+    b === null ? Object.create(b) : ((__.prototype = b.prototype), new __());
+}
+
+var __assign = function () {
+  __assign =
+    Object.assign ||
+    function __assign(t) {
+      for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s)
+          if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+      return t;
+    };
+  return __assign.apply(this, arguments);
+};
+
+function __awaiter(thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P
+      ? value
+      : new P(function (resolve) {
+          resolve(value);
+        });
+  }
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function step(result) {
+      result.done
+        ? resolve(result.value)
+        : adopt(result.value).then(fulfilled, rejected);
+    }
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+}
+
+function __generator(thisArg, body) {
+  var _ = {
+      label: 0,
+      sent: function () {
+        if (t[0] & 1) throw t[1];
+        return t[1];
+      },
+      trys: [],
+      ops: [],
+    },
+    f,
+    y,
+    t,
+    g;
+  return (
+    (g = { next: verb(0), throw: verb(1), return: verb(2) }),
+    typeof Symbol === "function" &&
+      (g[Symbol.iterator] = function () {
+        return this;
+      }),
+    g
+  );
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+    while (_)
+      try {
+        if (
+          ((f = 1),
+          y &&
+            (t =
+              op[0] & 2
+                ? y["return"]
+                : op[0]
+                ? y["throw"] || ((t = y["return"]) && t.call(y), 0)
+                : y.next) &&
+            !(t = t.call(y, op[1])).done)
+        )
+          return t;
+        if (((y = 0), t)) op = [op[0] & 2, t.value];
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+          case 4:
+            _.label++;
+            return { value: op[1], done: false };
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+          case 7:
+            op = _.ops.pop();
+            _.trys.pop();
+            continue;
+          default:
+            if (
+              !((t = _.trys), (t = t.length > 0 && t[t.length - 1])) &&
+              (op[0] === 6 || op[0] === 2)
+            ) {
+              _ = 0;
+              continue;
+            }
+            if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) {
+              _.label = op[1];
+              break;
+            }
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+              _.ops.push(op);
+              break;
+            }
+            if (t[2]) _.ops.pop();
+            _.trys.pop();
+            continue;
+        }
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    if (op[0] & 5) throw op[1];
+    return { value: op[0] ? op[1] : void 0, done: true };
+  }
+}
+
+function __spreadArrays() {
+  for (var s = 0, i = 0, il = arguments.length; i < il; i++)
+    s += arguments[i].length;
+  for (var r = Array(s), k = 0, i = 0; i < il; i++)
+    for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+      r[k] = a[j];
+  return r;
+}
+
+var bind = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+/*global toString:true*/
+
+// utils is a library of generic helper functions non-specific to axios
+
+var toString = Object.prototype.toString;
+
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+function isArray(val) {
+  return toString.call(val) === "[object Array]";
+}
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === "undefined";
+}
+
+/**
+ * Determine if a value is a Buffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Buffer, otherwise false
+ */
+function isBuffer(val) {
+  return (
+    val !== null &&
+    !isUndefined(val) &&
+    val.constructor !== null &&
+    !isUndefined(val.constructor) &&
+    typeof val.constructor.isBuffer === "function" &&
+    val.constructor.isBuffer(val)
+  );
+}
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+function isArrayBuffer(val) {
+  return toString.call(val) === "[object ArrayBuffer]";
+}
+
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+function isFormData(val) {
+  return typeof FormData !== "undefined" && val instanceof FormData;
+}
+
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  var result;
+  if (typeof ArrayBuffer !== "undefined" && ArrayBuffer.isView) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = val && val.buffer && val.buffer instanceof ArrayBuffer;
+  }
+  return result;
+}
+
+/**
+ * Determine if a value is a String
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+function isString(val) {
+  return typeof val === "string";
+}
+
+/**
+ * Determine if a value is a Number
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+function isNumber(val) {
+  return typeof val === "number";
+}
+
+/**
+ * Determine if a value is an Object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+function isObject(val) {
+  return val !== null && typeof val === "object";
+}
+
+/**
+ * Determine if a value is a plain Object
+ *
+ * @param {Object} val The value to test
+ * @return {boolean} True if value is a plain Object, otherwise false
+ */
+function isPlainObject(val) {
+  if (toString.call(val) !== "[object Object]") {
+    return false;
+  }
+
+  var prototype = Object.getPrototypeOf(val);
+  return prototype === null || prototype === Object.prototype;
+}
+
+/**
+ * Determine if a value is a Date
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+function isDate(val) {
+  return toString.call(val) === "[object Date]";
+}
+
+/**
+ * Determine if a value is a File
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+function isFile(val) {
+  return toString.call(val) === "[object File]";
+}
+
+/**
+ * Determine if a value is a Blob
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+function isBlob(val) {
+  return toString.call(val) === "[object Blob]";
+}
+
+/**
+ * Determine if a value is a Function
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+function isFunction(val) {
+  return toString.call(val) === "[object Function]";
+}
+
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
+
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+function isURLSearchParams(val) {
+  return (
+    typeof URLSearchParams !== "undefined" && val instanceof URLSearchParams
+  );
+}
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ * @returns {String} The String freed of excess whitespace
+ */
+function trim(str) {
+  return str.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+/**
+ * Determine if we're running in a standard browser environment
+ *
+ * This allows axios to run in a web worker, and react-native.
+ * Both environments support XMLHttpRequest, but not fully standard globals.
+ *
+ * web workers:
+ *  typeof window -> undefined
+ *  typeof document -> undefined
+ *
+ * react-native:
+ *  navigator.product -> 'ReactNative'
+ * nativescript
+ *  navigator.product -> 'NativeScript' or 'NS'
+ */
+function isStandardBrowserEnv() {
+  if (
+    typeof navigator !== "undefined" &&
+    (navigator.product === "ReactNative" ||
+      navigator.product === "NativeScript" ||
+      navigator.product === "NS")
+  ) {
+    return false;
+  }
+  return typeof window !== "undefined" && typeof document !== "undefined";
+}
+
+/**
+ * Iterate over an Array or an Object invoking a function for each item.
+ *
+ * If `obj` is an Array callback will be called passing
+ * the value, index, and complete array for each item.
+ *
+ * If 'obj' is an Object callback will be called passing
+ * the value, key, and complete object for each property.
+ *
+ * @param {Object|Array} obj The object to iterate
+ * @param {Function} fn The callback to invoke for each item
+ */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === "undefined") {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if (typeof obj !== "object") {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
+    }
+  }
+}
+
+/**
+ * Accepts varargs expecting each argument to be an object, then
+ * immutably merges the properties of each object and returns result.
+ *
+ * When multiple objects contain the same key the later object in
+ * the arguments list will take precedence.
+ *
+ * Example:
+ *
+ * ```js
+ * var result = merge({foo: 123}, {foo: 456});
+ * console.log(result.foo); // outputs 456
+ * ```
+ *
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function merge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (isPlainObject(result[key]) && isPlainObject(val)) {
+      result[key] = merge(result[key], val);
+    } else if (isPlainObject(val)) {
+      result[key] = merge({}, val);
+    } else if (isArray(val)) {
+      result[key] = val.slice();
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Extends object a by mutably adding to it the properties of object b.
+ *
+ * @param {Object} a The object to be extended
+ * @param {Object} b The object to copy properties from
+ * @param {Object} thisArg The object to bind function to
+ * @return {Object} The resulting value of object a
+ */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === "function") {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+/**
+ * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+ *
+ * @param {string} content with BOM
+ * @return {string} content value without BOM
+ */
+function stripBOM(content) {
+  if (content.charCodeAt(0) === 0xfeff) {
+    content = content.slice(1);
+  }
+  return content;
+}
+
+var utils = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isBuffer: isBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isPlainObject: isPlainObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  extend: extend,
+  trim: trim,
+  stripBOM: stripBOM,
+};
+
+function encode(val) {
+  return encodeURIComponent(val)
+    .replace(/%3A/gi, ":")
+    .replace(/%24/g, "$")
+    .replace(/%2C/gi, ",")
+    .replace(/%20/g, "+")
+    .replace(/%5B/gi, "[")
+    .replace(/%5D/gi, "]");
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+var buildURL = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === "undefined") {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + "[]";
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + "=" + encode(v));
+      });
+    });
+
+    serializedParams = parts.join("&");
+  }
+
+  if (serializedParams) {
+    var hashmarkIndex = url.indexOf("#");
+    if (hashmarkIndex !== -1) {
+      url = url.slice(0, hashmarkIndex);
+    }
+
+    url += (url.indexOf("?") === -1 ? "?" : "&") + serializedParams;
+  }
+
+  return url;
+};
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+ * Add a new interceptor to the stack
+ *
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
+ */
+InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected,
+  });
+  return this.handlers.length - 1;
+};
+
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+var InterceptorManager_1 = InterceptorManager;
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+var transformData = function transformData(data, headers, fns) {
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn(data, headers);
+  });
+
+  return data;
+};
+
+var isCancel = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+var normalizeHeaderName = function normalizeHeaderName(
+  headers,
+  normalizedName
+) {
+  utils.forEach(headers, function processHeader(value, name) {
+    if (
+      name !== normalizedName &&
+      name.toUpperCase() === normalizedName.toUpperCase()
+    ) {
+      headers[normalizedName] = value;
+      delete headers[name];
+    }
+  });
+};
+
+/**
+ * Update an Error with the specified config, error code, and response.
+ *
+ * @param {Error} error The error to update.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The error.
+ */
+var enhanceError = function enhanceError(
+  error,
+  config,
+  code,
+  request,
+  response
+) {
+  error.config = config;
+  if (code) {
+    error.code = code;
+  }
+
+  error.request = request;
+  error.response = response;
+  error.isAxiosError = true;
+
+  error.toJSON = function toJSON() {
+    return {
+      // Standard
+      message: this.message,
+      name: this.name,
+      // Microsoft
+      description: this.description,
+      number: this.number,
+      // Mozilla
+      fileName: this.fileName,
+      lineNumber: this.lineNumber,
+      columnNumber: this.columnNumber,
+      stack: this.stack,
+      // Axios
+      config: this.config,
+      code: this.code,
+    };
+  };
+  return error;
+};
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+var createError = function createError(
+  message,
+  config,
+  code,
+  request,
+  response
+) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, request, response);
+};
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+var settle = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(
+      createError(
+        "Request failed with status code " + response.status,
+        response.config,
+        null,
+        response.request,
+        response
+      )
+    );
+  }
+};
+
+var cookies = utils.isStandardBrowserEnv()
+  ? // Standard browser envs support document.cookie
+    (function standardBrowserEnv() {
+      return {
+        write: function write(name, value, expires, path, domain, secure) {
+          var cookie = [];
+          cookie.push(name + "=" + encodeURIComponent(value));
+
+          if (utils.isNumber(expires)) {
+            cookie.push("expires=" + new Date(expires).toGMTString());
+          }
+
+          if (utils.isString(path)) {
+            cookie.push("path=" + path);
+          }
+
+          if (utils.isString(domain)) {
+            cookie.push("domain=" + domain);
+          }
+
+          if (secure === true) {
+            cookie.push("secure");
+          }
+
+          document.cookie = cookie.join("; ");
+        },
+
+        read: function read(name) {
+          var match = document.cookie.match(
+            new RegExp("(^|;\\s*)(" + name + ")=([^;]*)")
+          );
+          return match ? decodeURIComponent(match[3]) : null;
+        },
+
+        remove: function remove(name) {
+          this.write(name, "", Date.now() - 86400000);
+        },
+      };
+    })()
+  : // Non standard browser env (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return {
+        write: function write() {},
+        read: function read() {
+          return null;
+        },
+        remove: function remove() {},
+      };
+    })();
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+var isAbsoluteURL = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+var combineURLs = function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "")
+    : baseURL;
+};
+
+/**
+ * Creates a new URL by combining the baseURL with the requestedURL,
+ * only when the requestedURL is not already an absolute URL.
+ * If the requestURL is absolute, this function returns the requestedURL untouched.
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} requestedURL Absolute or relative URL to combine
+ * @returns {string} The combined full path
+ */
+var buildFullPath = function buildFullPath(baseURL, requestedURL) {
+  if (baseURL && !isAbsoluteURL(requestedURL)) {
+    return combineURLs(baseURL, requestedURL);
+  }
+  return requestedURL;
+};
+
+// Headers whose duplicates are ignored by node
+// c.f. https://nodejs.org/api/http.html#http_message_headers
+var ignoreDuplicateOf = [
+  "age",
+  "authorization",
+  "content-length",
+  "content-type",
+  "etag",
+  "expires",
+  "from",
+  "host",
+  "if-modified-since",
+  "if-unmodified-since",
+  "last-modified",
+  "location",
+  "max-forwards",
+  "proxy-authorization",
+  "referer",
+  "retry-after",
+  "user-agent",
+];
+
+/**
+ * Parse headers into an object
+ *
+ * ```
+ * Date: Wed, 27 Aug 2014 08:58:49 GMT
+ * Content-Type: application/json
+ * Connection: keep-alive
+ * Transfer-Encoding: chunked
+ * ```
+ *
+ * @param {String} headers Headers needing to be parsed
+ * @returns {Object} Headers parsed into an object
+ */
+var parseHeaders = function parseHeaders(headers) {
+  var parsed = {};
+  var key;
+  var val;
+  var i;
+
+  if (!headers) {
+    return parsed;
+  }
+
+  utils.forEach(headers.split("\n"), function parser(line) {
+    i = line.indexOf(":");
+    key = utils.trim(line.substr(0, i)).toLowerCase();
+    val = utils.trim(line.substr(i + 1));
+
+    if (key) {
+      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+        return;
+      }
+      if (key === "set-cookie") {
+        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+      } else {
+        parsed[key] = parsed[key] ? parsed[key] + ", " + val : val;
+      }
+    }
+  });
+
+  return parsed;
+};
+
+var isURLSameOrigin = utils.isStandardBrowserEnv()
+  ? // Standard browser envs have full support of the APIs needed to test
+    // whether the request URL is of the same origin as current location.
+    (function standardBrowserEnv() {
+      var msie = /(msie|trident)/i.test(navigator.userAgent);
+      var urlParsingNode = document.createElement("a");
+      var originURL;
+
+      /**
+       * Parse a URL to discover it's components
+       *
+       * @param {String} url The URL to be parsed
+       * @returns {Object}
+       */
+      function resolveURL(url) {
+        var href = url;
+
+        if (msie) {
+          // IE needs attribute set twice to normalize properties
+          urlParsingNode.setAttribute("href", href);
+          href = urlParsingNode.href;
+        }
+
+        urlParsingNode.setAttribute("href", href);
+
+        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+        return {
+          href: urlParsingNode.href,
+          protocol: urlParsingNode.protocol
+            ? urlParsingNode.protocol.replace(/:$/, "")
+            : "",
+          host: urlParsingNode.host,
+          search: urlParsingNode.search
+            ? urlParsingNode.search.replace(/^\?/, "")
+            : "",
+          hash: urlParsingNode.hash
+            ? urlParsingNode.hash.replace(/^#/, "")
+            : "",
+          hostname: urlParsingNode.hostname,
+          port: urlParsingNode.port,
+          pathname:
+            urlParsingNode.pathname.charAt(0) === "/"
+              ? urlParsingNode.pathname
+              : "/" + urlParsingNode.pathname,
+        };
+      }
+
+      originURL = resolveURL(window.location.href);
+
+      /**
+       * Determine if a URL shares the same origin as the current location
+       *
+       * @param {String} requestURL The URL to test
+       * @returns {boolean} True if URL shares the same origin, otherwise false
+       */
+      return function isURLSameOrigin(requestURL) {
+        var parsed = utils.isString(requestURL)
+          ? resolveURL(requestURL)
+          : requestURL;
+        return (
+          parsed.protocol === originURL.protocol &&
+          parsed.host === originURL.host
+        );
+      };
+    })()
+  : // Non standard browser envs (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return function isURLSameOrigin() {
+        return true;
+      };
+    })();
+
+var xhr = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders["Content-Type"]; // Let the browser set it
+    }
+
+    if (
+      (utils.isBlob(requestData) || utils.isFile(requestData)) &&
+      requestData.type
+    ) {
+      delete requestHeaders["Content-Type"]; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || "";
+      var password = unescape(encodeURIComponent(config.auth.password)) || "";
+      requestHeaders.Authorization = "Basic " + btoa(username + ":" + password);
+    }
+
+    var fullPath = buildFullPath(config.baseURL, config.url);
+    request.open(
+      config.method.toUpperCase(),
+      buildURL(fullPath, config.params, config.paramsSerializer),
+      true
+    );
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    // Listen for ready state
+    request.onreadystatechange = function handleLoad() {
+      if (!request || request.readyState !== 4) {
+        return;
+      }
+
+      // The request errored out and we didn't get a response, this will be
+      // handled by onerror instead
+      // With one exception: request that using file: protocol, most browsers
+      // will return status as 0 even though it's a successful request
+      if (
+        request.status === 0 &&
+        !(request.responseURL && request.responseURL.indexOf("file:") === 0)
+      ) {
+        return;
+      }
+
+      // Prepare the response
+      var responseHeaders =
+        "getAllResponseHeaders" in request
+          ? parseHeaders(request.getAllResponseHeaders())
+          : null;
+      var responseData =
+        !config.responseType || config.responseType === "text"
+          ? request.responseText
+          : request.response;
+      var response = {
+        data: responseData,
+        status: request.status,
+        statusText: request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request,
+      };
+
+      settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle browser request cancellation (as opposed to a manual cancellation)
+    request.onabort = function handleAbort() {
+      if (!request) {
+        return;
+      }
+
+      reject(createError("Request aborted", config, "ECONNABORTED", request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError("Network Error", config, null, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      var timeoutErrorMessage = "timeout of " + config.timeout + "ms exceeded";
+      if (config.timeoutErrorMessage) {
+        timeoutErrorMessage = config.timeoutErrorMessage;
+      }
+      reject(createError(timeoutErrorMessage, config, "ECONNABORTED", request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      // Add xsrf header
+      var xsrfValue =
+        (config.withCredentials || isURLSameOrigin(fullPath)) &&
+        config.xsrfCookieName
+          ? cookies.read(config.xsrfCookieName)
+          : undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ("setRequestHeader" in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (
+          typeof requestData === "undefined" &&
+          key.toLowerCase() === "content-type"
+        ) {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (!utils.isUndefined(config.withCredentials)) {
+      request.withCredentials = !!config.withCredentials;
+    }
+
+    // Add responseType to request if needed
+    if (config.responseType) {
+      try {
+        request.responseType = config.responseType;
+      } catch (e) {
+        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
+        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
+        if (config.responseType !== "json") {
+          throw e;
+        }
+      }
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === "function") {
+      request.addEventListener("progress", config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === "function" && request.upload) {
+      request.upload.addEventListener("progress", config.onUploadProgress);
+    }
+
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (!request) {
+          return;
+        }
+
+        request.abort();
+        reject(cancel);
+        // Clean up request
+        request = null;
+      });
+    }
+
+    if (!requestData) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+
+var commonjsGlobal =
+  typeof globalThis !== "undefined"
+    ? globalThis
+    : typeof window !== "undefined"
+    ? window
+    : typeof global !== "undefined"
+    ? global
+    : typeof self !== "undefined"
+    ? self
+    : {};
+
+function createCommonjsModule(fn, basedir, module) {
+  return (
+    (module = {
+      path: basedir,
+      exports: {},
+      require: function (path, base) {
+        return commonjsRequire(
+          path,
+          base === undefined || base === null ? module.path : base
+        );
+      },
+    }),
+    fn(module, module.exports),
+    module.exports
+  );
+}
+
+function commonjsRequire() {
+  throw new Error(
+    "Dynamic requires are not currently supported by @rollup/plugin-commonjs"
+  );
+}
+
+/**
+ * Helpers.
+ */
+
+var s = 1000;
+var m = s * 60;
+var h = m * 60;
+var d = h * 24;
+var w = d * 7;
+var y = d * 365.25;
+
+/**
+ * Parse or format the given `val`.
+ *
+ * Options:
+ *
+ *  - `long` verbose formatting [false]
+ *
+ * @param {String|Number} val
+ * @param {Object} [options]
+ * @throws {Error} throw an error if val is not a non-empty string or a number
+ * @return {String|Number}
+ * @api public
+ */
+
+var ms = function (val, options) {
+  options = options || {};
+  var type = typeof val;
+  if (type === "string" && val.length > 0) {
+    return parse(val);
+  } else if (type === "number" && isFinite(val)) {
+    return options.long ? fmtLong(val) : fmtShort(val);
+  }
+  throw new Error(
+    "val is not a non-empty string or a valid number. val=" +
+      JSON.stringify(val)
+  );
+};
+
+/**
+ * Parse the given `str` and return milliseconds.
+ *
+ * @param {String} str
+ * @return {Number}
+ * @api private
+ */
+
+function parse(str) {
+  str = String(str);
+  if (str.length > 100) {
+    return;
+  }
+  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+    str
+  );
+  if (!match) {
+    return;
+  }
+  var n = parseFloat(match[1]);
+  var type = (match[2] || "ms").toLowerCase();
+  switch (type) {
+    case "years":
+    case "year":
+    case "yrs":
+    case "yr":
+    case "y":
+      return n * y;
+    case "weeks":
+    case "week":
+    case "w":
+      return n * w;
+    case "days":
+    case "day":
+    case "d":
+      return n * d;
+    case "hours":
+    case "hour":
+    case "hrs":
+    case "hr":
+    case "h":
+      return n * h;
+    case "minutes":
+    case "minute":
+    case "mins":
+    case "min":
+    case "m":
+      return n * m;
+    case "seconds":
+    case "second":
+    case "secs":
+    case "sec":
+    case "s":
+      return n * s;
+    case "milliseconds":
+    case "millisecond":
+    case "msecs":
+    case "msec":
+    case "ms":
+      return n;
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Short format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtShort(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return Math.round(ms / d) + "d";
+  }
+  if (msAbs >= h) {
+    return Math.round(ms / h) + "h";
+  }
+  if (msAbs >= m) {
+    return Math.round(ms / m) + "m";
+  }
+  if (msAbs >= s) {
+    return Math.round(ms / s) + "s";
+  }
+  return ms + "ms";
+}
+
+/**
+ * Long format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtLong(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return plural(ms, msAbs, d, "day");
+  }
+  if (msAbs >= h) {
+    return plural(ms, msAbs, h, "hour");
+  }
+  if (msAbs >= m) {
+    return plural(ms, msAbs, m, "minute");
+  }
+  if (msAbs >= s) {
+    return plural(ms, msAbs, s, "second");
+  }
+  return ms + " ms";
+}
+
+/**
+ * Pluralization helper.
+ */
+
+function plural(ms, msAbs, n, name) {
+  var isPlural = msAbs >= n * 1.5;
+  return Math.round(ms / n) + " " + name + (isPlural ? "s" : "");
+}
+
+/**
+ * This is the common logic for both the Node.js and web browser
+ * implementations of `debug()`.
+ */
+
+function setup(env) {
+  createDebug.debug = createDebug;
+  createDebug.default = createDebug;
+  createDebug.coerce = coerce;
+  createDebug.disable = disable;
+  createDebug.enable = enable;
+  createDebug.enabled = enabled;
+  createDebug.humanize = ms;
+
+  Object.keys(env).forEach((key) => {
+    createDebug[key] = env[key];
+  });
+
+  /**
+   * Active `debug` instances.
+   */
+  createDebug.instances = [];
+
+  /**
+   * The currently active debug mode names, and names to skip.
+   */
+
+  createDebug.names = [];
+  createDebug.skips = [];
+
+  /**
+   * Map of special "%n" handling functions, for the debug "format" argument.
+   *
+   * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+   */
+  createDebug.formatters = {};
+
+  /**
+   * Selects a color for a debug namespace
+   * @param {String} namespace The namespace string for the for the debug instance to be colored
+   * @return {Number|String} An ANSI color code for the given namespace
+   * @api private
+   */
+  function selectColor(namespace) {
+    let hash = 0;
+
+    for (let i = 0; i < namespace.length; i++) {
+      hash = (hash << 5) - hash + namespace.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+
+    return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
+  }
+  createDebug.selectColor = selectColor;
+
+  /**
+   * Create a debugger with the given `namespace`.
+   *
+   * @param {String} namespace
+   * @return {Function}
+   * @api public
+   */
+  function createDebug(namespace) {
+    let prevTime;
+
+    function debug(...args) {
+      // Disabled?
+      if (!debug.enabled) {
+        return;
+      }
+
+      const self = debug;
+
+      // Set `diff` timestamp
+      const curr = Number(new Date());
+      const ms = curr - (prevTime || curr);
+      self.diff = ms;
+      self.prev = prevTime;
+      self.curr = curr;
+      prevTime = curr;
+
+      args[0] = createDebug.coerce(args[0]);
+
+      if (typeof args[0] !== "string") {
+        // Anything else let's inspect with %O
+        args.unshift("%O");
+      }
+
+      // Apply any `formatters` transformations
+      let index = 0;
+      args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
+        // If we encounter an escaped % then don't increase the array index
+        if (match === "%%") {
+          return match;
+        }
+        index++;
+        const formatter = createDebug.formatters[format];
+        if (typeof formatter === "function") {
+          const val = args[index];
+          match = formatter.call(self, val);
+
+          // Now we need to remove `args[index]` since it's inlined in the `format`
+          args.splice(index, 1);
+          index--;
+        }
+        return match;
+      });
+
+      // Apply env-specific formatting (colors, etc.)
+      createDebug.formatArgs.call(self, args);
+
+      const logFn = self.log || createDebug.log;
+      logFn.apply(self, args);
+    }
+
+    debug.namespace = namespace;
+    debug.enabled = createDebug.enabled(namespace);
+    debug.useColors = createDebug.useColors();
+    debug.color = selectColor(namespace);
+    debug.destroy = destroy;
+    debug.extend = extend;
+    // Debug.formatArgs = formatArgs;
+    // debug.rawLog = rawLog;
+
+    // env-specific initialization logic for debug instances
+    if (typeof createDebug.init === "function") {
+      createDebug.init(debug);
+    }
+
+    createDebug.instances.push(debug);
+
+    return debug;
+  }
+
+  function destroy() {
+    const index = createDebug.instances.indexOf(this);
+    if (index !== -1) {
+      createDebug.instances.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
+  function extend(namespace, delimiter) {
+    const newDebug = createDebug(
+      this.namespace +
+        (typeof delimiter === "undefined" ? ":" : delimiter) +
+        namespace
+    );
+    newDebug.log = this.log;
+    return newDebug;
+  }
+
+  /**
+   * Enables a debug mode by namespaces. This can include modes
+   * separated by a colon and wildcards.
+   *
+   * @param {String} namespaces
+   * @api public
+   */
+  function enable(namespaces) {
+    createDebug.save(namespaces);
+
+    createDebug.names = [];
+    createDebug.skips = [];
+
+    let i;
+    const split = (typeof namespaces === "string" ? namespaces : "").split(
+      /[\s,]+/
+    );
+    const len = split.length;
+
+    for (i = 0; i < len; i++) {
+      if (!split[i]) {
+        // ignore empty strings
+        continue;
+      }
+
+      namespaces = split[i].replace(/\*/g, ".*?");
+
+      if (namespaces[0] === "-") {
+        createDebug.skips.push(new RegExp("^" + namespaces.substr(1) + "$"));
+      } else {
+        createDebug.names.push(new RegExp("^" + namespaces + "$"));
+      }
+    }
+
+    for (i = 0; i < createDebug.instances.length; i++) {
+      const instance = createDebug.instances[i];
+      instance.enabled = createDebug.enabled(instance.namespace);
+    }
+  }
+
+  /**
+   * Disable debug output.
+   *
+   * @return {String} namespaces
+   * @api public
+   */
+  function disable() {
+    const namespaces = [
+      ...createDebug.names.map(toNamespace),
+      ...createDebug.skips.map(toNamespace).map((namespace) => "-" + namespace),
+    ].join(",");
+    createDebug.enable("");
+    return namespaces;
+  }
+
+  /**
+   * Returns true if the given mode name is enabled, false otherwise.
+   *
+   * @param {String} name
+   * @return {Boolean}
+   * @api public
+   */
+  function enabled(name) {
+    if (name[name.length - 1] === "*") {
+      return true;
+    }
+
+    let i;
+    let len;
+
+    for (i = 0, len = createDebug.skips.length; i < len; i++) {
+      if (createDebug.skips[i].test(name)) {
+        return false;
+      }
+    }
+
+    for (i = 0, len = createDebug.names.length; i < len; i++) {
+      if (createDebug.names[i].test(name)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Convert regexp to namespace
+   *
+   * @param {RegExp} regxep
+   * @return {String} namespace
+   * @api private
+   */
+  function toNamespace(regexp) {
+    return regexp
+      .toString()
+      .substring(2, regexp.toString().length - 2)
+      .replace(/\.\*\?$/, "*");
+  }
+
+  /**
+   * Coerce `val`.
+   *
+   * @param {Mixed} val
+   * @return {Mixed}
+   * @api private
+   */
+  function coerce(val) {
+    if (val instanceof Error) {
+      return val.stack || val.message;
+    }
+    return val;
+  }
+
+  createDebug.enable(createDebug.load());
+
+  return createDebug;
+}
+
+var common = setup;
+
+var browser = createCommonjsModule(function (module, exports) {
+  /* eslint-env browser */
+
+  /**
+   * This is the web browser implementation of `debug()`.
+   */
+
+  exports.log = log;
+  exports.formatArgs = formatArgs;
+  exports.save = save;
+  exports.load = load;
+  exports.useColors = useColors;
+  exports.storage = localstorage();
+
+  /**
+   * Colors.
+   */
+
+  exports.colors = [
+    "#0000CC",
+    "#0000FF",
+    "#0033CC",
+    "#0033FF",
+    "#0066CC",
+    "#0066FF",
+    "#0099CC",
+    "#0099FF",
+    "#00CC00",
+    "#00CC33",
+    "#00CC66",
+    "#00CC99",
+    "#00CCCC",
+    "#00CCFF",
+    "#3300CC",
+    "#3300FF",
+    "#3333CC",
+    "#3333FF",
+    "#3366CC",
+    "#3366FF",
+    "#3399CC",
+    "#3399FF",
+    "#33CC00",
+    "#33CC33",
+    "#33CC66",
+    "#33CC99",
+    "#33CCCC",
+    "#33CCFF",
+    "#6600CC",
+    "#6600FF",
+    "#6633CC",
+    "#6633FF",
+    "#66CC00",
+    "#66CC33",
+    "#9900CC",
+    "#9900FF",
+    "#9933CC",
+    "#9933FF",
+    "#99CC00",
+    "#99CC33",
+    "#CC0000",
+    "#CC0033",
+    "#CC0066",
+    "#CC0099",
+    "#CC00CC",
+    "#CC00FF",
+    "#CC3300",
+    "#CC3333",
+    "#CC3366",
+    "#CC3399",
+    "#CC33CC",
+    "#CC33FF",
+    "#CC6600",
+    "#CC6633",
+    "#CC9900",
+    "#CC9933",
+    "#CCCC00",
+    "#CCCC33",
+    "#FF0000",
+    "#FF0033",
+    "#FF0066",
+    "#FF0099",
+    "#FF00CC",
+    "#FF00FF",
+    "#FF3300",
+    "#FF3333",
+    "#FF3366",
+    "#FF3399",
+    "#FF33CC",
+    "#FF33FF",
+    "#FF6600",
+    "#FF6633",
+    "#FF9900",
+    "#FF9933",
+    "#FFCC00",
+    "#FFCC33",
+  ];
+
+  /**
+   * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+   * and the Firebug extension (any Firefox version) are known
+   * to support "%c" CSS customizations.
+   *
+   * TODO: add a `localStorage` variable to explicitly enable/disable colors
+   */
+
+  // eslint-disable-next-line complexity
+  function useColors() {
+    // NB: In an Electron preload script, document will be defined but not fully
+    // initialized. Since we know we're in Chrome, we'll just detect this case
+    // explicitly
+    if (
+      typeof window !== "undefined" &&
+      window.process &&
+      (window.process.type === "renderer" || window.process.__nwjs)
+    ) {
+      return true;
+    }
+
+    // Internet Explorer and Edge do not support colors.
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.userAgent &&
+      navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)
+    ) {
+      return false;
+    }
+
+    // Is webkit? http://stackoverflow.com/a/16459606/376773
+    // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+    return (
+      (typeof document !== "undefined" &&
+        document.documentElement &&
+        document.documentElement.style &&
+        document.documentElement.style.WebkitAppearance) ||
+      // Is firebug? http://stackoverflow.com/a/398120/376773
+      (typeof window !== "undefined" &&
+        window.console &&
+        (window.console.firebug ||
+          (window.console.exception && window.console.table))) ||
+      // Is firefox >= v31?
+      // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+      (typeof navigator !== "undefined" &&
+        navigator.userAgent &&
+        navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) &&
+        parseInt(RegExp.$1, 10) >= 31) ||
+      // Double check webkit in userAgent just in case we are in a worker
+      (typeof navigator !== "undefined" &&
+        navigator.userAgent &&
+        navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/))
+    );
+  }
+
+  /**
+   * Colorize log arguments if enabled.
+   *
+   * @api public
+   */
+
+  function formatArgs(args) {
+    args[0] =
+      (this.useColors ? "%c" : "") +
+      this.namespace +
+      (this.useColors ? " %c" : " ") +
+      args[0] +
+      (this.useColors ? "%c " : " ") +
+      "+" +
+      module.exports.humanize(this.diff);
+
+    if (!this.useColors) {
+      return;
+    }
+
+    const c = "color: " + this.color;
+    args.splice(1, 0, c, "color: inherit");
+
+    // The final "%c" is somewhat tricky, because there could be other
+    // arguments passed either before or after the %c, so we need to
+    // figure out the correct index to insert the CSS into
+    let index = 0;
+    let lastC = 0;
+    args[0].replace(/%[a-zA-Z%]/g, (match) => {
+      if (match === "%%") {
+        return;
+      }
+      index++;
+      if (match === "%c") {
+        // We only are interested in the *last* %c
+        // (the user may have provided their own)
+        lastC = index;
+      }
+    });
+
+    args.splice(lastC, 0, c);
+  }
+
+  /**
+   * Invokes `console.log()` when available.
+   * No-op when `console.log` is not a "function".
+   *
+   * @api public
+   */
+  function log(...args) {
+    // This hackery is required for IE8/9, where
+    // the `console.log` function doesn't have 'apply'
+    return typeof console === "object" && console.log && console.log(...args);
+  }
+
+  /**
+   * Save `namespaces`.
+   *
+   * @param {String} namespaces
+   * @api private
+   */
+  function save(namespaces) {
+    try {
+      if (namespaces) {
+        exports.storage.setItem("debug", namespaces);
+      } else {
+        exports.storage.removeItem("debug");
+      }
+    } catch (error) {
+      // Swallow
+      // XXX (@Qix-) should we be logging these?
+    }
+  }
+
+  /**
+   * Load `namespaces`.
+   *
+   * @return {String} returns the previously persisted debug modes
+   * @api private
+   */
+  function load() {
+    let r;
+    try {
+      r = exports.storage.getItem("debug");
+    } catch (error) {
+      // Swallow
+      // XXX (@Qix-) should we be logging these?
+    }
+
+    // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+    if (!r && typeof process !== "undefined" && "env" in process) {
+      r = process.env.DEBUG;
+    }
+
+    return r;
+  }
+
+  /**
+   * Localstorage attempts to return the localstorage.
+   *
+   * This is necessary because safari throws
+   * when a user disables cookies/localstorage
+   * and you attempt to access it.
+   *
+   * @return {LocalStorage}
+   * @api private
+   */
+
+  function localstorage() {
+    try {
+      // TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context
+      // The Browser also has localStorage in the global context.
+      return localStorage;
+    } catch (error) {
+      // Swallow
+      // XXX (@Qix-) should we be logging these?
+    }
+  }
+
+  module.exports = common(exports);
+
+  const { formatters } = module.exports;
+
+  /**
+   * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+   */
+
+  formatters.j = function (v) {
+    try {
+      return JSON.stringify(v);
+    } catch (error) {
+      return "[UnexpectedJSONParseError]: " + error.message;
+    }
+  };
+});
+
+var hasFlag = (flag, argv = process.argv) => {
+  const prefix = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
+  const position = argv.indexOf(prefix + flag);
+  const terminatorPosition = argv.indexOf("--");
+  return (
+    position !== -1 &&
+    (terminatorPosition === -1 || position < terminatorPosition)
+  );
+};
+
+const { env } = process;
+
+let forceColor;
+if (
+  hasFlag("no-color") ||
+  hasFlag("no-colors") ||
+  hasFlag("color=false") ||
+  hasFlag("color=never")
+) {
+  forceColor = 0;
+} else if (
+  hasFlag("color") ||
+  hasFlag("colors") ||
+  hasFlag("color=true") ||
+  hasFlag("color=always")
+) {
+  forceColor = 1;
+}
+
+if ("FORCE_COLOR" in env) {
+  if (env.FORCE_COLOR === "true") {
+    forceColor = 1;
+  } else if (env.FORCE_COLOR === "false") {
+    forceColor = 0;
+  } else {
+    forceColor =
+      env.FORCE_COLOR.length === 0
+        ? 1
+        : Math.min(parseInt(env.FORCE_COLOR, 10), 3);
+  }
+}
+
+function translateLevel(level) {
+  if (level === 0) {
+    return false;
+  }
+
+  return {
+    level,
+    hasBasic: true,
+    has256: level >= 2,
+    has16m: level >= 3,
+  };
+}
+
+function supportsColor(haveStream, streamIsTTY) {
+  if (forceColor === 0) {
+    return 0;
+  }
+
+  if (
+    hasFlag("color=16m") ||
+    hasFlag("color=full") ||
+    hasFlag("color=truecolor")
+  ) {
+    return 3;
+  }
+
+  if (hasFlag("color=256")) {
+    return 2;
+  }
+
+  if (haveStream && !streamIsTTY && forceColor === undefined) {
+    return 0;
+  }
+
+  const min = forceColor || 0;
+
+  if (env.TERM === "dumb") {
+    return min;
+  }
+
+  if (process.platform === "win32") {
+    // Windows 10 build 10586 is the first Windows release that supports 256 colors.
+    // Windows 10 build 14931 is the first release that supports 16m/TrueColor.
+    const osRelease = os__default["default"].release().split(".");
+    if (Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
+      return Number(osRelease[2]) >= 14931 ? 3 : 2;
+    }
+
+    return 1;
+  }
+
+  if ("CI" in env) {
+    if (
+      [
+        "TRAVIS",
+        "CIRCLECI",
+        "APPVEYOR",
+        "GITLAB_CI",
+        "GITHUB_ACTIONS",
+        "BUILDKITE",
+      ].some((sign) => sign in env) ||
+      env.CI_NAME === "codeship"
+    ) {
+      return 1;
+    }
+
+    return min;
+  }
+
+  if ("TEAMCITY_VERSION" in env) {
+    return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
+  }
+
+  if (env.COLORTERM === "truecolor") {
+    return 3;
+  }
+
+  if ("TERM_PROGRAM" in env) {
+    const version = parseInt(
+      (env.TERM_PROGRAM_VERSION || "").split(".")[0],
+      10
+    );
+
+    switch (env.TERM_PROGRAM) {
+      case "iTerm.app":
+        return version >= 3 ? 3 : 2;
+      case "Apple_Terminal":
+        return 2;
+      // No default
+    }
+  }
+
+  if (/-256(color)?$/i.test(env.TERM)) {
+    return 2;
+  }
+
+  if (
+    /^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)
+  ) {
+    return 1;
+  }
+
+  if ("COLORTERM" in env) {
+    return 1;
+  }
+
+  return min;
+}
+
+function getSupportLevel(stream) {
+  const level = supportsColor(stream, stream && stream.isTTY);
+  return translateLevel(level);
+}
+
+var supportsColor_1 = {
+  supportsColor: getSupportLevel,
+  stdout: translateLevel(
+    supportsColor(true, tty__default["default"].isatty(1))
+  ),
+  stderr: translateLevel(
+    supportsColor(true, tty__default["default"].isatty(2))
+  ),
+};
+
+var node = createCommonjsModule(function (module, exports) {
+  /**
+   * Module dependencies.
+   */
+
+  /**
+   * This is the Node.js implementation of `debug()`.
+   */
+
+  exports.init = init;
+  exports.log = log;
+  exports.formatArgs = formatArgs;
+  exports.save = save;
+  exports.load = load;
+  exports.useColors = useColors;
+
+  /**
+   * Colors.
+   */
+
+  exports.colors = [6, 2, 3, 4, 5, 1];
+
+  try {
+    // Optional dependency (as in, doesn't need to be installed, NOT like optionalDependencies in package.json)
+    // eslint-disable-next-line import/no-extraneous-dependencies
+    const supportsColor = supportsColor_1;
+
+    if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
+      exports.colors = [
+        20,
+        21,
+        26,
+        27,
+        32,
+        33,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        56,
+        57,
+        62,
+        63,
+        68,
+        69,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        92,
+        93,
+        98,
+        99,
+        112,
+        113,
+        128,
+        129,
+        134,
+        135,
+        148,
+        149,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        178,
+        179,
+        184,
+        185,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        214,
+        215,
+        220,
+        221,
+      ];
+    }
+  } catch (error) {
+    // Swallow - we only care if `supports-color` is available; it doesn't have to be.
+  }
+
+  /**
+   * Build up the default `inspectOpts` object from the environment variables.
+   *
+   *   $ DEBUG_COLORS=no DEBUG_DEPTH=10 DEBUG_SHOW_HIDDEN=enabled node script.js
+   */
+
+  exports.inspectOpts = Object.keys(process.env)
+    .filter((key) => {
+      return /^debug_/i.test(key);
+    })
+    .reduce((obj, key) => {
+      // Camel-case
+      const prop = key
+        .substring(6)
+        .toLowerCase()
+        .replace(/_([a-z])/g, (_, k) => {
+          return k.toUpperCase();
+        });
+
+      // Coerce string value into JS value
+      let val = process.env[key];
+      if (/^(yes|on|true|enabled)$/i.test(val)) {
+        val = true;
+      } else if (/^(no|off|false|disabled)$/i.test(val)) {
+        val = false;
+      } else if (val === "null") {
+        val = null;
+      } else {
+        val = Number(val);
+      }
+
+      obj[prop] = val;
+      return obj;
+    }, {});
+
+  /**
+   * Is stdout a TTY? Colored output is enabled when `true`.
+   */
+
+  function useColors() {
+    return "colors" in exports.inspectOpts
+      ? Boolean(exports.inspectOpts.colors)
+      : tty__default["default"].isatty(process.stderr.fd);
+  }
+
+  /**
+   * Adds ANSI color escape codes if enabled.
+   *
+   * @api public
+   */
+
+  function formatArgs(args) {
+    const { namespace: name, useColors } = this;
+
+    if (useColors) {
+      const c = this.color;
+      const colorCode = "\u001B[3" + (c < 8 ? c : "8;5;" + c);
+      const prefix = `  ${colorCode};1m${name} \u001B[0m`;
+
+      args[0] = prefix + args[0].split("\n").join("\n" + prefix);
+      args.push(
+        colorCode + "m+" + module.exports.humanize(this.diff) + "\u001B[0m"
+      );
+    } else {
+      args[0] = getDate() + name + " " + args[0];
+    }
+  }
+
+  function getDate() {
+    if (exports.inspectOpts.hideDate) {
+      return "";
+    }
+    return new Date().toISOString() + " ";
+  }
+
+  /**
+   * Invokes `util.format()` with the specified arguments and writes to stderr.
+   */
+
+  function log(...args) {
+    return process.stderr.write(
+      util__default["default"].format(...args) + "\n"
+    );
+  }
+
+  /**
+   * Save `namespaces`.
+   *
+   * @param {String} namespaces
+   * @api private
+   */
+  function save(namespaces) {
+    if (namespaces) {
+      process.env.DEBUG = namespaces;
+    } else {
+      // If you set a process.env field to null or undefined, it gets cast to the
+      // string 'null' or 'undefined'. Just delete instead.
+      delete process.env.DEBUG;
+    }
+  }
+
+  /**
+   * Load `namespaces`.
+   *
+   * @return {String} returns the previously persisted debug modes
+   * @api private
+   */
+
+  function load() {
+    return process.env.DEBUG;
+  }
+
+  /**
+   * Init logic for `debug` instances.
+   *
+   * Create a new `inspectOpts` object in case `useColors` is set
+   * differently for a particular `debug` instance.
+   */
+
+  function init(debug) {
+    debug.inspectOpts = {};
+
+    const keys = Object.keys(exports.inspectOpts);
+    for (let i = 0; i < keys.length; i++) {
+      debug.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
+    }
+  }
+
+  module.exports = common(exports);
+
+  const { formatters } = module.exports;
+
+  /**
+   * Map %o to `util.inspect()`, all on a single line.
+   */
+
+  formatters.o = function (v) {
+    this.inspectOpts.colors = this.useColors;
+    return util__default["default"]
+      .inspect(v, this.inspectOpts)
+      .replace(/\s*\n\s*/g, " ");
+  };
+
+  /**
+   * Map %O to `util.inspect()`, allowing multiple lines if needed.
+   */
+
+  formatters.O = function (v) {
+    this.inspectOpts.colors = this.useColors;
+    return util__default["default"].inspect(v, this.inspectOpts);
+  };
+});
+
+var src = createCommonjsModule(function (module) {
+  /**
+   * Detect Electron renderer / nwjs process, which is node, but we should
+   * treat as a browser.
+   */
+
+  if (
+    typeof process === "undefined" ||
+    process.type === "renderer" ||
+    process.browser === true ||
+    process.__nwjs
+  ) {
+    module.exports = browser;
+  } else {
+    module.exports = node;
+  }
+});
+
+var debug;
+try {
+  /* eslint global-require: off */
+  debug = src("follow-redirects");
+} catch (error) {
+  debug = function () {
+    /* */
+  };
+}
+var debug_1 = debug;
+
+var URL$1 = url__default["default"].URL;
+
+var Writable = require$$0__default["default"].Writable;
+
+// Create handlers that pass events from native requests
+var eventHandlers = Object.create(null);
+["abort", "aborted", "connect", "error", "socket", "timeout"].forEach(function (
+  event
+) {
+  eventHandlers[event] = function (arg1, arg2, arg3) {
+    this._redirectable.emit(event, arg1, arg2, arg3);
+  };
+});
+
+// Error types with codes
+var RedirectionError = createErrorType("ERR_FR_REDIRECTION_FAILURE", "");
+var TooManyRedirectsError = createErrorType(
+  "ERR_FR_TOO_MANY_REDIRECTS",
+  "Maximum number of redirects exceeded"
+);
+var MaxBodyLengthExceededError = createErrorType(
+  "ERR_FR_MAX_BODY_LENGTH_EXCEEDED",
+  "Request body larger than maxBodyLength limit"
+);
+var WriteAfterEndError = createErrorType(
+  "ERR_STREAM_WRITE_AFTER_END",
+  "write after end"
+);
+
+// An HTTP(S) request that can be redirected
+function RedirectableRequest(options, responseCallback) {
+  // Initialize the request
+  Writable.call(this);
+  this._sanitizeOptions(options);
+  this._options = options;
+  this._ended = false;
+  this._ending = false;
+  this._redirectCount = 0;
+  this._redirects = [];
+  this._requestBodyLength = 0;
+  this._requestBodyBuffers = [];
+
+  // Attach a callback if passed
+  if (responseCallback) {
+    this.on("response", responseCallback);
+  }
+
+  // React to responses of native requests
+  var self = this;
+  this._onNativeResponse = function (response) {
+    self._processResponse(response);
+  };
+
+  // Perform the first request
+  this._performRequest();
+}
+RedirectableRequest.prototype = Object.create(Writable.prototype);
+
+// Writes buffered data to the current native request
+RedirectableRequest.prototype.write = function (data, encoding, callback) {
+  // Writing is not allowed if end has been called
+  if (this._ending) {
+    throw new WriteAfterEndError();
+  }
+
+  // Validate input and shift parameters if necessary
+  if (
+    !(
+      typeof data === "string" ||
+      (typeof data === "object" && "length" in data)
+    )
+  ) {
+    throw new TypeError("data should be a string, Buffer or Uint8Array");
+  }
+  if (typeof encoding === "function") {
+    callback = encoding;
+    encoding = null;
+  }
+
+  // Ignore empty buffers, since writing them doesn't invoke the callback
+  // https://github.com/nodejs/node/issues/22066
+  if (data.length === 0) {
+    if (callback) {
+      callback();
+    }
+    return;
+  }
+  // Only write when we don't exceed the maximum body length
+  if (this._requestBodyLength + data.length <= this._options.maxBodyLength) {
+    this._requestBodyLength += data.length;
+    this._requestBodyBuffers.push({ data: data, encoding: encoding });
+    this._currentRequest.write(data, encoding, callback);
+  }
+  // Error when we exceed the maximum body length
+  else {
+    this.emit("error", new MaxBodyLengthExceededError());
+    this.abort();
+  }
+};
+
+// Ends the current native request
+RedirectableRequest.prototype.end = function (data, encoding, callback) {
+  // Shift parameters if necessary
+  if (typeof data === "function") {
+    callback = data;
+    data = encoding = null;
+  } else if (typeof encoding === "function") {
+    callback = encoding;
+    encoding = null;
+  }
+
+  // Write data if needed and end
+  if (!data) {
+    this._ended = this._ending = true;
+    this._currentRequest.end(null, null, callback);
+  } else {
+    var self = this;
+    var currentRequest = this._currentRequest;
+    this.write(data, encoding, function () {
+      self._ended = true;
+      currentRequest.end(null, null, callback);
+    });
+    this._ending = true;
+  }
+};
+
+// Sets a header value on the current native request
+RedirectableRequest.prototype.setHeader = function (name, value) {
+  this._options.headers[name] = value;
+  this._currentRequest.setHeader(name, value);
+};
+
+// Clears a header value on the current native request
+RedirectableRequest.prototype.removeHeader = function (name) {
+  delete this._options.headers[name];
+  this._currentRequest.removeHeader(name);
+};
+
+// Global timeout for all underlying requests
+RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
+  if (callback) {
+    this.once("timeout", callback);
+  }
+
+  if (this.socket) {
+    startTimer(this, msecs);
+  } else {
+    var self = this;
+    this._currentRequest.once("socket", function () {
+      startTimer(self, msecs);
+    });
+  }
+
+  this.once("response", clearTimer);
+  this.once("error", clearTimer);
+
+  return this;
+};
+
+function startTimer(request, msecs) {
+  clearTimeout(request._timeout);
+  request._timeout = setTimeout(function () {
+    request.emit("timeout");
+  }, msecs);
+}
+
+function clearTimer() {
+  clearTimeout(this._timeout);
+}
+
+// Proxy all other public ClientRequest methods
+[
+  "abort",
+  "flushHeaders",
+  "getHeader",
+  "setNoDelay",
+  "setSocketKeepAlive",
+].forEach(function (method) {
+  RedirectableRequest.prototype[method] = function (a, b) {
+    return this._currentRequest[method](a, b);
+  };
+});
+
+// Proxy all public ClientRequest properties
+["aborted", "connection", "socket"].forEach(function (property) {
+  Object.defineProperty(RedirectableRequest.prototype, property, {
+    get: function () {
+      return this._currentRequest[property];
+    },
+  });
+});
+
+RedirectableRequest.prototype._sanitizeOptions = function (options) {
+  // Ensure headers are always present
+  if (!options.headers) {
+    options.headers = {};
+  }
+
+  // Since http.request treats host as an alias of hostname,
+  // but the url module interprets host as hostname plus port,
+  // eliminate the host property to avoid confusion.
+  if (options.host) {
+    // Use hostname if set, because it has precedence
+    if (!options.hostname) {
+      options.hostname = options.host;
+    }
+    delete options.host;
+  }
+
+  // Complete the URL object when necessary
+  if (!options.pathname && options.path) {
+    var searchPos = options.path.indexOf("?");
+    if (searchPos < 0) {
+      options.pathname = options.path;
+    } else {
+      options.pathname = options.path.substring(0, searchPos);
+      options.search = options.path.substring(searchPos);
+    }
+  }
+};
+
+// Executes the next native request (initial or redirect)
+RedirectableRequest.prototype._performRequest = function () {
+  // Load the native protocol
+  var protocol = this._options.protocol;
+  var nativeProtocol = this._options.nativeProtocols[protocol];
+  if (!nativeProtocol) {
+    this.emit("error", new TypeError("Unsupported protocol " + protocol));
+    return;
+  }
+
+  // If specified, use the agent corresponding to the protocol
+  // (HTTP and HTTPS use different types of agents)
+  if (this._options.agents) {
+    var scheme = protocol.substr(0, protocol.length - 1);
+    this._options.agent = this._options.agents[scheme];
+  }
+
+  // Create the native request
+  var request = (this._currentRequest = nativeProtocol.request(
+    this._options,
+    this._onNativeResponse
+  ));
+  this._currentUrl = url__default["default"].format(this._options);
+
+  // Set up event handlers
+  request._redirectable = this;
+  for (var event in eventHandlers) {
+    /* istanbul ignore else */
+    if (event) {
+      request.on(event, eventHandlers[event]);
+    }
+  }
+
+  // End a redirected request
+  // (The first request must be ended explicitly with RedirectableRequest#end)
+  if (this._isRedirect) {
+    // Write the request entity and end.
+    var i = 0;
+    var self = this;
+    var buffers = this._requestBodyBuffers;
+    (function writeNext(error) {
+      // Only write if this request has not been redirected yet
+      /* istanbul ignore else */
+      if (request === self._currentRequest) {
+        // Report any write errors
+        /* istanbul ignore if */
+        if (error) {
+          self.emit("error", error);
+        }
+        // Write the next buffer if there are still left
+        else if (i < buffers.length) {
+          var buffer = buffers[i++];
+          /* istanbul ignore else */
+          if (!request.finished) {
+            request.write(buffer.data, buffer.encoding, writeNext);
+          }
+        }
+        // End the request if `end` has been called on us
+        else if (self._ended) {
+          request.end();
+        }
+      }
+    })();
+  }
+};
+
+// Processes a response from the current native request
+RedirectableRequest.prototype._processResponse = function (response) {
+  // Store the redirected response
+  var statusCode = response.statusCode;
+  if (this._options.trackRedirects) {
+    this._redirects.push({
+      url: this._currentUrl,
+      headers: response.headers,
+      statusCode: statusCode,
+    });
+  }
+
+  // RFC7231§6.4: The 3xx (Redirection) class of status code indicates
+  // that further action needs to be taken by the user agent in order to
+  // fulfill the request. If a Location header field is provided,
+  // the user agent MAY automatically redirect its request to the URI
+  // referenced by the Location field value,
+  // even if the specific status code is not understood.
+  var location = response.headers.location;
+  if (
+    location &&
+    this._options.followRedirects !== false &&
+    statusCode >= 300 &&
+    statusCode < 400
+  ) {
+    // Abort the current request
+    this._currentRequest.removeAllListeners();
+    this._currentRequest.on("error", noop);
+    this._currentRequest.abort();
+    // Discard the remainder of the response to avoid waiting for data
+    response.destroy();
+
+    // RFC7231§6.4: A client SHOULD detect and intervene
+    // in cyclical redirections (i.e., "infinite" redirection loops).
+    if (++this._redirectCount > this._options.maxRedirects) {
+      this.emit("error", new TooManyRedirectsError());
+      return;
+    }
+
+    // RFC7231§6.4: Automatic redirection needs to done with
+    // care for methods not known to be safe, […]
+    // RFC7231§6.4.2–3: For historical reasons, a user agent MAY change
+    // the request method from POST to GET for the subsequent request.
+    if (
+      ((statusCode === 301 || statusCode === 302) &&
+        this._options.method === "POST") ||
+      // RFC7231§6.4.4: The 303 (See Other) status code indicates that
+      // the server is redirecting the user agent to a different resource […]
+      // A user agent can perform a retrieval request targeting that URI
+      // (a GET or HEAD request if using HTTP) […]
+      (statusCode === 303 && !/^(?:GET|HEAD)$/.test(this._options.method))
+    ) {
+      this._options.method = "GET";
+      // Drop a possible entity and headers related to it
+      this._requestBodyBuffers = [];
+      removeMatchingHeaders(/^content-/i, this._options.headers);
+    }
+
+    // Drop the Host header, as the redirect might lead to a different host
+    var previousHostName =
+      removeMatchingHeaders(/^host$/i, this._options.headers) ||
+      url__default["default"].parse(this._currentUrl).hostname;
+
+    // Create the redirected request
+    var redirectUrl = url__default["default"].resolve(
+      this._currentUrl,
+      location
+    );
+    debug_1("redirecting to", redirectUrl);
+    this._isRedirect = true;
+    var redirectUrlParts = url__default["default"].parse(redirectUrl);
+    Object.assign(this._options, redirectUrlParts);
+
+    // Drop the Authorization header if redirecting to another host
+    if (redirectUrlParts.hostname !== previousHostName) {
+      removeMatchingHeaders(/^authorization$/i, this._options.headers);
+    }
+
+    // Evaluate the beforeRedirect callback
+    if (typeof this._options.beforeRedirect === "function") {
+      var responseDetails = { headers: response.headers };
+      try {
+        this._options.beforeRedirect.call(null, this._options, responseDetails);
+      } catch (err) {
+        this.emit("error", err);
+        return;
+      }
+      this._sanitizeOptions(this._options);
+    }
+
+    // Perform the redirected request
+    try {
+      this._performRequest();
+    } catch (cause) {
+      var error = new RedirectionError(
+        "Redirected request failed: " + cause.message
+      );
+      error.cause = cause;
+      this.emit("error", error);
+    }
+  } else {
+    // The response is not a redirect; return it as-is
+    response.responseUrl = this._currentUrl;
+    response.redirects = this._redirects;
+    this.emit("response", response);
+
+    // Clean up
+    this._requestBodyBuffers = [];
+  }
+};
+
+// Wraps the key/value object of protocols with redirect functionality
+function wrap(protocols) {
+  // Default settings
+  var exports = {
+    maxRedirects: 21,
+    maxBodyLength: 10 * 1024 * 1024,
+  };
+
+  // Wrap each protocol
+  var nativeProtocols = {};
+  Object.keys(protocols).forEach(function (scheme) {
+    var protocol = scheme + ":";
+    var nativeProtocol = (nativeProtocols[protocol] = protocols[scheme]);
+    var wrappedProtocol = (exports[scheme] = Object.create(nativeProtocol));
+
+    // Executes a request, following redirects
+    wrappedProtocol.request = function (input, options, callback) {
+      // Parse parameters
+      if (typeof input === "string") {
+        var urlStr = input;
+        try {
+          input = urlToOptions(new URL$1(urlStr));
+        } catch (err) {
+          /* istanbul ignore next */
+          input = url__default["default"].parse(urlStr);
+        }
+      } else if (URL$1 && input instanceof URL$1) {
+        input = urlToOptions(input);
+      } else {
+        callback = options;
+        options = input;
+        input = { protocol: protocol };
+      }
+      if (typeof options === "function") {
+        callback = options;
+        options = null;
+      }
+
+      // Set defaults
+      options = Object.assign(
+        {
+          maxRedirects: exports.maxRedirects,
+          maxBodyLength: exports.maxBodyLength,
+        },
+        input,
+        options
+      );
+      options.nativeProtocols = nativeProtocols;
+
+      assert__default["default"].equal(
+        options.protocol,
+        protocol,
+        "protocol mismatch"
+      );
+      debug_1("options", options);
+      return new RedirectableRequest(options, callback);
+    };
+
+    // Executes a GET request, following redirects
+    wrappedProtocol.get = function (input, options, callback) {
+      var request = wrappedProtocol.request(input, options, callback);
+      request.end();
+      return request;
+    };
+  });
+  return exports;
+}
+
+/* istanbul ignore next */
+function noop() {
+  /* empty */
+}
+
+// from https://github.com/nodejs/node/blob/master/lib/internal/url.js
+function urlToOptions(urlObject) {
+  var options = {
+    protocol: urlObject.protocol,
+    hostname: urlObject.hostname.startsWith("[")
+      ? /* istanbul ignore next */
+        urlObject.hostname.slice(1, -1)
+      : urlObject.hostname,
+    hash: urlObject.hash,
+    search: urlObject.search,
+    pathname: urlObject.pathname,
+    path: urlObject.pathname + urlObject.search,
+    href: urlObject.href,
+  };
+  if (urlObject.port !== "") {
+    options.port = Number(urlObject.port);
+  }
+  return options;
+}
+
+function removeMatchingHeaders(regex, headers) {
+  var lastValue;
+  for (var header in headers) {
+    if (regex.test(header)) {
+      lastValue = headers[header];
+      delete headers[header];
+    }
+  }
+  return lastValue;
+}
+
+function createErrorType(code, defaultMessage) {
+  function CustomError(message) {
+    Error.captureStackTrace(this, this.constructor);
+    this.message = message || defaultMessage;
+  }
+  CustomError.prototype = new Error();
+  CustomError.prototype.constructor = CustomError;
+  CustomError.prototype.name = "Error [" + code + "]";
+  CustomError.prototype.code = code;
+  return CustomError;
+}
+
+// Exports
+var followRedirects = wrap({
+  http: http__default["default"],
+  https: https__default["default"],
+});
+var wrap_1 = wrap;
+followRedirects.wrap = wrap_1;
+
+var _args = [["axios@0.20.0", "/Users/kcarr/Documents/react-cmi5-context"]];
+var _from = "axios@0.20.0";
+var _id = "axios@0.20.0";
+var _inBundle = false;
+var _integrity =
+  "sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==";
+var _location = "/axios";
+var _phantomChildren = {};
+var _requested = {
+  type: "version",
+  registry: true,
+  raw: "axios@0.20.0",
+  name: "axios",
+  escapedName: "axios",
+  rawSpec: "0.20.0",
+  saveSpec: null,
+  fetchSpec: "0.20.0",
+};
+var _requiredBy = ["/"];
+var _resolved = "https://registry.npmjs.org/axios/-/axios-0.20.0.tgz";
+var _spec = "0.20.0";
+var _where = "/Users/kcarr/Documents/react-cmi5-context";
+var author = {
+  name: "Matt Zabriskie",
+};
+var browser$1 = {
+  "./lib/adapters/http.js": "./lib/adapters/xhr.js",
+};
+var bugs = {
+  url: "https://github.com/axios/axios/issues",
+};
+var bundlesize = [
+  {
+    path: "./dist/axios.min.js",
+    threshold: "5kB",
+  },
+];
+var dependencies = {
+  "follow-redirects": "^1.10.0",
+};
+var description = "Promise based HTTP client for the browser and node.js";
+var devDependencies = {
+  bundlesize: "^0.17.0",
+  coveralls: "^3.0.0",
+  "es6-promise": "^4.2.4",
+  grunt: "^1.0.2",
+  "grunt-banner": "^0.6.0",
+  "grunt-cli": "^1.2.0",
+  "grunt-contrib-clean": "^1.1.0",
+  "grunt-contrib-watch": "^1.0.0",
+  "grunt-eslint": "^20.1.0",
+  "grunt-karma": "^2.0.0",
+  "grunt-mocha-test": "^0.13.3",
+  "grunt-ts": "^6.0.0-beta.19",
+  "grunt-webpack": "^1.0.18",
+  "istanbul-instrumenter-loader": "^1.0.0",
+  "jasmine-core": "^2.4.1",
+  karma: "^1.3.0",
+  "karma-chrome-launcher": "^2.2.0",
+  "karma-coverage": "^1.1.1",
+  "karma-firefox-launcher": "^1.1.0",
+  "karma-jasmine": "^1.1.1",
+  "karma-jasmine-ajax": "^0.1.13",
+  "karma-opera-launcher": "^1.0.0",
+  "karma-safari-launcher": "^1.0.0",
+  "karma-sauce-launcher": "^1.2.0",
+  "karma-sinon": "^1.0.5",
+  "karma-sourcemap-loader": "^0.3.7",
+  "karma-webpack": "^1.7.0",
+  "load-grunt-tasks": "^3.5.2",
+  minimist: "^1.2.0",
+  mocha: "^5.2.0",
+  sinon: "^4.5.0",
+  typescript: "^2.8.1",
+  "url-search-params": "^0.10.0",
+  webpack: "^1.13.1",
+  "webpack-dev-server": "^1.14.1",
+};
+var homepage = "https://github.com/axios/axios";
+var jsdelivr = "dist/axios.min.js";
+var keywords = ["xhr", "http", "ajax", "promise", "node"];
+var license = "MIT";
+var main = "index.js";
+var name = "axios";
+var repository = {
+  type: "git",
+  url: "git+https://github.com/axios/axios.git",
+};
+var scripts = {
+  build: "NODE_ENV=production grunt build",
+  coveralls:
+    "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+  examples: "node ./examples/server.js",
+  fix: "eslint --fix lib/**/*.js",
+  postversion: "git push && git push --tags",
+  preversion: "npm test",
+  start: "node ./sandbox/server.js",
+  test: "grunt test && bundlesize",
+  version:
+    "npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json",
+};
+var typings = "./index.d.ts";
+var unpkg = "dist/axios.min.js";
+var version = "0.20.0";
+var pkg = {
+  _args: _args,
+  _from: _from,
+  _id: _id,
+  _inBundle: _inBundle,
+  _integrity: _integrity,
+  _location: _location,
+  _phantomChildren: _phantomChildren,
+  _requested: _requested,
+  _requiredBy: _requiredBy,
+  _resolved: _resolved,
+  _spec: _spec,
+  _where: _where,
+  author: author,
+  browser: browser$1,
+  bugs: bugs,
+  bundlesize: bundlesize,
+  dependencies: dependencies,
+  description: description,
+  devDependencies: devDependencies,
+  homepage: homepage,
+  jsdelivr: jsdelivr,
+  keywords: keywords,
+  license: license,
+  main: main,
+  name: name,
+  repository: repository,
+  scripts: scripts,
+  typings: typings,
+  unpkg: unpkg,
+  version: version,
+};
+
+var httpFollow = followRedirects.http;
+var httpsFollow = followRedirects.https;
+
+var isHttps = /https:?/;
+
+/*eslint consistent-return:0*/
+var http_1 = function httpAdapter(config) {
+  return new Promise(function dispatchHttpRequest(
+    resolvePromise,
+    rejectPromise
+  ) {
+    var resolve = function resolve(value) {
+      resolvePromise(value);
+    };
+    var reject = function reject(value) {
+      rejectPromise(value);
+    };
+    var data = config.data;
+    var headers = config.headers;
+
+    // Set User-Agent (required by some servers)
+    // Only set header if it hasn't been set in config
+    // See https://github.com/axios/axios/issues/69
+    if (!headers["User-Agent"] && !headers["user-agent"]) {
+      headers["User-Agent"] = "axios/" + pkg.version;
+    }
+
+    if (data && !utils.isStream(data)) {
+      if (Buffer.isBuffer(data));
+      else if (utils.isArrayBuffer(data)) {
+        data = Buffer.from(new Uint8Array(data));
+      } else if (utils.isString(data)) {
+        data = Buffer.from(data, "utf-8");
+      } else {
+        return reject(
+          createError(
+            "Data after transformation must be a string, an ArrayBuffer, a Buffer, or a Stream",
+            config
+          )
+        );
+      }
+
+      // Add Content-Length header if data exists
+      headers["Content-Length"] = data.length;
+    }
+
+    // HTTP basic authentication
+    var auth = undefined;
+    if (config.auth) {
+      var username = config.auth.username || "";
+      var password = config.auth.password || "";
+      auth = username + ":" + password;
+    }
+
+    // Parse url
+    var fullPath = buildFullPath(config.baseURL, config.url);
+    var parsed = url__default["default"].parse(fullPath);
+    var protocol = parsed.protocol || "http:";
+
+    if (!auth && parsed.auth) {
+      var urlAuth = parsed.auth.split(":");
+      var urlUsername = urlAuth[0] || "";
+      var urlPassword = urlAuth[1] || "";
+      auth = urlUsername + ":" + urlPassword;
+    }
+
+    if (auth) {
+      delete headers.Authorization;
+    }
+
+    var isHttpsRequest = isHttps.test(protocol);
+    var agent = isHttpsRequest ? config.httpsAgent : config.httpAgent;
+
+    var options = {
+      path: buildURL(
+        parsed.path,
+        config.params,
+        config.paramsSerializer
+      ).replace(/^\?/, ""),
+      method: config.method.toUpperCase(),
+      headers: headers,
+      agent: agent,
+      agents: { http: config.httpAgent, https: config.httpsAgent },
+      auth: auth,
+    };
+
+    if (config.socketPath) {
+      options.socketPath = config.socketPath;
+    } else {
+      options.hostname = parsed.hostname;
+      options.port = parsed.port;
+    }
+
+    var proxy = config.proxy;
+    if (!proxy && proxy !== false) {
+      var proxyEnv = protocol.slice(0, -1) + "_proxy";
+      var proxyUrl =
+        process.env[proxyEnv] || process.env[proxyEnv.toUpperCase()];
+      if (proxyUrl) {
+        var parsedProxyUrl = url__default["default"].parse(proxyUrl);
+        var noProxyEnv = process.env.no_proxy || process.env.NO_PROXY;
+        var shouldProxy = true;
+
+        if (noProxyEnv) {
+          var noProxy = noProxyEnv.split(",").map(function trim(s) {
+            return s.trim();
+          });
+
+          shouldProxy = !noProxy.some(function proxyMatch(proxyElement) {
+            if (!proxyElement) {
+              return false;
+            }
+            if (proxyElement === "*") {
+              return true;
+            }
+            if (
+              proxyElement[0] === "." &&
+              parsed.hostname.substr(
+                parsed.hostname.length - proxyElement.length
+              ) === proxyElement
+            ) {
+              return true;
+            }
+
+            return parsed.hostname === proxyElement;
+          });
+        }
+
+        if (shouldProxy) {
+          proxy = {
+            host: parsedProxyUrl.hostname,
+            port: parsedProxyUrl.port,
+          };
+
+          if (parsedProxyUrl.auth) {
+            var proxyUrlAuth = parsedProxyUrl.auth.split(":");
+            proxy.auth = {
+              username: proxyUrlAuth[0],
+              password: proxyUrlAuth[1],
+            };
+          }
+        }
+      }
+    }
+
+    if (proxy) {
+      options.hostname = proxy.host;
+      options.host = proxy.host;
+      options.headers.host =
+        parsed.hostname + (parsed.port ? ":" + parsed.port : "");
+      options.port = proxy.port;
+      options.path =
+        protocol +
+        "//" +
+        parsed.hostname +
+        (parsed.port ? ":" + parsed.port : "") +
+        options.path;
+
+      // Basic proxy authorization
+      if (proxy.auth) {
+        var base64 = Buffer.from(
+          proxy.auth.username + ":" + proxy.auth.password,
+          "utf8"
+        ).toString("base64");
+        options.headers["Proxy-Authorization"] = "Basic " + base64;
+      }
+    }
+
+    var transport;
+    var isHttpsProxy =
+      isHttpsRequest && (proxy ? isHttps.test(proxy.protocol) : true);
+    if (config.transport) {
+      transport = config.transport;
+    } else if (config.maxRedirects === 0) {
+      transport = isHttpsProxy
+        ? https__default["default"]
+        : http__default["default"];
+    } else {
+      if (config.maxRedirects) {
+        options.maxRedirects = config.maxRedirects;
+      }
+      transport = isHttpsProxy ? httpsFollow : httpFollow;
+    }
+
+    if (config.maxBodyLength > -1) {
+      options.maxBodyLength = config.maxBodyLength;
+    }
+
+    // Create the request
+    var req = transport.request(options, function handleResponse(res) {
+      if (req.aborted) return;
+
+      // uncompress the response body transparently if required
+      var stream = res;
+
+      // return the last request in case of redirects
+      var lastRequest = res.req || req;
+
+      // if no content, is HEAD request or decompress disabled we should not decompress
+      if (
+        res.statusCode !== 204 &&
+        lastRequest.method !== "HEAD" &&
+        config.decompress !== false
+      ) {
+        switch (res.headers["content-encoding"]) {
+          /*eslint default-case:0*/
+          case "gzip":
+          case "compress":
+          case "deflate":
+            // add the unzipper to the body stream processing pipeline
+            stream = stream.pipe(zlib__default["default"].createUnzip());
+
+            // remove the content-encoding in order to not confuse downstream operations
+            delete res.headers["content-encoding"];
+            break;
+        }
+      }
+
+      var response = {
+        status: res.statusCode,
+        statusText: res.statusMessage,
+        headers: res.headers,
+        config: config,
+        request: lastRequest,
+      };
+
+      if (config.responseType === "stream") {
+        response.data = stream;
+        settle(resolve, reject, response);
+      } else {
+        var responseBuffer = [];
+        stream.on("data", function handleStreamData(chunk) {
+          responseBuffer.push(chunk);
+
+          // make sure the content length is not over the maxContentLength if specified
+          if (
+            config.maxContentLength > -1 &&
+            Buffer.concat(responseBuffer).length > config.maxContentLength
+          ) {
+            stream.destroy();
+            reject(
+              createError(
+                "maxContentLength size of " +
+                  config.maxContentLength +
+                  " exceeded",
+                config,
+                null,
+                lastRequest
+              )
+            );
+          }
+        });
+
+        stream.on("error", function handleStreamError(err) {
+          if (req.aborted) return;
+          reject(enhanceError(err, config, null, lastRequest));
+        });
+
+        stream.on("end", function handleStreamEnd() {
+          var responseData = Buffer.concat(responseBuffer);
+          if (config.responseType !== "arraybuffer") {
+            responseData = responseData.toString(config.responseEncoding);
+            if (
+              !config.responseEncoding ||
+              config.responseEncoding === "utf8"
+            ) {
+              responseData = utils.stripBOM(responseData);
+            }
+          }
+
+          response.data = responseData;
+          settle(resolve, reject, response);
+        });
+      }
+    });
+
+    // Handle errors
+    req.on("error", function handleRequestError(err) {
+      if (req.aborted && err.code !== "ERR_FR_TOO_MANY_REDIRECTS") return;
+      reject(enhanceError(err, config, null, req));
+    });
+
+    // Handle request timeout
+    if (config.timeout) {
+      // Sometime, the response will be very slow, and does not respond, the connect event will be block by event loop system.
+      // And timer callback will be fired, and abort() will be invoked before connection, then get "socket hang up" and code ECONNRESET.
+      // At this time, if we have a large number of request, nodejs will hang up some socket on background. and the number will up and up.
+      // And then these socket which be hang up will devoring CPU little by little.
+      // ClientRequest.setTimeout will be fired on the specify milliseconds, and can make sure that abort() will be fired after connect.
+      req.setTimeout(config.timeout, function handleRequestTimeout() {
+        req.abort();
+        reject(
+          createError(
+            "timeout of " + config.timeout + "ms exceeded",
+            config,
+            "ECONNABORTED",
+            req
+          )
+        );
+      });
+    }
+
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (req.aborted) return;
+
+        req.abort();
+        reject(cancel);
+      });
+    }
+
+    // Send the request
+    if (utils.isStream(data)) {
+      data
+        .on("error", function handleStreamError(err) {
+          reject(enhanceError(err, config, null, req));
+        })
+        .pipe(req);
+    } else {
+      req.end(data);
+    }
+  });
+};
+
+var DEFAULT_CONTENT_TYPE = {
+  "Content-Type": "application/x-www-form-urlencoded",
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (
+    !utils.isUndefined(headers) &&
+    utils.isUndefined(headers["Content-Type"])
+  ) {
+    headers["Content-Type"] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== "undefined") {
+    // For browsers use XHR adapter
+    adapter = xhr;
+  } else if (
+    typeof process !== "undefined" &&
+    Object.prototype.toString.call(process) === "[object process]"
+  ) {
+    // For node use HTTP adapter
+    adapter = http_1;
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [
+    function transformRequest(data, headers) {
+      normalizeHeaderName(headers, "Accept");
+      normalizeHeaderName(headers, "Content-Type");
+      if (
+        utils.isFormData(data) ||
+        utils.isArrayBuffer(data) ||
+        utils.isBuffer(data) ||
+        utils.isStream(data) ||
+        utils.isFile(data) ||
+        utils.isBlob(data)
+      ) {
+        return data;
+      }
+      if (utils.isArrayBufferView(data)) {
+        return data.buffer;
+      }
+      if (utils.isURLSearchParams(data)) {
+        setContentTypeIfUnset(
+          headers,
+          "application/x-www-form-urlencoded;charset=utf-8"
+        );
+        return data.toString();
+      }
+      if (utils.isObject(data)) {
+        setContentTypeIfUnset(headers, "application/json;charset=utf-8");
+        return JSON.stringify(data);
+      }
+      return data;
+    },
+  ],
+
+  transformResponse: [
+    function transformResponse(data) {
+      /*eslint no-param-reassign:0*/
+      if (typeof data === "string") {
+        try {
+          data = JSON.parse(data);
+        } catch (e) {
+          /* Ignore */
+        }
+      }
+      return data;
+    },
+  ],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
+
+  maxContentLength: -1,
+  maxBodyLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  },
+};
+
+defaults.headers = {
+  common: {
+    Accept: "application/json, text/plain, */*",
+  },
+};
+
+utils.forEach(["delete", "get", "head"], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(["post", "put", "patch"], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+var defaults_1 = defaults;
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+var dispatchRequest = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData(
+    config.data,
+    config.headers,
+    config.transformRequest
+  );
+
+  // Flatten headers
+  config.headers = utils.merge(
+    config.headers.common || {},
+    config.headers[config.method] || {},
+    config.headers
+  );
+
+  utils.forEach(
+    ["delete", "get", "head", "post", "put", "patch", "common"],
+    function cleanHeaderConfig(method) {
+      delete config.headers[method];
+    }
+  );
+
+  var adapter = config.adapter || defaults_1.adapter;
+
+  return adapter(config).then(
+    function onAdapterResolution(response) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      response.data = transformData(
+        response.data,
+        response.headers,
+        config.transformResponse
+      );
+
+      return response;
+    },
+    function onAdapterRejection(reason) {
+      if (!isCancel(reason)) {
+        throwIfCancellationRequested(config);
+
+        // Transform response data
+        if (reason && reason.response) {
+          reason.response.data = transformData(
+            reason.response.data,
+            reason.response.headers,
+            config.transformResponse
+          );
+        }
+      }
+
+      return Promise.reject(reason);
+    }
+  );
+};
+
+/**
+ * Config-specific merge-function which creates a new config-object
+ * by merging two configuration objects together.
+ *
+ * @param {Object} config1
+ * @param {Object} config2
+ * @returns {Object} New object resulting from merging config2 to config1
+ */
+var mergeConfig = function mergeConfig(config1, config2) {
+  // eslint-disable-next-line no-param-reassign
+  config2 = config2 || {};
+  var config = {};
+
+  var valueFromConfig2Keys = ["url", "method", "data"];
+  var mergeDeepPropertiesKeys = ["headers", "auth", "proxy", "params"];
+  var defaultToConfig2Keys = [
+    "baseURL",
+    "transformRequest",
+    "transformResponse",
+    "paramsSerializer",
+    "timeout",
+    "timeoutMessage",
+    "withCredentials",
+    "adapter",
+    "responseType",
+    "xsrfCookieName",
+    "xsrfHeaderName",
+    "onUploadProgress",
+    "onDownloadProgress",
+    "decompress",
+    "maxContentLength",
+    "maxBodyLength",
+    "maxRedirects",
+    "transport",
+    "httpAgent",
+    "httpsAgent",
+    "cancelToken",
+    "socketPath",
+    "responseEncoding",
+  ];
+  var directMergeKeys = ["validateStatus"];
+
+  function getMergedValue(target, source) {
+    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
+      return utils.merge(target, source);
+    } else if (utils.isPlainObject(source)) {
+      return utils.merge({}, source);
+    } else if (utils.isArray(source)) {
+      return source.slice();
+    }
+    return source;
+  }
+
+  function mergeDeepProperties(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  }
+
+  utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
+    }
+  });
+
+  utils.forEach(mergeDeepPropertiesKeys, mergeDeepProperties);
+
+  utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      config[prop] = getMergedValue(undefined, config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  });
+
+  utils.forEach(directMergeKeys, function merge(prop) {
+    if (prop in config2) {
+      config[prop] = getMergedValue(config1[prop], config2[prop]);
+    } else if (prop in config1) {
+      config[prop] = getMergedValue(undefined, config1[prop]);
+    }
+  });
+
+  var axiosKeys = valueFromConfig2Keys
+    .concat(mergeDeepPropertiesKeys)
+    .concat(defaultToConfig2Keys)
+    .concat(directMergeKeys);
+
+  var otherKeys = Object.keys(config1)
+    .concat(Object.keys(config2))
+    .filter(function filterAxiosKeys(key) {
+      return axiosKeys.indexOf(key) === -1;
+    });
+
+  utils.forEach(otherKeys, mergeDeepProperties);
+
+  return config;
+};
+
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager_1(),
+    response: new InterceptorManager_1(),
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof config === "string") {
+    config = arguments[1] || {};
+    config.url = arguments[0];
+  } else {
+    config = config || {};
+  }
+
+  config = mergeConfig(this.defaults, config);
+
+  // Set config.method
+  if (config.method) {
+    config.method = config.method.toLowerCase();
+  } else if (this.defaults.method) {
+    config.method = this.defaults.method.toLowerCase();
+  } else {
+    config.method = "get";
+  }
+
+  // Hook up interceptors middleware
+  var chain = [dispatchRequest, undefined];
+  var promise = Promise.resolve(config);
+
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(
+    interceptor
+  ) {
+    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  this.interceptors.response.forEach(function pushResponseInterceptors(
+    interceptor
+  ) {
+    chain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  while (chain.length) {
+    promise = promise.then(chain.shift(), chain.shift());
+  }
+
+  return promise;
+};
+
+Axios.prototype.getUri = function getUri(config) {
+  config = mergeConfig(this.defaults, config);
+  return buildURL(config.url, config.params, config.paramsSerializer).replace(
+    /^\?/,
+    ""
+  );
+};
+
+// Provide aliases for supported request methods
+utils.forEach(
+  ["delete", "get", "head", "options"],
+  function forEachMethodNoData(method) {
+    /*eslint func-names:0*/
+    Axios.prototype[method] = function (url, config) {
+      return this.request(
+        mergeConfig(config || {}, {
+          method: method,
+          url: url,
+        })
+      );
+    };
+  }
+);
+
+utils.forEach(["post", "put", "patch"], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function (url, data, config) {
+    return this.request(
+      mergeConfig(config || {}, {
+        method: method,
+        url: url,
+        data: data,
+      })
+    );
+  };
+});
+
+var Axios_1 = Axios;
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return "Cancel" + (this.message ? ": " + this.message : "");
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+var Cancel_1 = Cancel;
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== "function") {
+    throw new TypeError("executor must be a function.");
+  }
+
+  var resolvePromise;
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel_1(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel,
+  };
+};
+
+var CancelToken_1 = CancelToken;
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+var spread = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {Axios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var context = new Axios_1(defaultConfig);
+  var instance = bind(Axios_1.prototype.request, context);
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios_1.prototype, context);
+
+  // Copy context to instance
+  utils.extend(instance, context);
+
+  return instance;
+}
+
+// Create the default instance to be exported
+var axios = createInstance(defaults_1);
+
+// Expose Axios class to allow class inheritance
+axios.Axios = Axios_1;
+
+// Factory for creating new instances
+axios.create = function create(instanceConfig) {
+  return createInstance(mergeConfig(axios.defaults, instanceConfig));
+};
+
+// Expose Cancel & CancelToken
+axios.Cancel = Cancel_1;
+axios.CancelToken = CancelToken_1;
+axios.isCancel = isCancel;
+
+// Expose all/spread
+axios.all = function all(promises) {
+  return Promise.all(promises);
+};
+axios.spread = spread;
+
+var axios_1 = axios;
+
+// Allow use of default import syntax in TypeScript
+var _default = axios;
+axios_1.default = _default;
+
+var axios$1 = axios_1;
+
+var moment = createCommonjsModule(function (module, exports) {
+  (function (global, factory) {
+    module.exports = factory();
+  })(commonjsGlobal, function () {
+    var hookCallback;
+
+    function hooks() {
+      return hookCallback.apply(null, arguments);
+    }
+
+    // This is done to register the method called with moment()
+    // without creating circular dependencies.
+    function setHookCallback(callback) {
+      hookCallback = callback;
+    }
+
+    function isArray(input) {
+      return (
+        input instanceof Array ||
+        Object.prototype.toString.call(input) === "[object Array]"
+      );
+    }
+
+    function isObject(input) {
+      // IE8 will treat undefined and null as object if it wasn't for
+      // input != null
+      return (
+        input != null &&
+        Object.prototype.toString.call(input) === "[object Object]"
+      );
+    }
+
+    function hasOwnProp(a, b) {
+      return Object.prototype.hasOwnProperty.call(a, b);
+    }
+
+    function isObjectEmpty(obj) {
+      if (Object.getOwnPropertyNames) {
+        return Object.getOwnPropertyNames(obj).length === 0;
+      } else {
+        var k;
+        for (k in obj) {
+          if (hasOwnProp(obj, k)) {
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+
+    function isUndefined(input) {
+      return input === void 0;
+    }
+
+    function isNumber(input) {
+      return (
+        typeof input === "number" ||
+        Object.prototype.toString.call(input) === "[object Number]"
+      );
+    }
+
+    function isDate(input) {
+      return (
+        input instanceof Date ||
+        Object.prototype.toString.call(input) === "[object Date]"
+      );
+    }
+
+    function map(arr, fn) {
+      var res = [],
+        i;
+      for (i = 0; i < arr.length; ++i) {
+        res.push(fn(arr[i], i));
+      }
+      return res;
+    }
+
+    function extend(a, b) {
+      for (var i in b) {
+        if (hasOwnProp(b, i)) {
+          a[i] = b[i];
+        }
+      }
+
+      if (hasOwnProp(b, "toString")) {
+        a.toString = b.toString;
+      }
+
+      if (hasOwnProp(b, "valueOf")) {
+        a.valueOf = b.valueOf;
+      }
+
+      return a;
+    }
+
+    function createUTC(input, format, locale, strict) {
+      return createLocalOrUTC(input, format, locale, strict, true).utc();
+    }
+
+    function defaultParsingFlags() {
+      // We need to deep clone this object.
+      return {
+        empty: false,
+        unusedTokens: [],
+        unusedInput: [],
+        overflow: -2,
+        charsLeftOver: 0,
+        nullInput: false,
+        invalidEra: null,
+        invalidMonth: null,
+        invalidFormat: false,
+        userInvalidated: false,
+        iso: false,
+        parsedDateParts: [],
+        era: null,
+        meridiem: null,
+        rfc2822: false,
+        weekdayMismatch: false,
+      };
+    }
+
+    function getParsingFlags(m) {
+      if (m._pf == null) {
+        m._pf = defaultParsingFlags();
+      }
+      return m._pf;
+    }
+
+    var some;
+    if (Array.prototype.some) {
+      some = Array.prototype.some;
+    } else {
+      some = function (fun) {
+        var t = Object(this),
+          len = t.length >>> 0,
+          i;
+
+        for (i = 0; i < len; i++) {
+          if (i in t && fun.call(this, t[i], i, t)) {
+            return true;
+          }
+        }
+
+        return false;
+      };
+    }
+
+    function isValid(m) {
+      if (m._isValid == null) {
+        var flags = getParsingFlags(m),
+          parsedParts = some.call(flags.parsedDateParts, function (i) {
+            return i != null;
+          }),
+          isNowValid =
+            !isNaN(m._d.getTime()) &&
+            flags.overflow < 0 &&
+            !flags.empty &&
+            !flags.invalidEra &&
+            !flags.invalidMonth &&
+            !flags.invalidWeekday &&
+            !flags.weekdayMismatch &&
+            !flags.nullInput &&
+            !flags.invalidFormat &&
+            !flags.userInvalidated &&
+            (!flags.meridiem || (flags.meridiem && parsedParts));
+
+        if (m._strict) {
+          isNowValid =
+            isNowValid &&
+            flags.charsLeftOver === 0 &&
+            flags.unusedTokens.length === 0 &&
+            flags.bigHour === undefined;
+        }
+
+        if (Object.isFrozen == null || !Object.isFrozen(m)) {
+          m._isValid = isNowValid;
+        } else {
+          return isNowValid;
+        }
+      }
+      return m._isValid;
+    }
+
+    function createInvalid(flags) {
+      var m = createUTC(NaN);
+      if (flags != null) {
+        extend(getParsingFlags(m), flags);
+      } else {
+        getParsingFlags(m).userInvalidated = true;
+      }
+
+      return m;
+    }
+
+    // Plugins that add properties should also add the key here (null value),
+    // so we can properly clone ourselves.
+    var momentProperties = (hooks.momentProperties = []),
+      updateInProgress = false;
+
+    function copyConfig(to, from) {
+      var i, prop, val;
+
+      if (!isUndefined(from._isAMomentObject)) {
+        to._isAMomentObject = from._isAMomentObject;
+      }
+      if (!isUndefined(from._i)) {
+        to._i = from._i;
+      }
+      if (!isUndefined(from._f)) {
+        to._f = from._f;
+      }
+      if (!isUndefined(from._l)) {
+        to._l = from._l;
+      }
+      if (!isUndefined(from._strict)) {
+        to._strict = from._strict;
+      }
+      if (!isUndefined(from._tzm)) {
+        to._tzm = from._tzm;
+      }
+      if (!isUndefined(from._isUTC)) {
+        to._isUTC = from._isUTC;
+      }
+      if (!isUndefined(from._offset)) {
+        to._offset = from._offset;
+      }
+      if (!isUndefined(from._pf)) {
+        to._pf = getParsingFlags(from);
+      }
+      if (!isUndefined(from._locale)) {
+        to._locale = from._locale;
+      }
+
+      if (momentProperties.length > 0) {
+        for (i = 0; i < momentProperties.length; i++) {
+          prop = momentProperties[i];
+          val = from[prop];
+          if (!isUndefined(val)) {
+            to[prop] = val;
+          }
+        }
+      }
+
+      return to;
+    }
+
+    // Moment prototype object
+    function Moment(config) {
+      copyConfig(this, config);
+      this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+      if (!this.isValid()) {
+        this._d = new Date(NaN);
+      }
+      // Prevent infinite loop in case updateOffset creates new moment
+      // objects.
+      if (updateInProgress === false) {
+        updateInProgress = true;
+        hooks.updateOffset(this);
+        updateInProgress = false;
+      }
+    }
+
+    function isMoment(obj) {
+      return (
+        obj instanceof Moment || (obj != null && obj._isAMomentObject != null)
+      );
+    }
+
+    function warn(msg) {
+      if (
+        hooks.suppressDeprecationWarnings === false &&
+        typeof console !== "undefined" &&
+        console.warn
+      ) {
+        console.warn("Deprecation warning: " + msg);
+      }
+    }
+
+    function deprecate(msg, fn) {
+      var firstTime = true;
+
+      return extend(function () {
+        if (hooks.deprecationHandler != null) {
+          hooks.deprecationHandler(null, msg);
+        }
+        if (firstTime) {
+          var args = [],
+            arg,
+            i,
+            key;
+          for (i = 0; i < arguments.length; i++) {
+            arg = "";
+            if (typeof arguments[i] === "object") {
+              arg += "\n[" + i + "] ";
+              for (key in arguments[0]) {
+                if (hasOwnProp(arguments[0], key)) {
+                  arg += key + ": " + arguments[0][key] + ", ";
+                }
+              }
+              arg = arg.slice(0, -2); // Remove trailing comma and space
+            } else {
+              arg = arguments[i];
+            }
+            args.push(arg);
+          }
+          warn(
+            msg +
+              "\nArguments: " +
+              Array.prototype.slice.call(args).join("") +
+              "\n" +
+              new Error().stack
+          );
+          firstTime = false;
+        }
+        return fn.apply(this, arguments);
+      }, fn);
+    }
+
+    var deprecations = {};
+
+    function deprecateSimple(name, msg) {
+      if (hooks.deprecationHandler != null) {
+        hooks.deprecationHandler(name, msg);
+      }
+      if (!deprecations[name]) {
+        warn(msg);
+        deprecations[name] = true;
+      }
+    }
+
+    hooks.suppressDeprecationWarnings = false;
+    hooks.deprecationHandler = null;
+
+    function isFunction(input) {
+      return (
+        (typeof Function !== "undefined" && input instanceof Function) ||
+        Object.prototype.toString.call(input) === "[object Function]"
+      );
+    }
+
+    function set(config) {
+      var prop, i;
+      for (i in config) {
+        if (hasOwnProp(config, i)) {
+          prop = config[i];
+          if (isFunction(prop)) {
+            this[i] = prop;
+          } else {
+            this["_" + i] = prop;
+          }
+        }
+      }
+      this._config = config;
+      // Lenient ordinal parsing accepts just a number in addition to
+      // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+      // TODO: Remove "ordinalParse" fallback in next major release.
+      this._dayOfMonthOrdinalParseLenient = new RegExp(
+        (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
+          "|" +
+          /\d{1,2}/.source
+      );
+    }
+
+    function mergeConfigs(parentConfig, childConfig) {
+      var res = extend({}, parentConfig),
+        prop;
+      for (prop in childConfig) {
+        if (hasOwnProp(childConfig, prop)) {
+          if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+            res[prop] = {};
+            extend(res[prop], parentConfig[prop]);
+            extend(res[prop], childConfig[prop]);
+          } else if (childConfig[prop] != null) {
+            res[prop] = childConfig[prop];
+          } else {
+            delete res[prop];
+          }
+        }
+      }
+      for (prop in parentConfig) {
+        if (
+          hasOwnProp(parentConfig, prop) &&
+          !hasOwnProp(childConfig, prop) &&
+          isObject(parentConfig[prop])
+        ) {
+          // make sure changes to properties don't modify parent config
+          res[prop] = extend({}, res[prop]);
+        }
+      }
+      return res;
+    }
+
+    function Locale(config) {
+      if (config != null) {
+        this.set(config);
+      }
+    }
+
+    var keys;
+
+    if (Object.keys) {
+      keys = Object.keys;
+    } else {
+      keys = function (obj) {
+        var i,
+          res = [];
+        for (i in obj) {
+          if (hasOwnProp(obj, i)) {
+            res.push(i);
+          }
+        }
+        return res;
+      };
+    }
+
+    var defaultCalendar = {
+      sameDay: "[Today at] LT",
+      nextDay: "[Tomorrow at] LT",
+      nextWeek: "dddd [at] LT",
+      lastDay: "[Yesterday at] LT",
+      lastWeek: "[Last] dddd [at] LT",
+      sameElse: "L",
+    };
+
+    function calendar(key, mom, now) {
+      var output = this._calendar[key] || this._calendar["sameElse"];
+      return isFunction(output) ? output.call(mom, now) : output;
+    }
+
+    function zeroFill(number, targetLength, forceSign) {
+      var absNumber = "" + Math.abs(number),
+        zerosToFill = targetLength - absNumber.length,
+        sign = number >= 0;
+      return (
+        (sign ? (forceSign ? "+" : "") : "-") +
+        Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) +
+        absNumber
+      );
+    }
+
+    var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|N{1,5}|YYYYYY|YYYYY|YYYY|YY|y{2,4}|yo?|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g,
+      localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,
+      formatFunctions = {},
+      formatTokenFunctions = {};
+
+    // token:    'M'
+    // padded:   ['MM', 2]
+    // ordinal:  'Mo'
+    // callback: function () { this.month() + 1 }
+    function addFormatToken(token, padded, ordinal, callback) {
+      var func = callback;
+      if (typeof callback === "string") {
+        func = function () {
+          return this[callback]();
+        };
+      }
+      if (token) {
+        formatTokenFunctions[token] = func;
+      }
+      if (padded) {
+        formatTokenFunctions[padded[0]] = function () {
+          return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+        };
+      }
+      if (ordinal) {
+        formatTokenFunctions[ordinal] = function () {
+          return this.localeData().ordinal(func.apply(this, arguments), token);
+        };
+      }
+    }
+
+    function removeFormattingTokens(input) {
+      if (input.match(/\[[\s\S]/)) {
+        return input.replace(/^\[|\]$/g, "");
+      }
+      return input.replace(/\\/g, "");
+    }
+
+    function makeFormatFunction(format) {
+      var array = format.match(formattingTokens),
+        i,
+        length;
+
+      for (i = 0, length = array.length; i < length; i++) {
+        if (formatTokenFunctions[array[i]]) {
+          array[i] = formatTokenFunctions[array[i]];
+        } else {
+          array[i] = removeFormattingTokens(array[i]);
+        }
+      }
+
+      return function (mom) {
+        var output = "",
+          i;
+        for (i = 0; i < length; i++) {
+          output += isFunction(array[i])
+            ? array[i].call(mom, format)
+            : array[i];
+        }
+        return output;
+      };
+    }
+
+    // format date using native date object
+    function formatMoment(m, format) {
+      if (!m.isValid()) {
+        return m.localeData().invalidDate();
+      }
+
+      format = expandFormat(format, m.localeData());
+      formatFunctions[format] =
+        formatFunctions[format] || makeFormatFunction(format);
+
+      return formatFunctions[format](m);
+    }
+
+    function expandFormat(format, locale) {
+      var i = 5;
+
+      function replaceLongDateFormatTokens(input) {
+        return locale.longDateFormat(input) || input;
+      }
+
+      localFormattingTokens.lastIndex = 0;
+      while (i >= 0 && localFormattingTokens.test(format)) {
+        format = format.replace(
+          localFormattingTokens,
+          replaceLongDateFormatTokens
+        );
+        localFormattingTokens.lastIndex = 0;
+        i -= 1;
+      }
+
+      return format;
+    }
+
+    var defaultLongDateFormat = {
+      LTS: "h:mm:ss A",
+      LT: "h:mm A",
+      L: "MM/DD/YYYY",
+      LL: "MMMM D, YYYY",
+      LLL: "MMMM D, YYYY h:mm A",
+      LLLL: "dddd, MMMM D, YYYY h:mm A",
+    };
+
+    function longDateFormat(key) {
+      var format = this._longDateFormat[key],
+        formatUpper = this._longDateFormat[key.toUpperCase()];
+
+      if (format || !formatUpper) {
+        return format;
+      }
+
+      this._longDateFormat[key] = formatUpper
+        .match(formattingTokens)
+        .map(function (tok) {
+          if (
+            tok === "MMMM" ||
+            tok === "MM" ||
+            tok === "DD" ||
+            tok === "dddd"
+          ) {
+            return tok.slice(1);
+          }
+          return tok;
+        })
+        .join("");
+
+      return this._longDateFormat[key];
+    }
+
+    var defaultInvalidDate = "Invalid date";
+
+    function invalidDate() {
+      return this._invalidDate;
+    }
+
+    var defaultOrdinal = "%d",
+      defaultDayOfMonthOrdinalParse = /\d{1,2}/;
+
+    function ordinal(number) {
+      return this._ordinal.replace("%d", number);
+    }
+
+    var defaultRelativeTime = {
+      future: "in %s",
+      past: "%s ago",
+      s: "a few seconds",
+      ss: "%d seconds",
+      m: "a minute",
+      mm: "%d minutes",
+      h: "an hour",
+      hh: "%d hours",
+      d: "a day",
+      dd: "%d days",
+      w: "a week",
+      ww: "%d weeks",
+      M: "a month",
+      MM: "%d months",
+      y: "a year",
+      yy: "%d years",
+    };
+
+    function relativeTime(number, withoutSuffix, string, isFuture) {
+      var output = this._relativeTime[string];
+      return isFunction(output)
+        ? output(number, withoutSuffix, string, isFuture)
+        : output.replace(/%d/i, number);
+    }
+
+    function pastFuture(diff, output) {
+      var format = this._relativeTime[diff > 0 ? "future" : "past"];
+      return isFunction(format)
+        ? format(output)
+        : format.replace(/%s/i, output);
+    }
+
+    var aliases = {};
+
+    function addUnitAlias(unit, shorthand) {
+      var lowerCase = unit.toLowerCase();
+      aliases[lowerCase] = aliases[lowerCase + "s"] = aliases[shorthand] = unit;
+    }
+
+    function normalizeUnits(units) {
+      return typeof units === "string"
+        ? aliases[units] || aliases[units.toLowerCase()]
+        : undefined;
+    }
+
+    function normalizeObjectUnits(inputObject) {
+      var normalizedInput = {},
+        normalizedProp,
+        prop;
+
+      for (prop in inputObject) {
+        if (hasOwnProp(inputObject, prop)) {
+          normalizedProp = normalizeUnits(prop);
+          if (normalizedProp) {
+            normalizedInput[normalizedProp] = inputObject[prop];
+          }
+        }
+      }
+
+      return normalizedInput;
+    }
+
+    var priorities = {};
+
+    function addUnitPriority(unit, priority) {
+      priorities[unit] = priority;
+    }
+
+    function getPrioritizedUnits(unitsObj) {
+      var units = [],
+        u;
+      for (u in unitsObj) {
+        if (hasOwnProp(unitsObj, u)) {
+          units.push({ unit: u, priority: priorities[u] });
+        }
+      }
+      units.sort(function (a, b) {
+        return a.priority - b.priority;
+      });
+      return units;
+    }
+
+    function isLeapYear(year) {
+      return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
+    function absFloor(number) {
+      if (number < 0) {
+        // -0 -> 0
+        return Math.ceil(number) || 0;
+      } else {
+        return Math.floor(number);
+      }
+    }
+
+    function toInt(argumentForCoercion) {
+      var coercedNumber = +argumentForCoercion,
+        value = 0;
+
+      if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+        value = absFloor(coercedNumber);
+      }
+
+      return value;
+    }
+
+    function makeGetSet(unit, keepTime) {
+      return function (value) {
+        if (value != null) {
+          set$1(this, unit, value);
+          hooks.updateOffset(this, keepTime);
+          return this;
+        } else {
+          return get(this, unit);
+        }
+      };
+    }
+
+    function get(mom, unit) {
+      return mom.isValid()
+        ? mom._d["get" + (mom._isUTC ? "UTC" : "") + unit]()
+        : NaN;
+    }
+
+    function set$1(mom, unit, value) {
+      if (mom.isValid() && !isNaN(value)) {
+        if (
+          unit === "FullYear" &&
+          isLeapYear(mom.year()) &&
+          mom.month() === 1 &&
+          mom.date() === 29
+        ) {
+          value = toInt(value);
+          mom._d["set" + (mom._isUTC ? "UTC" : "") + unit](
+            value,
+            mom.month(),
+            daysInMonth(value, mom.month())
+          );
+        } else {
+          mom._d["set" + (mom._isUTC ? "UTC" : "") + unit](value);
+        }
+      }
+    }
+
+    // MOMENTS
+
+    function stringGet(units) {
+      units = normalizeUnits(units);
+      if (isFunction(this[units])) {
+        return this[units]();
+      }
+      return this;
+    }
+
+    function stringSet(units, value) {
+      if (typeof units === "object") {
+        units = normalizeObjectUnits(units);
+        var prioritized = getPrioritizedUnits(units),
+          i;
+        for (i = 0; i < prioritized.length; i++) {
+          this[prioritized[i].unit](units[prioritized[i].unit]);
+        }
+      } else {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+          return this[units](value);
+        }
+      }
+      return this;
+    }
+
+    var match1 = /\d/, //       0 - 9
+      match2 = /\d\d/, //      00 - 99
+      match3 = /\d{3}/, //     000 - 999
+      match4 = /\d{4}/, //    0000 - 9999
+      match6 = /[+-]?\d{6}/, // -999999 - 999999
+      match1to2 = /\d\d?/, //       0 - 99
+      match3to4 = /\d\d\d\d?/, //     999 - 9999
+      match5to6 = /\d\d\d\d\d\d?/, //   99999 - 999999
+      match1to3 = /\d{1,3}/, //       0 - 999
+      match1to4 = /\d{1,4}/, //       0 - 9999
+      match1to6 = /[+-]?\d{1,6}/, // -999999 - 999999
+      matchUnsigned = /\d+/, //       0 - inf
+      matchSigned = /[+-]?\d+/, //    -inf - inf
+      matchOffset = /Z|[+-]\d\d:?\d\d/gi, // +00:00 -00:00 +0000 -0000 or Z
+      matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi, // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+      matchTimestamp = /[+-]?\d+(\.\d{1,3})?/, // 123456789 123456789.123
+      // any word (or two) characters or numbers including two/three word month in arabic.
+      // includes scottish gaelic two word and hyphenated months
+      matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i,
+      regexes;
+
+    regexes = {};
+
+    function addRegexToken(token, regex, strictRegex) {
+      regexes[token] = isFunction(regex)
+        ? regex
+        : function (isStrict, localeData) {
+            return isStrict && strictRegex ? strictRegex : regex;
+          };
+    }
+
+    function getParseRegexForToken(token, config) {
+      if (!hasOwnProp(regexes, token)) {
+        return new RegExp(unescapeFormat(token));
+      }
+
+      return regexes[token](config._strict, config._locale);
+    }
+
+    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function unescapeFormat(s) {
+      return regexEscape(
+        s
+          .replace("\\", "")
+          .replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (
+            matched,
+            p1,
+            p2,
+            p3,
+            p4
+          ) {
+            return p1 || p2 || p3 || p4;
+          })
+      );
+    }
+
+    function regexEscape(s) {
+      return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    }
+
+    var tokens = {};
+
+    function addParseToken(token, callback) {
+      var i,
+        func = callback;
+      if (typeof token === "string") {
+        token = [token];
+      }
+      if (isNumber(callback)) {
+        func = function (input, array) {
+          array[callback] = toInt(input);
+        };
+      }
+      for (i = 0; i < token.length; i++) {
+        tokens[token[i]] = func;
+      }
+    }
+
+    function addWeekParseToken(token, callback) {
+      addParseToken(token, function (input, array, config, token) {
+        config._w = config._w || {};
+        callback(input, config._w, config, token);
+      });
+    }
+
+    function addTimeToArrayFromToken(token, input, config) {
+      if (input != null && hasOwnProp(tokens, token)) {
+        tokens[token](input, config._a, config, token);
+      }
+    }
+
+    var YEAR = 0,
+      MONTH = 1,
+      DATE = 2,
+      HOUR = 3,
+      MINUTE = 4,
+      SECOND = 5,
+      MILLISECOND = 6,
+      WEEK = 7,
+      WEEKDAY = 8;
+
+    function mod(n, x) {
+      return ((n % x) + x) % x;
+    }
+
+    var indexOf;
+
+    if (Array.prototype.indexOf) {
+      indexOf = Array.prototype.indexOf;
+    } else {
+      indexOf = function (o) {
+        // I know
+        var i;
+        for (i = 0; i < this.length; ++i) {
+          if (this[i] === o) {
+            return i;
+          }
+        }
+        return -1;
+      };
+    }
+
+    function daysInMonth(year, month) {
+      if (isNaN(year) || isNaN(month)) {
+        return NaN;
+      }
+      var modMonth = mod(month, 12);
+      year += (month - modMonth) / 12;
+      return modMonth === 1
+        ? isLeapYear(year)
+          ? 29
+          : 28
+        : 31 - ((modMonth % 7) % 2);
+    }
+
+    // FORMATTING
+
+    addFormatToken("M", ["MM", 2], "Mo", function () {
+      return this.month() + 1;
+    });
+
+    addFormatToken("MMM", 0, 0, function (format) {
+      return this.localeData().monthsShort(this, format);
+    });
+
+    addFormatToken("MMMM", 0, 0, function (format) {
+      return this.localeData().months(this, format);
+    });
+
+    // ALIASES
+
+    addUnitAlias("month", "M");
+
+    // PRIORITY
+
+    addUnitPriority("month", 8);
+
+    // PARSING
+
+    addRegexToken("M", match1to2);
+    addRegexToken("MM", match1to2, match2);
+    addRegexToken("MMM", function (isStrict, locale) {
+      return locale.monthsShortRegex(isStrict);
+    });
+    addRegexToken("MMMM", function (isStrict, locale) {
+      return locale.monthsRegex(isStrict);
+    });
+
+    addParseToken(["M", "MM"], function (input, array) {
+      array[MONTH] = toInt(input) - 1;
+    });
+
+    addParseToken(["MMM", "MMMM"], function (input, array, config, token) {
+      var month = config._locale.monthsParse(input, token, config._strict);
+      // if we didn't find a month name, mark the date as invalid.
+      if (month != null) {
+        array[MONTH] = month;
+      } else {
+        getParsingFlags(config).invalidMonth = input;
+      }
+    });
+
+    // LOCALES
+
+    var defaultLocaleMonths = "January_February_March_April_May_June_July_August_September_October_November_December".split(
+        "_"
+      ),
+      defaultLocaleMonthsShort = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split(
+        "_"
+      ),
+      MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/,
+      defaultMonthsShortRegex = matchWord,
+      defaultMonthsRegex = matchWord;
+
+    function localeMonths(m, format) {
+      if (!m) {
+        return isArray(this._months)
+          ? this._months
+          : this._months["standalone"];
+      }
+      return isArray(this._months)
+        ? this._months[m.month()]
+        : this._months[
+            (this._months.isFormat || MONTHS_IN_FORMAT).test(format)
+              ? "format"
+              : "standalone"
+          ][m.month()];
+    }
+
+    function localeMonthsShort(m, format) {
+      if (!m) {
+        return isArray(this._monthsShort)
+          ? this._monthsShort
+          : this._monthsShort["standalone"];
+      }
+      return isArray(this._monthsShort)
+        ? this._monthsShort[m.month()]
+        : this._monthsShort[
+            MONTHS_IN_FORMAT.test(format) ? "format" : "standalone"
+          ][m.month()];
+    }
+
+    function handleStrictParse(monthName, format, strict) {
+      var i,
+        ii,
+        mom,
+        llc = monthName.toLocaleLowerCase();
+      if (!this._monthsParse) {
+        // this is not used
+        this._monthsParse = [];
+        this._longMonthsParse = [];
+        this._shortMonthsParse = [];
+        for (i = 0; i < 12; ++i) {
+          mom = createUTC([2000, i]);
+          this._shortMonthsParse[i] = this.monthsShort(
+            mom,
+            ""
+          ).toLocaleLowerCase();
+          this._longMonthsParse[i] = this.months(mom, "").toLocaleLowerCase();
+        }
+      }
+
+      if (strict) {
+        if (format === "MMM") {
+          ii = indexOf.call(this._shortMonthsParse, llc);
+          return ii !== -1 ? ii : null;
+        } else {
+          ii = indexOf.call(this._longMonthsParse, llc);
+          return ii !== -1 ? ii : null;
+        }
+      } else {
+        if (format === "MMM") {
+          ii = indexOf.call(this._shortMonthsParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._longMonthsParse, llc);
+          return ii !== -1 ? ii : null;
+        } else {
+          ii = indexOf.call(this._longMonthsParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._shortMonthsParse, llc);
+          return ii !== -1 ? ii : null;
+        }
+      }
+    }
+
+    function localeMonthsParse(monthName, format, strict) {
+      var i, mom, regex;
+
+      if (this._monthsParseExact) {
+        return handleStrictParse.call(this, monthName, format, strict);
+      }
+
+      if (!this._monthsParse) {
+        this._monthsParse = [];
+        this._longMonthsParse = [];
+        this._shortMonthsParse = [];
+      }
+
+      // TODO: add sorting
+      // Sorting makes sure if one month (or abbr) is a prefix of another
+      // see sorting in computeMonthsParse
+      for (i = 0; i < 12; i++) {
+        // make the regex if we don't have it already
+        mom = createUTC([2000, i]);
+        if (strict && !this._longMonthsParse[i]) {
+          this._longMonthsParse[i] = new RegExp(
+            "^" + this.months(mom, "").replace(".", "") + "$",
+            "i"
+          );
+          this._shortMonthsParse[i] = new RegExp(
+            "^" + this.monthsShort(mom, "").replace(".", "") + "$",
+            "i"
+          );
+        }
+        if (!strict && !this._monthsParse[i]) {
+          regex = "^" + this.months(mom, "") + "|^" + this.monthsShort(mom, "");
+          this._monthsParse[i] = new RegExp(regex.replace(".", ""), "i");
+        }
+        // test the regex
+        if (
+          strict &&
+          format === "MMMM" &&
+          this._longMonthsParse[i].test(monthName)
+        ) {
+          return i;
+        } else if (
+          strict &&
+          format === "MMM" &&
+          this._shortMonthsParse[i].test(monthName)
+        ) {
+          return i;
+        } else if (!strict && this._monthsParse[i].test(monthName)) {
+          return i;
+        }
+      }
+    }
+
+    // MOMENTS
+
+    function setMonth(mom, value) {
+      var dayOfMonth;
+
+      if (!mom.isValid()) {
+        // No op
+        return mom;
+      }
+
+      if (typeof value === "string") {
+        if (/^\d+$/.test(value)) {
+          value = toInt(value);
+        } else {
+          value = mom.localeData().monthsParse(value);
+          // TODO: Another silent failure?
+          if (!isNumber(value)) {
+            return mom;
+          }
+        }
+      }
+
+      dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
+      mom._d["set" + (mom._isUTC ? "UTC" : "") + "Month"](value, dayOfMonth);
+      return mom;
+    }
+
+    function getSetMonth(value) {
+      if (value != null) {
+        setMonth(this, value);
+        hooks.updateOffset(this, true);
+        return this;
+      } else {
+        return get(this, "Month");
+      }
+    }
+
+    function getDaysInMonth() {
+      return daysInMonth(this.year(), this.month());
+    }
+
+    function monthsShortRegex(isStrict) {
+      if (this._monthsParseExact) {
+        if (!hasOwnProp(this, "_monthsRegex")) {
+          computeMonthsParse.call(this);
+        }
+        if (isStrict) {
+          return this._monthsShortStrictRegex;
+        } else {
+          return this._monthsShortRegex;
+        }
+      } else {
+        if (!hasOwnProp(this, "_monthsShortRegex")) {
+          this._monthsShortRegex = defaultMonthsShortRegex;
+        }
+        return this._monthsShortStrictRegex && isStrict
+          ? this._monthsShortStrictRegex
+          : this._monthsShortRegex;
+      }
+    }
+
+    function monthsRegex(isStrict) {
+      if (this._monthsParseExact) {
+        if (!hasOwnProp(this, "_monthsRegex")) {
+          computeMonthsParse.call(this);
+        }
+        if (isStrict) {
+          return this._monthsStrictRegex;
+        } else {
+          return this._monthsRegex;
+        }
+      } else {
+        if (!hasOwnProp(this, "_monthsRegex")) {
+          this._monthsRegex = defaultMonthsRegex;
+        }
+        return this._monthsStrictRegex && isStrict
+          ? this._monthsStrictRegex
+          : this._monthsRegex;
+      }
+    }
+
+    function computeMonthsParse() {
+      function cmpLenRev(a, b) {
+        return b.length - a.length;
+      }
+
+      var shortPieces = [],
+        longPieces = [],
+        mixedPieces = [],
+        i,
+        mom;
+      for (i = 0; i < 12; i++) {
+        // make the regex if we don't have it already
+        mom = createUTC([2000, i]);
+        shortPieces.push(this.monthsShort(mom, ""));
+        longPieces.push(this.months(mom, ""));
+        mixedPieces.push(this.months(mom, ""));
+        mixedPieces.push(this.monthsShort(mom, ""));
+      }
+      // Sorting makes sure if one month (or abbr) is a prefix of another it
+      // will match the longer piece.
+      shortPieces.sort(cmpLenRev);
+      longPieces.sort(cmpLenRev);
+      mixedPieces.sort(cmpLenRev);
+      for (i = 0; i < 12; i++) {
+        shortPieces[i] = regexEscape(shortPieces[i]);
+        longPieces[i] = regexEscape(longPieces[i]);
+      }
+      for (i = 0; i < 24; i++) {
+        mixedPieces[i] = regexEscape(mixedPieces[i]);
+      }
+
+      this._monthsRegex = new RegExp("^(" + mixedPieces.join("|") + ")", "i");
+      this._monthsShortRegex = this._monthsRegex;
+      this._monthsStrictRegex = new RegExp(
+        "^(" + longPieces.join("|") + ")",
+        "i"
+      );
+      this._monthsShortStrictRegex = new RegExp(
+        "^(" + shortPieces.join("|") + ")",
+        "i"
+      );
+    }
+
+    // FORMATTING
+
+    addFormatToken("Y", 0, 0, function () {
+      var y = this.year();
+      return y <= 9999 ? zeroFill(y, 4) : "+" + y;
+    });
+
+    addFormatToken(0, ["YY", 2], 0, function () {
+      return this.year() % 100;
+    });
+
+    addFormatToken(0, ["YYYY", 4], 0, "year");
+    addFormatToken(0, ["YYYYY", 5], 0, "year");
+    addFormatToken(0, ["YYYYYY", 6, true], 0, "year");
+
+    // ALIASES
+
+    addUnitAlias("year", "y");
+
+    // PRIORITIES
+
+    addUnitPriority("year", 1);
+
+    // PARSING
+
+    addRegexToken("Y", matchSigned);
+    addRegexToken("YY", match1to2, match2);
+    addRegexToken("YYYY", match1to4, match4);
+    addRegexToken("YYYYY", match1to6, match6);
+    addRegexToken("YYYYYY", match1to6, match6);
+
+    addParseToken(["YYYYY", "YYYYYY"], YEAR);
+    addParseToken("YYYY", function (input, array) {
+      array[YEAR] =
+        input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+    });
+    addParseToken("YY", function (input, array) {
+      array[YEAR] = hooks.parseTwoDigitYear(input);
+    });
+    addParseToken("Y", function (input, array) {
+      array[YEAR] = parseInt(input, 10);
+    });
+
+    // HELPERS
+
+    function daysInYear(year) {
+      return isLeapYear(year) ? 366 : 365;
+    }
+
+    // HOOKS
+
+    hooks.parseTwoDigitYear = function (input) {
+      return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    // MOMENTS
+
+    var getSetYear = makeGetSet("FullYear", true);
+
+    function getIsLeapYear() {
+      return isLeapYear(this.year());
+    }
+
+    function createDate(y, m, d, h, M, s, ms) {
+      // can't just apply() to create a date:
+      // https://stackoverflow.com/q/181348
+      var date;
+      // the date constructor remaps years 0-99 to 1900-1999
+      if (y < 100 && y >= 0) {
+        // preserve leap years using a full 400 year cycle, then reset
+        date = new Date(y + 400, m, d, h, M, s, ms);
+        if (isFinite(date.getFullYear())) {
+          date.setFullYear(y);
+        }
+      } else {
+        date = new Date(y, m, d, h, M, s, ms);
+      }
+
+      return date;
+    }
+
+    function createUTCDate(y) {
+      var date, args;
+      // the Date.UTC function remaps years 0-99 to 1900-1999
+      if (y < 100 && y >= 0) {
+        args = Array.prototype.slice.call(arguments);
+        // preserve leap years using a full 400 year cycle, then reset
+        args[0] = y + 400;
+        date = new Date(Date.UTC.apply(null, args));
+        if (isFinite(date.getUTCFullYear())) {
+          date.setUTCFullYear(y);
+        }
+      } else {
+        date = new Date(Date.UTC.apply(null, arguments));
+      }
+
+      return date;
+    }
+
+    // start-of-first-week - start-of-year
+    function firstWeekOffset(year, dow, doy) {
+      var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+        fwd = 7 + dow - doy,
+        // first-week day local weekday -- which local weekday is fwd
+        fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
+
+      return -fwdlw + fwd - 1;
+    }
+
+    // https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+    function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
+      var localWeekday = (7 + weekday - dow) % 7,
+        weekOffset = firstWeekOffset(year, dow, doy),
+        dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
+        resYear,
+        resDayOfYear;
+
+      if (dayOfYear <= 0) {
+        resYear = year - 1;
+        resDayOfYear = daysInYear(resYear) + dayOfYear;
+      } else if (dayOfYear > daysInYear(year)) {
+        resYear = year + 1;
+        resDayOfYear = dayOfYear - daysInYear(year);
+      } else {
+        resYear = year;
+        resDayOfYear = dayOfYear;
+      }
+
+      return {
+        year: resYear,
+        dayOfYear: resDayOfYear,
+      };
+    }
+
+    function weekOfYear(mom, dow, doy) {
+      var weekOffset = firstWeekOffset(mom.year(), dow, doy),
+        week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
+        resWeek,
+        resYear;
+
+      if (week < 1) {
+        resYear = mom.year() - 1;
+        resWeek = week + weeksInYear(resYear, dow, doy);
+      } else if (week > weeksInYear(mom.year(), dow, doy)) {
+        resWeek = week - weeksInYear(mom.year(), dow, doy);
+        resYear = mom.year() + 1;
+      } else {
+        resYear = mom.year();
+        resWeek = week;
+      }
+
+      return {
+        week: resWeek,
+        year: resYear,
+      };
+    }
+
+    function weeksInYear(year, dow, doy) {
+      var weekOffset = firstWeekOffset(year, dow, doy),
+        weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
+      return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+    }
+
+    // FORMATTING
+
+    addFormatToken("w", ["ww", 2], "wo", "week");
+    addFormatToken("W", ["WW", 2], "Wo", "isoWeek");
+
+    // ALIASES
+
+    addUnitAlias("week", "w");
+    addUnitAlias("isoWeek", "W");
+
+    // PRIORITIES
+
+    addUnitPriority("week", 5);
+    addUnitPriority("isoWeek", 5);
+
+    // PARSING
+
+    addRegexToken("w", match1to2);
+    addRegexToken("ww", match1to2, match2);
+    addRegexToken("W", match1to2);
+    addRegexToken("WW", match1to2, match2);
+
+    addWeekParseToken(["w", "ww", "W", "WW"], function (
+      input,
+      week,
+      config,
+      token
+    ) {
+      week[token.substr(0, 1)] = toInt(input);
+    });
+
+    // HELPERS
+
+    // LOCALES
+
+    function localeWeek(mom) {
+      return weekOfYear(mom, this._week.dow, this._week.doy).week;
+    }
+
+    var defaultLocaleWeek = {
+      dow: 0, // Sunday is the first day of the week.
+      doy: 6, // The week that contains Jan 6th is the first week of the year.
+    };
+
+    function localeFirstDayOfWeek() {
+      return this._week.dow;
+    }
+
+    function localeFirstDayOfYear() {
+      return this._week.doy;
+    }
+
+    // MOMENTS
+
+    function getSetWeek(input) {
+      var week = this.localeData().week(this);
+      return input == null ? week : this.add((input - week) * 7, "d");
+    }
+
+    function getSetISOWeek(input) {
+      var week = weekOfYear(this, 1, 4).week;
+      return input == null ? week : this.add((input - week) * 7, "d");
+    }
+
+    // FORMATTING
+
+    addFormatToken("d", 0, "do", "day");
+
+    addFormatToken("dd", 0, 0, function (format) {
+      return this.localeData().weekdaysMin(this, format);
+    });
+
+    addFormatToken("ddd", 0, 0, function (format) {
+      return this.localeData().weekdaysShort(this, format);
+    });
+
+    addFormatToken("dddd", 0, 0, function (format) {
+      return this.localeData().weekdays(this, format);
+    });
+
+    addFormatToken("e", 0, 0, "weekday");
+    addFormatToken("E", 0, 0, "isoWeekday");
+
+    // ALIASES
+
+    addUnitAlias("day", "d");
+    addUnitAlias("weekday", "e");
+    addUnitAlias("isoWeekday", "E");
+
+    // PRIORITY
+    addUnitPriority("day", 11);
+    addUnitPriority("weekday", 11);
+    addUnitPriority("isoWeekday", 11);
+
+    // PARSING
+
+    addRegexToken("d", match1to2);
+    addRegexToken("e", match1to2);
+    addRegexToken("E", match1to2);
+    addRegexToken("dd", function (isStrict, locale) {
+      return locale.weekdaysMinRegex(isStrict);
+    });
+    addRegexToken("ddd", function (isStrict, locale) {
+      return locale.weekdaysShortRegex(isStrict);
+    });
+    addRegexToken("dddd", function (isStrict, locale) {
+      return locale.weekdaysRegex(isStrict);
+    });
+
+    addWeekParseToken(["dd", "ddd", "dddd"], function (
+      input,
+      week,
+      config,
+      token
+    ) {
+      var weekday = config._locale.weekdaysParse(input, token, config._strict);
+      // if we didn't get a weekday name, mark the date as invalid
+      if (weekday != null) {
+        week.d = weekday;
+      } else {
+        getParsingFlags(config).invalidWeekday = input;
+      }
+    });
+
+    addWeekParseToken(["d", "e", "E"], function (input, week, config, token) {
+      week[token] = toInt(input);
+    });
+
+    // HELPERS
+
+    function parseWeekday(input, locale) {
+      if (typeof input !== "string") {
+        return input;
+      }
+
+      if (!isNaN(input)) {
+        return parseInt(input, 10);
+      }
+
+      input = locale.weekdaysParse(input);
+      if (typeof input === "number") {
+        return input;
+      }
+
+      return null;
+    }
+
+    function parseIsoWeekday(input, locale) {
+      if (typeof input === "string") {
+        return locale.weekdaysParse(input) % 7 || 7;
+      }
+      return isNaN(input) ? null : input;
+    }
+
+    // LOCALES
+    function shiftWeekdays(ws, n) {
+      return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
+
+    var defaultLocaleWeekdays = "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split(
+        "_"
+      ),
+      defaultLocaleWeekdaysShort = "Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_"),
+      defaultLocaleWeekdaysMin = "Su_Mo_Tu_We_Th_Fr_Sa".split("_"),
+      defaultWeekdaysRegex = matchWord,
+      defaultWeekdaysShortRegex = matchWord,
+      defaultWeekdaysMinRegex = matchWord;
+
+    function localeWeekdays(m, format) {
+      var weekdays = isArray(this._weekdays)
+        ? this._weekdays
+        : this._weekdays[
+            m && m !== true && this._weekdays.isFormat.test(format)
+              ? "format"
+              : "standalone"
+          ];
+      return m === true
+        ? shiftWeekdays(weekdays, this._week.dow)
+        : m
+        ? weekdays[m.day()]
+        : weekdays;
+    }
+
+    function localeWeekdaysShort(m) {
+      return m === true
+        ? shiftWeekdays(this._weekdaysShort, this._week.dow)
+        : m
+        ? this._weekdaysShort[m.day()]
+        : this._weekdaysShort;
+    }
+
+    function localeWeekdaysMin(m) {
+      return m === true
+        ? shiftWeekdays(this._weekdaysMin, this._week.dow)
+        : m
+        ? this._weekdaysMin[m.day()]
+        : this._weekdaysMin;
+    }
+
+    function handleStrictParse$1(weekdayName, format, strict) {
+      var i,
+        ii,
+        mom,
+        llc = weekdayName.toLocaleLowerCase();
+      if (!this._weekdaysParse) {
+        this._weekdaysParse = [];
+        this._shortWeekdaysParse = [];
+        this._minWeekdaysParse = [];
+
+        for (i = 0; i < 7; ++i) {
+          mom = createUTC([2000, 1]).day(i);
+          this._minWeekdaysParse[i] = this.weekdaysMin(
+            mom,
+            ""
+          ).toLocaleLowerCase();
+          this._shortWeekdaysParse[i] = this.weekdaysShort(
+            mom,
+            ""
+          ).toLocaleLowerCase();
+          this._weekdaysParse[i] = this.weekdays(mom, "").toLocaleLowerCase();
+        }
+      }
+
+      if (strict) {
+        if (format === "dddd") {
+          ii = indexOf.call(this._weekdaysParse, llc);
+          return ii !== -1 ? ii : null;
+        } else if (format === "ddd") {
+          ii = indexOf.call(this._shortWeekdaysParse, llc);
+          return ii !== -1 ? ii : null;
+        } else {
+          ii = indexOf.call(this._minWeekdaysParse, llc);
+          return ii !== -1 ? ii : null;
+        }
+      } else {
+        if (format === "dddd") {
+          ii = indexOf.call(this._weekdaysParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._shortWeekdaysParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._minWeekdaysParse, llc);
+          return ii !== -1 ? ii : null;
+        } else if (format === "ddd") {
+          ii = indexOf.call(this._shortWeekdaysParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._weekdaysParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._minWeekdaysParse, llc);
+          return ii !== -1 ? ii : null;
+        } else {
+          ii = indexOf.call(this._minWeekdaysParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._weekdaysParse, llc);
+          if (ii !== -1) {
+            return ii;
+          }
+          ii = indexOf.call(this._shortWeekdaysParse, llc);
+          return ii !== -1 ? ii : null;
+        }
+      }
+    }
+
+    function localeWeekdaysParse(weekdayName, format, strict) {
+      var i, mom, regex;
+
+      if (this._weekdaysParseExact) {
+        return handleStrictParse$1.call(this, weekdayName, format, strict);
+      }
+
+      if (!this._weekdaysParse) {
+        this._weekdaysParse = [];
+        this._minWeekdaysParse = [];
+        this._shortWeekdaysParse = [];
+        this._fullWeekdaysParse = [];
+      }
+
+      for (i = 0; i < 7; i++) {
+        // make the regex if we don't have it already
+
+        mom = createUTC([2000, 1]).day(i);
+        if (strict && !this._fullWeekdaysParse[i]) {
+          this._fullWeekdaysParse[i] = new RegExp(
+            "^" + this.weekdays(mom, "").replace(".", "\\.?") + "$",
+            "i"
+          );
+          this._shortWeekdaysParse[i] = new RegExp(
+            "^" + this.weekdaysShort(mom, "").replace(".", "\\.?") + "$",
+            "i"
+          );
+          this._minWeekdaysParse[i] = new RegExp(
+            "^" + this.weekdaysMin(mom, "").replace(".", "\\.?") + "$",
+            "i"
+          );
+        }
+        if (!this._weekdaysParse[i]) {
+          regex =
+            "^" +
+            this.weekdays(mom, "") +
+            "|^" +
+            this.weekdaysShort(mom, "") +
+            "|^" +
+            this.weekdaysMin(mom, "");
+          this._weekdaysParse[i] = new RegExp(regex.replace(".", ""), "i");
+        }
+        // test the regex
+        if (
+          strict &&
+          format === "dddd" &&
+          this._fullWeekdaysParse[i].test(weekdayName)
+        ) {
+          return i;
+        } else if (
+          strict &&
+          format === "ddd" &&
+          this._shortWeekdaysParse[i].test(weekdayName)
+        ) {
+          return i;
+        } else if (
+          strict &&
+          format === "dd" &&
+          this._minWeekdaysParse[i].test(weekdayName)
+        ) {
+          return i;
+        } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
+          return i;
+        }
+      }
+    }
+
+    // MOMENTS
+
+    function getSetDayOfWeek(input) {
+      if (!this.isValid()) {
+        return input != null ? this : NaN;
+      }
+      var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+      if (input != null) {
+        input = parseWeekday(input, this.localeData());
+        return this.add(input - day, "d");
+      } else {
+        return day;
+      }
+    }
+
+    function getSetLocaleDayOfWeek(input) {
+      if (!this.isValid()) {
+        return input != null ? this : NaN;
+      }
+      var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+      return input == null ? weekday : this.add(input - weekday, "d");
+    }
+
+    function getSetISODayOfWeek(input) {
+      if (!this.isValid()) {
+        return input != null ? this : NaN;
+      }
+
+      // behaves the same as moment#day except
+      // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+      // as a setter, sunday should belong to the previous week.
+
+      if (input != null) {
+        var weekday = parseIsoWeekday(input, this.localeData());
+        return this.day(this.day() % 7 ? weekday : weekday - 7);
+      } else {
+        return this.day() || 7;
+      }
+    }
+
+    function weekdaysRegex(isStrict) {
+      if (this._weekdaysParseExact) {
+        if (!hasOwnProp(this, "_weekdaysRegex")) {
+          computeWeekdaysParse.call(this);
+        }
+        if (isStrict) {
+          return this._weekdaysStrictRegex;
+        } else {
+          return this._weekdaysRegex;
+        }
+      } else {
+        if (!hasOwnProp(this, "_weekdaysRegex")) {
+          this._weekdaysRegex = defaultWeekdaysRegex;
+        }
+        return this._weekdaysStrictRegex && isStrict
+          ? this._weekdaysStrictRegex
+          : this._weekdaysRegex;
+      }
+    }
+
+    function weekdaysShortRegex(isStrict) {
+      if (this._weekdaysParseExact) {
+        if (!hasOwnProp(this, "_weekdaysRegex")) {
+          computeWeekdaysParse.call(this);
+        }
+        if (isStrict) {
+          return this._weekdaysShortStrictRegex;
+        } else {
+          return this._weekdaysShortRegex;
+        }
+      } else {
+        if (!hasOwnProp(this, "_weekdaysShortRegex")) {
+          this._weekdaysShortRegex = defaultWeekdaysShortRegex;
+        }
+        return this._weekdaysShortStrictRegex && isStrict
+          ? this._weekdaysShortStrictRegex
+          : this._weekdaysShortRegex;
+      }
+    }
+
+    function weekdaysMinRegex(isStrict) {
+      if (this._weekdaysParseExact) {
+        if (!hasOwnProp(this, "_weekdaysRegex")) {
+          computeWeekdaysParse.call(this);
+        }
+        if (isStrict) {
+          return this._weekdaysMinStrictRegex;
+        } else {
+          return this._weekdaysMinRegex;
+        }
+      } else {
+        if (!hasOwnProp(this, "_weekdaysMinRegex")) {
+          this._weekdaysMinRegex = defaultWeekdaysMinRegex;
+        }
+        return this._weekdaysMinStrictRegex && isStrict
+          ? this._weekdaysMinStrictRegex
+          : this._weekdaysMinRegex;
+      }
+    }
+
+    function computeWeekdaysParse() {
+      function cmpLenRev(a, b) {
+        return b.length - a.length;
+      }
+
+      var minPieces = [],
+        shortPieces = [],
+        longPieces = [],
+        mixedPieces = [],
+        i,
+        mom,
+        minp,
+        shortp,
+        longp;
+      for (i = 0; i < 7; i++) {
+        // make the regex if we don't have it already
+        mom = createUTC([2000, 1]).day(i);
+        minp = regexEscape(this.weekdaysMin(mom, ""));
+        shortp = regexEscape(this.weekdaysShort(mom, ""));
+        longp = regexEscape(this.weekdays(mom, ""));
+        minPieces.push(minp);
+        shortPieces.push(shortp);
+        longPieces.push(longp);
+        mixedPieces.push(minp);
+        mixedPieces.push(shortp);
+        mixedPieces.push(longp);
+      }
+      // Sorting makes sure if one weekday (or abbr) is a prefix of another it
+      // will match the longer piece.
+      minPieces.sort(cmpLenRev);
+      shortPieces.sort(cmpLenRev);
+      longPieces.sort(cmpLenRev);
+      mixedPieces.sort(cmpLenRev);
+
+      this._weekdaysRegex = new RegExp("^(" + mixedPieces.join("|") + ")", "i");
+      this._weekdaysShortRegex = this._weekdaysRegex;
+      this._weekdaysMinRegex = this._weekdaysRegex;
+
+      this._weekdaysStrictRegex = new RegExp(
+        "^(" + longPieces.join("|") + ")",
+        "i"
+      );
+      this._weekdaysShortStrictRegex = new RegExp(
+        "^(" + shortPieces.join("|") + ")",
+        "i"
+      );
+      this._weekdaysMinStrictRegex = new RegExp(
+        "^(" + minPieces.join("|") + ")",
+        "i"
+      );
+    }
+
+    // FORMATTING
+
+    function hFormat() {
+      return this.hours() % 12 || 12;
+    }
+
+    function kFormat() {
+      return this.hours() || 24;
+    }
+
+    addFormatToken("H", ["HH", 2], 0, "hour");
+    addFormatToken("h", ["hh", 2], 0, hFormat);
+    addFormatToken("k", ["kk", 2], 0, kFormat);
+
+    addFormatToken("hmm", 0, 0, function () {
+      return "" + hFormat.apply(this) + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken("hmmss", 0, 0, function () {
+      return (
+        "" +
+        hFormat.apply(this) +
+        zeroFill(this.minutes(), 2) +
+        zeroFill(this.seconds(), 2)
+      );
+    });
+
+    addFormatToken("Hmm", 0, 0, function () {
+      return "" + this.hours() + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken("Hmmss", 0, 0, function () {
+      return (
+        "" +
+        this.hours() +
+        zeroFill(this.minutes(), 2) +
+        zeroFill(this.seconds(), 2)
+      );
+    });
+
+    function meridiem(token, lowercase) {
+      addFormatToken(token, 0, 0, function () {
+        return this.localeData().meridiem(
+          this.hours(),
+          this.minutes(),
+          lowercase
+        );
+      });
+    }
+
+    meridiem("a", true);
+    meridiem("A", false);
+
+    // ALIASES
+
+    addUnitAlias("hour", "h");
+
+    // PRIORITY
+    addUnitPriority("hour", 13);
+
+    // PARSING
+
+    function matchMeridiem(isStrict, locale) {
+      return locale._meridiemParse;
+    }
+
+    addRegexToken("a", matchMeridiem);
+    addRegexToken("A", matchMeridiem);
+    addRegexToken("H", match1to2);
+    addRegexToken("h", match1to2);
+    addRegexToken("k", match1to2);
+    addRegexToken("HH", match1to2, match2);
+    addRegexToken("hh", match1to2, match2);
+    addRegexToken("kk", match1to2, match2);
+
+    addRegexToken("hmm", match3to4);
+    addRegexToken("hmmss", match5to6);
+    addRegexToken("Hmm", match3to4);
+    addRegexToken("Hmmss", match5to6);
+
+    addParseToken(["H", "HH"], HOUR);
+    addParseToken(["k", "kk"], function (input, array, config) {
+      var kInput = toInt(input);
+      array[HOUR] = kInput === 24 ? 0 : kInput;
+    });
+    addParseToken(["a", "A"], function (input, array, config) {
+      config._isPm = config._locale.isPM(input);
+      config._meridiem = input;
+    });
+    addParseToken(["h", "hh"], function (input, array, config) {
+      array[HOUR] = toInt(input);
+      getParsingFlags(config).bigHour = true;
+    });
+    addParseToken("hmm", function (input, array, config) {
+      var pos = input.length - 2;
+      array[HOUR] = toInt(input.substr(0, pos));
+      array[MINUTE] = toInt(input.substr(pos));
+      getParsingFlags(config).bigHour = true;
+    });
+    addParseToken("hmmss", function (input, array, config) {
+      var pos1 = input.length - 4,
+        pos2 = input.length - 2;
+      array[HOUR] = toInt(input.substr(0, pos1));
+      array[MINUTE] = toInt(input.substr(pos1, 2));
+      array[SECOND] = toInt(input.substr(pos2));
+      getParsingFlags(config).bigHour = true;
+    });
+    addParseToken("Hmm", function (input, array, config) {
+      var pos = input.length - 2;
+      array[HOUR] = toInt(input.substr(0, pos));
+      array[MINUTE] = toInt(input.substr(pos));
+    });
+    addParseToken("Hmmss", function (input, array, config) {
+      var pos1 = input.length - 4,
+        pos2 = input.length - 2;
+      array[HOUR] = toInt(input.substr(0, pos1));
+      array[MINUTE] = toInt(input.substr(pos1, 2));
+      array[SECOND] = toInt(input.substr(pos2));
+    });
+
+    // LOCALES
+
+    function localeIsPM(input) {
+      // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+      // Using charAt should be more compatible.
+      return (input + "").toLowerCase().charAt(0) === "p";
+    }
+
+    var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i,
+      // Setting the hour should keep the time, because the user explicitly
+      // specified which hour they want. So trying to maintain the same hour (in
+      // a new timezone) makes sense. Adding/subtracting hours does not follow
+      // this rule.
+      getSetHour = makeGetSet("Hours", true);
+
+    function localeMeridiem(hours, minutes, isLower) {
+      if (hours > 11) {
+        return isLower ? "pm" : "PM";
+      } else {
+        return isLower ? "am" : "AM";
+      }
+    }
+
+    var baseConfig = {
+      calendar: defaultCalendar,
+      longDateFormat: defaultLongDateFormat,
+      invalidDate: defaultInvalidDate,
+      ordinal: defaultOrdinal,
+      dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
+      relativeTime: defaultRelativeTime,
+
+      months: defaultLocaleMonths,
+      monthsShort: defaultLocaleMonthsShort,
+
+      week: defaultLocaleWeek,
+
+      weekdays: defaultLocaleWeekdays,
+      weekdaysMin: defaultLocaleWeekdaysMin,
+      weekdaysShort: defaultLocaleWeekdaysShort,
+
+      meridiemParse: defaultLocaleMeridiemParse,
+    };
+
+    // internal storage for locale config files
+    var locales = {},
+      localeFamilies = {},
+      globalLocale;
+
+    function commonPrefix(arr1, arr2) {
+      var i,
+        minl = Math.min(arr1.length, arr2.length);
+      for (i = 0; i < minl; i += 1) {
+        if (arr1[i] !== arr2[i]) {
+          return i;
+        }
+      }
+      return minl;
+    }
+
+    function normalizeLocale(key) {
+      return key ? key.toLowerCase().replace("_", "-") : key;
+    }
+
+    // pick the locale from the array
+    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+    // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+    function chooseLocale(names) {
+      var i = 0,
+        j,
+        next,
+        locale,
+        split;
+
+      while (i < names.length) {
+        split = normalizeLocale(names[i]).split("-");
+        j = split.length;
+        next = normalizeLocale(names[i + 1]);
+        next = next ? next.split("-") : null;
+        while (j > 0) {
+          locale = loadLocale(split.slice(0, j).join("-"));
+          if (locale) {
+            return locale;
+          }
+          if (next && next.length >= j && commonPrefix(split, next) >= j - 1) {
+            //the next array item is better than a shallower substring of this one
+            break;
+          }
+          j--;
+        }
+        i++;
+      }
+      return globalLocale;
+    }
+
+    function loadLocale(name) {
+      var oldLocale = null,
+        aliasedRequire;
+      // TODO: Find a better way to register and load all the locales in Node
+      if (
+        locales[name] === undefined &&
+        "object" !== "undefined" &&
+        module &&
+        module.exports
+      ) {
+        try {
+          oldLocale = globalLocale._abbr;
+          aliasedRequire = commonjsRequire;
+          aliasedRequire("./locale/" + name);
+          getSetGlobalLocale(oldLocale);
+        } catch (e) {
+          // mark as not found to avoid repeating expensive file require call causing high CPU
+          // when trying to find en-US, en_US, en-us for every format call
+          locales[name] = null; // null means not found
+        }
+      }
+      return locales[name];
+    }
+
+    // This function will load locale and then set the global locale.  If
+    // no arguments are passed in, it will simply return the current global
+    // locale key.
+    function getSetGlobalLocale(key, values) {
+      var data;
+      if (key) {
+        if (isUndefined(values)) {
+          data = getLocale(key);
+        } else {
+          data = defineLocale(key, values);
+        }
+
+        if (data) {
+          // moment.duration._locale = moment._locale = data;
+          globalLocale = data;
+        } else {
+          if (typeof console !== "undefined" && console.warn) {
+            //warn user if arguments are passed but the locale could not be set
+            console.warn(
+              "Locale " + key + " not found. Did you forget to load it?"
+            );
+          }
+        }
+      }
+
+      return globalLocale._abbr;
+    }
+
+    function defineLocale(name, config) {
+      if (config !== null) {
+        var locale,
+          parentConfig = baseConfig;
+        config.abbr = name;
+        if (locales[name] != null) {
+          deprecateSimple(
+            "defineLocaleOverride",
+            "use moment.updateLocale(localeName, config) to change " +
+              "an existing locale. moment.defineLocale(localeName, " +
+              "config) should only be used for creating a new locale " +
+              "See http://momentjs.com/guides/#/warnings/define-locale/ for more info."
+          );
+          parentConfig = locales[name]._config;
+        } else if (config.parentLocale != null) {
+          if (locales[config.parentLocale] != null) {
+            parentConfig = locales[config.parentLocale]._config;
+          } else {
+            locale = loadLocale(config.parentLocale);
+            if (locale != null) {
+              parentConfig = locale._config;
+            } else {
+              if (!localeFamilies[config.parentLocale]) {
+                localeFamilies[config.parentLocale] = [];
+              }
+              localeFamilies[config.parentLocale].push({
+                name: name,
+                config: config,
+              });
+              return null;
+            }
+          }
+        }
+        locales[name] = new Locale(mergeConfigs(parentConfig, config));
+
+        if (localeFamilies[name]) {
+          localeFamilies[name].forEach(function (x) {
+            defineLocale(x.name, x.config);
+          });
+        }
+
+        // backwards compat for now: also set the locale
+        // make sure we set the locale AFTER all child locales have been
+        // created, so we won't end up with the child locale set.
+        getSetGlobalLocale(name);
+
+        return locales[name];
+      } else {
+        // useful for testing
+        delete locales[name];
+        return null;
+      }
+    }
+
+    function updateLocale(name, config) {
+      if (config != null) {
+        var locale,
+          tmpLocale,
+          parentConfig = baseConfig;
+
+        if (locales[name] != null && locales[name].parentLocale != null) {
+          // Update existing child locale in-place to avoid memory-leaks
+          locales[name].set(mergeConfigs(locales[name]._config, config));
+        } else {
+          // MERGE
+          tmpLocale = loadLocale(name);
+          if (tmpLocale != null) {
+            parentConfig = tmpLocale._config;
+          }
+          config = mergeConfigs(parentConfig, config);
+          if (tmpLocale == null) {
+            // updateLocale is called for creating a new locale
+            // Set abbr so it will have a name (getters return
+            // undefined otherwise).
+            config.abbr = name;
+          }
+          locale = new Locale(config);
+          locale.parentLocale = locales[name];
+          locales[name] = locale;
+        }
+
+        // backwards compat for now: also set the locale
+        getSetGlobalLocale(name);
+      } else {
+        // pass null for config to unupdate, useful for tests
+        if (locales[name] != null) {
+          if (locales[name].parentLocale != null) {
+            locales[name] = locales[name].parentLocale;
+            if (name === getSetGlobalLocale()) {
+              getSetGlobalLocale(name);
+            }
+          } else if (locales[name] != null) {
+            delete locales[name];
+          }
+        }
+      }
+      return locales[name];
+    }
+
+    // returns locale data
+    function getLocale(key) {
+      var locale;
+
+      if (key && key._locale && key._locale._abbr) {
+        key = key._locale._abbr;
+      }
+
+      if (!key) {
+        return globalLocale;
+      }
+
+      if (!isArray(key)) {
+        //short-circuit everything else
+        locale = loadLocale(key);
+        if (locale) {
+          return locale;
+        }
+        key = [key];
+      }
+
+      return chooseLocale(key);
+    }
+
+    function listLocales() {
+      return keys(locales);
+    }
+
+    function checkOverflow(m) {
+      var overflow,
+        a = m._a;
+
+      if (a && getParsingFlags(m).overflow === -2) {
+        overflow =
+          a[MONTH] < 0 || a[MONTH] > 11
+            ? MONTH
+            : a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH])
+            ? DATE
+            : a[HOUR] < 0 ||
+              a[HOUR] > 24 ||
+              (a[HOUR] === 24 &&
+                (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0))
+            ? HOUR
+            : a[MINUTE] < 0 || a[MINUTE] > 59
+            ? MINUTE
+            : a[SECOND] < 0 || a[SECOND] > 59
+            ? SECOND
+            : a[MILLISECOND] < 0 || a[MILLISECOND] > 999
+            ? MILLISECOND
+            : -1;
+
+        if (
+          getParsingFlags(m)._overflowDayOfYear &&
+          (overflow < YEAR || overflow > DATE)
+        ) {
+          overflow = DATE;
+        }
+        if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
+          overflow = WEEK;
+        }
+        if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
+          overflow = WEEKDAY;
+        }
+
+        getParsingFlags(m).overflow = overflow;
+      }
+
+      return m;
+    }
+
+    // iso 8601 regex
+    // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+    var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([+-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+      basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d|))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([+-]\d\d(?::?\d\d)?|\s*Z)?)?$/,
+      tzRegex = /Z|[+-]\d\d(?::?\d\d)?/,
+      isoDates = [
+        ["YYYYYY-MM-DD", /[+-]\d{6}-\d\d-\d\d/],
+        ["YYYY-MM-DD", /\d{4}-\d\d-\d\d/],
+        ["GGGG-[W]WW-E", /\d{4}-W\d\d-\d/],
+        ["GGGG-[W]WW", /\d{4}-W\d\d/, false],
+        ["YYYY-DDD", /\d{4}-\d{3}/],
+        ["YYYY-MM", /\d{4}-\d\d/, false],
+        ["YYYYYYMMDD", /[+-]\d{10}/],
+        ["YYYYMMDD", /\d{8}/],
+        ["GGGG[W]WWE", /\d{4}W\d{3}/],
+        ["GGGG[W]WW", /\d{4}W\d{2}/, false],
+        ["YYYYDDD", /\d{7}/],
+        ["YYYYMM", /\d{6}/, false],
+        ["YYYY", /\d{4}/, false],
+      ],
+      // iso time formats and regexes
+      isoTimes = [
+        ["HH:mm:ss.SSSS", /\d\d:\d\d:\d\d\.\d+/],
+        ["HH:mm:ss,SSSS", /\d\d:\d\d:\d\d,\d+/],
+        ["HH:mm:ss", /\d\d:\d\d:\d\d/],
+        ["HH:mm", /\d\d:\d\d/],
+        ["HHmmss.SSSS", /\d\d\d\d\d\d\.\d+/],
+        ["HHmmss,SSSS", /\d\d\d\d\d\d,\d+/],
+        ["HHmmss", /\d\d\d\d\d\d/],
+        ["HHmm", /\d\d\d\d/],
+        ["HH", /\d\d/],
+      ],
+      aspNetJsonRegex = /^\/?Date\((-?\d+)/i,
+      // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
+      rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/,
+      obsOffsets = {
+        UT: 0,
+        GMT: 0,
+        EDT: -4 * 60,
+        EST: -5 * 60,
+        CDT: -5 * 60,
+        CST: -6 * 60,
+        MDT: -6 * 60,
+        MST: -7 * 60,
+        PDT: -7 * 60,
+        PST: -8 * 60,
+      };
+
+    // date from iso format
+    function configFromISO(config) {
+      var i,
+        l,
+        string = config._i,
+        match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
+        allowTime,
+        dateFormat,
+        timeFormat,
+        tzFormat;
+
+      if (match) {
+        getParsingFlags(config).iso = true;
+
+        for (i = 0, l = isoDates.length; i < l; i++) {
+          if (isoDates[i][1].exec(match[1])) {
+            dateFormat = isoDates[i][0];
+            allowTime = isoDates[i][2] !== false;
+            break;
+          }
+        }
+        if (dateFormat == null) {
+          config._isValid = false;
+          return;
+        }
+        if (match[3]) {
+          for (i = 0, l = isoTimes.length; i < l; i++) {
+            if (isoTimes[i][1].exec(match[3])) {
+              // match[2] should be 'T' or space
+              timeFormat = (match[2] || " ") + isoTimes[i][0];
+              break;
+            }
+          }
+          if (timeFormat == null) {
+            config._isValid = false;
+            return;
+          }
+        }
+        if (!allowTime && timeFormat != null) {
+          config._isValid = false;
+          return;
+        }
+        if (match[4]) {
+          if (tzRegex.exec(match[4])) {
+            tzFormat = "Z";
+          } else {
+            config._isValid = false;
+            return;
+          }
+        }
+        config._f = dateFormat + (timeFormat || "") + (tzFormat || "");
+        configFromStringAndFormat(config);
+      } else {
+        config._isValid = false;
+      }
+    }
+
+    function extractFromRFC2822Strings(
+      yearStr,
+      monthStr,
+      dayStr,
+      hourStr,
+      minuteStr,
+      secondStr
+    ) {
+      var result = [
+        untruncateYear(yearStr),
+        defaultLocaleMonthsShort.indexOf(monthStr),
+        parseInt(dayStr, 10),
+        parseInt(hourStr, 10),
+        parseInt(minuteStr, 10),
+      ];
+
+      if (secondStr) {
+        result.push(parseInt(secondStr, 10));
+      }
+
+      return result;
+    }
+
+    function untruncateYear(yearStr) {
+      var year = parseInt(yearStr, 10);
+      if (year <= 49) {
+        return 2000 + year;
+      } else if (year <= 999) {
+        return 1900 + year;
+      }
+      return year;
+    }
+
+    function preprocessRFC2822(s) {
+      // Remove comments and folding whitespace and replace multiple-spaces with a single space
+      return s
+        .replace(/\([^)]*\)|[\n\t]/g, " ")
+        .replace(/(\s\s+)/g, " ")
+        .replace(/^\s\s*/, "")
+        .replace(/\s\s*$/, "");
+    }
+
+    function checkWeekday(weekdayStr, parsedInput, config) {
+      if (weekdayStr) {
+        // TODO: Replace the vanilla JS Date object with an independent day-of-week check.
+        var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+          weekdayActual = new Date(
+            parsedInput[0],
+            parsedInput[1],
+            parsedInput[2]
+          ).getDay();
+        if (weekdayProvided !== weekdayActual) {
+          getParsingFlags(config).weekdayMismatch = true;
+          config._isValid = false;
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function calculateOffset(obsOffset, militaryOffset, numOffset) {
+      if (obsOffset) {
+        return obsOffsets[obsOffset];
+      } else if (militaryOffset) {
+        // the only allowed military tz is Z
+        return 0;
+      } else {
+        var hm = parseInt(numOffset, 10),
+          m = hm % 100,
+          h = (hm - m) / 100;
+        return h * 60 + m;
+      }
+    }
+
+    // date and time from ref 2822 format
+    function configFromRFC2822(config) {
+      var match = rfc2822.exec(preprocessRFC2822(config._i)),
+        parsedArray;
+      if (match) {
+        parsedArray = extractFromRFC2822Strings(
+          match[4],
+          match[3],
+          match[2],
+          match[5],
+          match[6],
+          match[7]
+        );
+        if (!checkWeekday(match[1], parsedArray, config)) {
+          return;
+        }
+
+        config._a = parsedArray;
+        config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+        config._d = createUTCDate.apply(null, config._a);
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
+        getParsingFlags(config).rfc2822 = true;
+      } else {
+        config._isValid = false;
+      }
+    }
+
+    // date from 1) ASP.NET, 2) ISO, 3) RFC 2822 formats, or 4) optional fallback if parsing isn't strict
+    function configFromString(config) {
+      var matched = aspNetJsonRegex.exec(config._i);
+      if (matched !== null) {
+        config._d = new Date(+matched[1]);
+        return;
+      }
+
+      configFromISO(config);
+      if (config._isValid === false) {
+        delete config._isValid;
+      } else {
+        return;
+      }
+
+      configFromRFC2822(config);
+      if (config._isValid === false) {
+        delete config._isValid;
+      } else {
+        return;
+      }
+
+      if (config._strict) {
+        config._isValid = false;
+      } else {
+        // Final attempt, use Input Fallback
+        hooks.createFromInputFallback(config);
+      }
+    }
+
+    hooks.createFromInputFallback = deprecate(
+      "value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), " +
+        "which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are " +
+        "discouraged and will be removed in an upcoming major release. Please refer to " +
+        "http://momentjs.com/guides/#/warnings/js-date/ for more info.",
+      function (config) {
+        config._d = new Date(config._i + (config._useUTC ? " UTC" : ""));
+      }
+    );
+
+    // Pick the first defined of two or three arguments.
+    function defaults(a, b, c) {
+      if (a != null) {
+        return a;
+      }
+      if (b != null) {
+        return b;
+      }
+      return c;
+    }
+
+    function currentDateArray(config) {
+      // hooks is actually the exported moment object
+      var nowValue = new Date(hooks.now());
+      if (config._useUTC) {
+        return [
+          nowValue.getUTCFullYear(),
+          nowValue.getUTCMonth(),
+          nowValue.getUTCDate(),
+        ];
+      }
+      return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+    }
+
+    // convert an array to a date.
+    // the array should mirror the parameters below
+    // note: all values past the year are optional and will default to the lowest possible value.
+    // [year, month, day , hour, minute, second, millisecond]
+    function configFromArray(config) {
+      var i,
+        date,
+        input = [],
+        currentDate,
+        expectedWeekday,
+        yearToUse;
+
+      if (config._d) {
+        return;
+      }
+
+      currentDate = currentDateArray(config);
+
+      //compute day of the year from weeks and weekdays
+      if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+        dayOfYearFromWeekInfo(config);
+      }
+
+      //if the day of the year is set, figure out what it is
+      if (config._dayOfYear != null) {
+        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+        if (
+          config._dayOfYear > daysInYear(yearToUse) ||
+          config._dayOfYear === 0
+        ) {
+          getParsingFlags(config)._overflowDayOfYear = true;
+        }
+
+        date = createUTCDate(yearToUse, 0, config._dayOfYear);
+        config._a[MONTH] = date.getUTCMonth();
+        config._a[DATE] = date.getUTCDate();
+      }
+
+      // Default to current date.
+      // * if no year, month, day of month are given, default to today
+      // * if day of month is given, default month and year
+      // * if month is given, default only year
+      // * if year is given, don't default anything
+      for (i = 0; i < 3 && config._a[i] == null; ++i) {
+        config._a[i] = input[i] = currentDate[i];
+      }
+
+      // Zero out whatever was not defaulted, including time
+      for (; i < 7; i++) {
+        config._a[i] = input[i] =
+          config._a[i] == null ? (i === 2 ? 1 : 0) : config._a[i];
+      }
+
+      // Check for 24:00:00.000
+      if (
+        config._a[HOUR] === 24 &&
+        config._a[MINUTE] === 0 &&
+        config._a[SECOND] === 0 &&
+        config._a[MILLISECOND] === 0
+      ) {
+        config._nextDay = true;
+        config._a[HOUR] = 0;
+      }
+
+      config._d = (config._useUTC ? createUTCDate : createDate).apply(
+        null,
+        input
+      );
+      expectedWeekday = config._useUTC
+        ? config._d.getUTCDay()
+        : config._d.getDay();
+
+      // Apply timezone offset from input. The actual utcOffset can be changed
+      // with parseZone.
+      if (config._tzm != null) {
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+      }
+
+      if (config._nextDay) {
+        config._a[HOUR] = 24;
+      }
+
+      // check for mismatching day of week
+      if (
+        config._w &&
+        typeof config._w.d !== "undefined" &&
+        config._w.d !== expectedWeekday
+      ) {
+        getParsingFlags(config).weekdayMismatch = true;
+      }
+    }
+
+    function dayOfYearFromWeekInfo(config) {
+      var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow, curWeek;
+
+      w = config._w;
+      if (w.GG != null || w.W != null || w.E != null) {
+        dow = 1;
+        doy = 4;
+
+        // TODO: We need to take the current isoWeekYear, but that depends on
+        // how we interpret now (local, utc, fixed offset). So create
+        // a now version of current config (take local/utc/offset flags, and
+        // create now).
+        weekYear = defaults(
+          w.GG,
+          config._a[YEAR],
+          weekOfYear(createLocal(), 1, 4).year
+        );
+        week = defaults(w.W, 1);
+        weekday = defaults(w.E, 1);
+        if (weekday < 1 || weekday > 7) {
+          weekdayOverflow = true;
+        }
+      } else {
+        dow = config._locale._week.dow;
+        doy = config._locale._week.doy;
+
+        curWeek = weekOfYear(createLocal(), dow, doy);
+
+        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+        // Default to current week.
+        week = defaults(w.w, curWeek.week);
+
+        if (w.d != null) {
+          // weekday -- low day numbers are considered next week
+          weekday = w.d;
+          if (weekday < 0 || weekday > 6) {
+            weekdayOverflow = true;
+          }
+        } else if (w.e != null) {
+          // local weekday -- counting starts from beginning of week
+          weekday = w.e + dow;
+          if (w.e < 0 || w.e > 6) {
+            weekdayOverflow = true;
+          }
+        } else {
+          // default to beginning of week
+          weekday = dow;
+        }
+      }
+      if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+        getParsingFlags(config)._overflowWeeks = true;
+      } else if (weekdayOverflow != null) {
+        getParsingFlags(config)._overflowWeekday = true;
+      } else {
+        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+        config._a[YEAR] = temp.year;
+        config._dayOfYear = temp.dayOfYear;
+      }
+    }
+
+    // constant that refers to the ISO standard
+    hooks.ISO_8601 = function () {};
+
+    // constant that refers to the RFC 2822 form
+    hooks.RFC_2822 = function () {};
+
+    // date from string and format string
+    function configFromStringAndFormat(config) {
+      // TODO: Move this to another part of the creation flow to prevent circular deps
+      if (config._f === hooks.ISO_8601) {
+        configFromISO(config);
+        return;
+      }
+      if (config._f === hooks.RFC_2822) {
+        configFromRFC2822(config);
+        return;
+      }
+      config._a = [];
+      getParsingFlags(config).empty = true;
+
+      // This array is used to make a Date, either with `new Date` or `Date.UTC`
+      var string = "" + config._i,
+        i,
+        parsedInput,
+        tokens,
+        token,
+        skipped,
+        stringLength = string.length,
+        totalParsedInputLength = 0,
+        era;
+
+      tokens =
+        expandFormat(config._f, config._locale).match(formattingTokens) || [];
+
+      for (i = 0; i < tokens.length; i++) {
+        token = tokens[i];
+        parsedInput = (string.match(getParseRegexForToken(token, config)) ||
+          [])[0];
+        if (parsedInput) {
+          skipped = string.substr(0, string.indexOf(parsedInput));
+          if (skipped.length > 0) {
+            getParsingFlags(config).unusedInput.push(skipped);
+          }
+          string = string.slice(
+            string.indexOf(parsedInput) + parsedInput.length
+          );
+          totalParsedInputLength += parsedInput.length;
+        }
+        // don't parse if it's not a known token
+        if (formatTokenFunctions[token]) {
+          if (parsedInput) {
+            getParsingFlags(config).empty = false;
+          } else {
+            getParsingFlags(config).unusedTokens.push(token);
+          }
+          addTimeToArrayFromToken(token, parsedInput, config);
+        } else if (config._strict && !parsedInput) {
+          getParsingFlags(config).unusedTokens.push(token);
+        }
+      }
+
+      // add remaining unparsed input length to the string
+      getParsingFlags(config).charsLeftOver =
+        stringLength - totalParsedInputLength;
+      if (string.length > 0) {
+        getParsingFlags(config).unusedInput.push(string);
+      }
+
+      // clear _12h flag if hour is <= 12
+      if (
+        config._a[HOUR] <= 12 &&
+        getParsingFlags(config).bigHour === true &&
+        config._a[HOUR] > 0
+      ) {
+        getParsingFlags(config).bigHour = undefined;
+      }
+
+      getParsingFlags(config).parsedDateParts = config._a.slice(0);
+      getParsingFlags(config).meridiem = config._meridiem;
+      // handle meridiem
+      config._a[HOUR] = meridiemFixWrap(
+        config._locale,
+        config._a[HOUR],
+        config._meridiem
+      );
+
+      // handle era
+      era = getParsingFlags(config).era;
+      if (era !== null) {
+        config._a[YEAR] = config._locale.erasConvertYear(era, config._a[YEAR]);
+      }
+
+      configFromArray(config);
+      checkOverflow(config);
+    }
+
+    function meridiemFixWrap(locale, hour, meridiem) {
+      var isPm;
+
+      if (meridiem == null) {
+        // nothing to do
+        return hour;
+      }
+      if (locale.meridiemHour != null) {
+        return locale.meridiemHour(hour, meridiem);
+      } else if (locale.isPM != null) {
+        // Fallback
+        isPm = locale.isPM(meridiem);
+        if (isPm && hour < 12) {
+          hour += 12;
+        }
+        if (!isPm && hour === 12) {
+          hour = 0;
+        }
+        return hour;
+      } else {
+        // this is not supposed to happen
+        return hour;
+      }
+    }
+
+    // date from string and array of format strings
+    function configFromStringAndArray(config) {
+      var tempConfig,
+        bestMoment,
+        scoreToBeat,
+        i,
+        currentScore,
+        validFormatFound,
+        bestFormatIsValid = false;
+
+      if (config._f.length === 0) {
+        getParsingFlags(config).invalidFormat = true;
+        config._d = new Date(NaN);
+        return;
+      }
+
+      for (i = 0; i < config._f.length; i++) {
+        currentScore = 0;
+        validFormatFound = false;
+        tempConfig = copyConfig({}, config);
+        if (config._useUTC != null) {
+          tempConfig._useUTC = config._useUTC;
+        }
+        tempConfig._f = config._f[i];
+        configFromStringAndFormat(tempConfig);
+
+        if (isValid(tempConfig)) {
+          validFormatFound = true;
+        }
+
+        // if there is any input that was not parsed add a penalty for that format
+        currentScore += getParsingFlags(tempConfig).charsLeftOver;
+
+        //or tokens
+        currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+
+        getParsingFlags(tempConfig).score = currentScore;
+
+        if (!bestFormatIsValid) {
+          if (
+            scoreToBeat == null ||
+            currentScore < scoreToBeat ||
+            validFormatFound
+          ) {
+            scoreToBeat = currentScore;
+            bestMoment = tempConfig;
+            if (validFormatFound) {
+              bestFormatIsValid = true;
+            }
+          }
+        } else {
+          if (currentScore < scoreToBeat) {
+            scoreToBeat = currentScore;
+            bestMoment = tempConfig;
+          }
+        }
+      }
+
+      extend(config, bestMoment || tempConfig);
+    }
+
+    function configFromObject(config) {
+      if (config._d) {
+        return;
+      }
+
+      var i = normalizeObjectUnits(config._i),
+        dayOrDate = i.day === undefined ? i.date : i.day;
+      config._a = map(
+        [i.year, i.month, dayOrDate, i.hour, i.minute, i.second, i.millisecond],
+        function (obj) {
+          return obj && parseInt(obj, 10);
+        }
+      );
+
+      configFromArray(config);
+    }
+
+    function createFromConfig(config) {
+      var res = new Moment(checkOverflow(prepareConfig(config)));
+      if (res._nextDay) {
+        // Adding is smart enough around DST
+        res.add(1, "d");
+        res._nextDay = undefined;
+      }
+
+      return res;
+    }
+
+    function prepareConfig(config) {
+      var input = config._i,
+        format = config._f;
+
+      config._locale = config._locale || getLocale(config._l);
+
+      if (input === null || (format === undefined && input === "")) {
+        return createInvalid({ nullInput: true });
+      }
+
+      if (typeof input === "string") {
+        config._i = input = config._locale.preparse(input);
+      }
+
+      if (isMoment(input)) {
+        return new Moment(checkOverflow(input));
+      } else if (isDate(input)) {
+        config._d = input;
+      } else if (isArray(format)) {
+        configFromStringAndArray(config);
+      } else if (format) {
+        configFromStringAndFormat(config);
+      } else {
+        configFromInput(config);
+      }
+
+      if (!isValid(config)) {
+        config._d = null;
+      }
+
+      return config;
+    }
+
+    function configFromInput(config) {
+      var input = config._i;
+      if (isUndefined(input)) {
+        config._d = new Date(hooks.now());
+      } else if (isDate(input)) {
+        config._d = new Date(input.valueOf());
+      } else if (typeof input === "string") {
+        configFromString(config);
+      } else if (isArray(input)) {
+        config._a = map(input.slice(0), function (obj) {
+          return parseInt(obj, 10);
+        });
+        configFromArray(config);
+      } else if (isObject(input)) {
+        configFromObject(config);
+      } else if (isNumber(input)) {
+        // from milliseconds
+        config._d = new Date(input);
+      } else {
+        hooks.createFromInputFallback(config);
+      }
+    }
+
+    function createLocalOrUTC(input, format, locale, strict, isUTC) {
+      var c = {};
+
+      if (format === true || format === false) {
+        strict = format;
+        format = undefined;
+      }
+
+      if (locale === true || locale === false) {
+        strict = locale;
+        locale = undefined;
+      }
+
+      if (
+        (isObject(input) && isObjectEmpty(input)) ||
+        (isArray(input) && input.length === 0)
+      ) {
+        input = undefined;
+      }
+      // object construction must be done this way.
+      // https://github.com/moment/moment/issues/1423
+      c._isAMomentObject = true;
+      c._useUTC = c._isUTC = isUTC;
+      c._l = locale;
+      c._i = input;
+      c._f = format;
+      c._strict = strict;
+
+      return createFromConfig(c);
+    }
+
+    function createLocal(input, format, locale, strict) {
+      return createLocalOrUTC(input, format, locale, strict, false);
+    }
+
+    var prototypeMin = deprecate(
+        "moment().min is deprecated, use moment.max instead. http://momentjs.com/guides/#/warnings/min-max/",
+        function () {
+          var other = createLocal.apply(null, arguments);
+          if (this.isValid() && other.isValid()) {
+            return other < this ? this : other;
+          } else {
+            return createInvalid();
+          }
+        }
+      ),
+      prototypeMax = deprecate(
+        "moment().max is deprecated, use moment.min instead. http://momentjs.com/guides/#/warnings/min-max/",
+        function () {
+          var other = createLocal.apply(null, arguments);
+          if (this.isValid() && other.isValid()) {
+            return other > this ? this : other;
+          } else {
+            return createInvalid();
+          }
+        }
+      );
+
+    // Pick a moment m from moments so that m[fn](other) is true for all
+    // other. This relies on the function fn to be transitive.
+    //
+    // moments should either be an array of moment objects or an array, whose
+    // first element is an array of moment objects.
+    function pickBy(fn, moments) {
+      var res, i;
+      if (moments.length === 1 && isArray(moments[0])) {
+        moments = moments[0];
+      }
+      if (!moments.length) {
+        return createLocal();
+      }
+      res = moments[0];
+      for (i = 1; i < moments.length; ++i) {
+        if (!moments[i].isValid() || moments[i][fn](res)) {
+          res = moments[i];
+        }
+      }
+      return res;
+    }
+
+    // TODO: Use [].sort instead?
+    function min() {
+      var args = [].slice.call(arguments, 0);
+
+      return pickBy("isBefore", args);
+    }
+
+    function max() {
+      var args = [].slice.call(arguments, 0);
+
+      return pickBy("isAfter", args);
+    }
+
+    var now = function () {
+      return Date.now ? Date.now() : +new Date();
+    };
+
+    var ordering = [
+      "year",
+      "quarter",
+      "month",
+      "week",
+      "day",
+      "hour",
+      "minute",
+      "second",
+      "millisecond",
+    ];
+
+    function isDurationValid(m) {
+      var key,
+        unitHasDecimal = false,
+        i;
+      for (key in m) {
+        if (
+          hasOwnProp(m, key) &&
+          !(
+            indexOf.call(ordering, key) !== -1 &&
+            (m[key] == null || !isNaN(m[key]))
+          )
+        ) {
+          return false;
+        }
+      }
+
+      for (i = 0; i < ordering.length; ++i) {
+        if (m[ordering[i]]) {
+          if (unitHasDecimal) {
+            return false; // only allow non-integers for smallest unit
+          }
+          if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
+            unitHasDecimal = true;
+          }
+        }
+      }
+
+      return true;
+    }
+
+    function isValid$1() {
+      return this._isValid;
+    }
+
+    function createInvalid$1() {
+      return createDuration(NaN);
+    }
+
+    function Duration(duration) {
+      var normalizedInput = normalizeObjectUnits(duration),
+        years = normalizedInput.year || 0,
+        quarters = normalizedInput.quarter || 0,
+        months = normalizedInput.month || 0,
+        weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
+        days = normalizedInput.day || 0,
+        hours = normalizedInput.hour || 0,
+        minutes = normalizedInput.minute || 0,
+        seconds = normalizedInput.second || 0,
+        milliseconds = normalizedInput.millisecond || 0;
+
+      this._isValid = isDurationValid(normalizedInput);
+
+      // representation for dateAddRemove
+      this._milliseconds =
+        +milliseconds +
+        seconds * 1e3 + // 1000
+        minutes * 6e4 + // 1000 * 60
+        hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
+      // Because of dateAddRemove treats 24 hours as different from a
+      // day when working around DST, we need to store them separately
+      this._days = +days + weeks * 7;
+      // It is impossible to translate months into days without knowing
+      // which months you are are talking about, so we have to store
+      // it separately.
+      this._months = +months + quarters * 3 + years * 12;
+
+      this._data = {};
+
+      this._locale = getLocale();
+
+      this._bubble();
+    }
+
+    function isDuration(obj) {
+      return obj instanceof Duration;
+    }
+
+    function absRound(number) {
+      if (number < 0) {
+        return Math.round(-1 * number) * -1;
+      } else {
+        return Math.round(number);
+      }
+    }
+
+    // compare two arrays, return the number of differences
+    function compareArrays(array1, array2, dontConvert) {
+      var len = Math.min(array1.length, array2.length),
+        lengthDiff = Math.abs(array1.length - array2.length),
+        diffs = 0,
+        i;
+      for (i = 0; i < len; i++) {
+        if (
+          (dontConvert && array1[i] !== array2[i]) ||
+          (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))
+        ) {
+          diffs++;
+        }
+      }
+      return diffs + lengthDiff;
+    }
+
+    // FORMATTING
+
+    function offset(token, separator) {
+      addFormatToken(token, 0, 0, function () {
+        var offset = this.utcOffset(),
+          sign = "+";
+        if (offset < 0) {
+          offset = -offset;
+          sign = "-";
+        }
+        return (
+          sign +
+          zeroFill(~~(offset / 60), 2) +
+          separator +
+          zeroFill(~~offset % 60, 2)
+        );
+      });
+    }
+
+    offset("Z", ":");
+    offset("ZZ", "");
+
+    // PARSING
+
+    addRegexToken("Z", matchShortOffset);
+    addRegexToken("ZZ", matchShortOffset);
+    addParseToken(["Z", "ZZ"], function (input, array, config) {
+      config._useUTC = true;
+      config._tzm = offsetFromString(matchShortOffset, input);
+    });
+
+    // HELPERS
+
+    // timezone chunker
+    // '+10:00' > ['10',  '00']
+    // '-1530'  > ['-15', '30']
+    var chunkOffset = /([\+\-]|\d\d)/gi;
+
+    function offsetFromString(matcher, string) {
+      var matches = (string || "").match(matcher),
+        chunk,
+        parts,
+        minutes;
+
+      if (matches === null) {
+        return null;
+      }
+
+      chunk = matches[matches.length - 1] || [];
+      parts = (chunk + "").match(chunkOffset) || ["-", 0, 0];
+      minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+      return minutes === 0 ? 0 : parts[0] === "+" ? minutes : -minutes;
+    }
+
+    // Return a moment from input, that is local/utc/zone equivalent to model.
+    function cloneWithOffset(input, model) {
+      var res, diff;
+      if (model._isUTC) {
+        res = model.clone();
+        diff =
+          (isMoment(input) || isDate(input)
+            ? input.valueOf()
+            : createLocal(input).valueOf()) - res.valueOf();
+        // Use low-level api, because this fn is low-level api.
+        res._d.setTime(res._d.valueOf() + diff);
+        hooks.updateOffset(res, false);
+        return res;
+      } else {
+        return createLocal(input).local();
+      }
+    }
+
+    function getDateOffset(m) {
+      // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+      // https://github.com/moment/moment/pull/1871
+      return -Math.round(m._d.getTimezoneOffset());
+    }
+
+    // HOOKS
+
+    // This function will be called whenever a moment is mutated.
+    // It is intended to keep the offset in sync with the timezone.
+    hooks.updateOffset = function () {};
+
+    // MOMENTS
+
+    // keepLocalTime = true means only change the timezone, without
+    // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
+    // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
+    // +0200, so we adjust the time as needed, to be valid.
+    //
+    // Keeping the time actually adds/subtracts (one hour)
+    // from the actual represented time. That is why we call updateOffset
+    // a second time. In case it wants us to change the offset again
+    // _changeInProgress == true case, then we have to adjust, because
+    // there is no such time in the given timezone.
+    function getSetOffset(input, keepLocalTime, keepMinutes) {
+      var offset = this._offset || 0,
+        localAdjust;
+      if (!this.isValid()) {
+        return input != null ? this : NaN;
+      }
+      if (input != null) {
+        if (typeof input === "string") {
+          input = offsetFromString(matchShortOffset, input);
+          if (input === null) {
+            return this;
+          }
+        } else if (Math.abs(input) < 16 && !keepMinutes) {
+          input = input * 60;
+        }
+        if (!this._isUTC && keepLocalTime) {
+          localAdjust = getDateOffset(this);
+        }
+        this._offset = input;
+        this._isUTC = true;
+        if (localAdjust != null) {
+          this.add(localAdjust, "m");
+        }
+        if (offset !== input) {
+          if (!keepLocalTime || this._changeInProgress) {
+            addSubtract(this, createDuration(input - offset, "m"), 1, false);
+          } else if (!this._changeInProgress) {
+            this._changeInProgress = true;
+            hooks.updateOffset(this, true);
+            this._changeInProgress = null;
+          }
+        }
+        return this;
+      } else {
+        return this._isUTC ? offset : getDateOffset(this);
+      }
+    }
+
+    function getSetZone(input, keepLocalTime) {
+      if (input != null) {
+        if (typeof input !== "string") {
+          input = -input;
+        }
+
+        this.utcOffset(input, keepLocalTime);
+
+        return this;
+      } else {
+        return -this.utcOffset();
+      }
+    }
+
+    function setOffsetToUTC(keepLocalTime) {
+      return this.utcOffset(0, keepLocalTime);
+    }
+
+    function setOffsetToLocal(keepLocalTime) {
+      if (this._isUTC) {
+        this.utcOffset(0, keepLocalTime);
+        this._isUTC = false;
+
+        if (keepLocalTime) {
+          this.subtract(getDateOffset(this), "m");
+        }
+      }
+      return this;
+    }
+
+    function setOffsetToParsedOffset() {
+      if (this._tzm != null) {
+        this.utcOffset(this._tzm, false, true);
+      } else if (typeof this._i === "string") {
+        var tZone = offsetFromString(matchOffset, this._i);
+        if (tZone != null) {
+          this.utcOffset(tZone);
+        } else {
+          this.utcOffset(0, true);
+        }
+      }
+      return this;
+    }
+
+    function hasAlignedHourOffset(input) {
+      if (!this.isValid()) {
+        return false;
+      }
+      input = input ? createLocal(input).utcOffset() : 0;
+
+      return (this.utcOffset() - input) % 60 === 0;
+    }
+
+    function isDaylightSavingTime() {
+      return (
+        this.utcOffset() > this.clone().month(0).utcOffset() ||
+        this.utcOffset() > this.clone().month(5).utcOffset()
+      );
+    }
+
+    function isDaylightSavingTimeShifted() {
+      if (!isUndefined(this._isDSTShifted)) {
+        return this._isDSTShifted;
+      }
+
+      var c = {},
+        other;
+
+      copyConfig(c, this);
+      c = prepareConfig(c);
+
+      if (c._a) {
+        other = c._isUTC ? createUTC(c._a) : createLocal(c._a);
+        this._isDSTShifted =
+          this.isValid() && compareArrays(c._a, other.toArray()) > 0;
+      } else {
+        this._isDSTShifted = false;
+      }
+
+      return this._isDSTShifted;
+    }
+
+    function isLocal() {
+      return this.isValid() ? !this._isUTC : false;
+    }
+
+    function isUtcOffset() {
+      return this.isValid() ? this._isUTC : false;
+    }
+
+    function isUtc() {
+      return this.isValid() ? this._isUTC && this._offset === 0 : false;
+    }
+
+    // ASP.NET json date format regex
+    var aspNetRegex = /^(-|\+)?(?:(\d*)[. ])?(\d+):(\d+)(?::(\d+)(\.\d*)?)?$/,
+      // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+      // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+      // and further modified to allow for strings containing both week and day
+      isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
+
+    function createDuration(input, key) {
+      var duration = input,
+        // matching against regexp is expensive, do it on demand
+        match = null,
+        sign,
+        ret,
+        diffRes;
+
+      if (isDuration(input)) {
+        duration = {
+          ms: input._milliseconds,
+          d: input._days,
+          M: input._months,
+        };
+      } else if (isNumber(input) || !isNaN(+input)) {
+        duration = {};
+        if (key) {
+          duration[key] = +input;
+        } else {
+          duration.milliseconds = +input;
+        }
+      } else if ((match = aspNetRegex.exec(input))) {
+        sign = match[1] === "-" ? -1 : 1;
+        duration = {
+          y: 0,
+          d: toInt(match[DATE]) * sign,
+          h: toInt(match[HOUR]) * sign,
+          m: toInt(match[MINUTE]) * sign,
+          s: toInt(match[SECOND]) * sign,
+          ms: toInt(absRound(match[MILLISECOND] * 1000)) * sign, // the millisecond decimal point is included in the match
+        };
+      } else if ((match = isoRegex.exec(input))) {
+        sign = match[1] === "-" ? -1 : 1;
+        duration = {
+          y: parseIso(match[2], sign),
+          M: parseIso(match[3], sign),
+          w: parseIso(match[4], sign),
+          d: parseIso(match[5], sign),
+          h: parseIso(match[6], sign),
+          m: parseIso(match[7], sign),
+          s: parseIso(match[8], sign),
+        };
+      } else if (duration == null) {
+        // checks for null or undefined
+        duration = {};
+      } else if (
+        typeof duration === "object" &&
+        ("from" in duration || "to" in duration)
+      ) {
+        diffRes = momentsDifference(
+          createLocal(duration.from),
+          createLocal(duration.to)
+        );
+
+        duration = {};
+        duration.ms = diffRes.milliseconds;
+        duration.M = diffRes.months;
+      }
+
+      ret = new Duration(duration);
+
+      if (isDuration(input) && hasOwnProp(input, "_locale")) {
+        ret._locale = input._locale;
+      }
+
+      if (isDuration(input) && hasOwnProp(input, "_isValid")) {
+        ret._isValid = input._isValid;
+      }
+
+      return ret;
+    }
+
+    createDuration.fn = Duration.prototype;
+    createDuration.invalid = createInvalid$1;
+
+    function parseIso(inp, sign) {
+      // We'd normally use ~~inp for this, but unfortunately it also
+      // converts floats to ints.
+      // inp may be undefined, so careful calling replace on it.
+      var res = inp && parseFloat(inp.replace(",", "."));
+      // apply sign while we're at it
+      return (isNaN(res) ? 0 : res) * sign;
+    }
+
+    function positiveMomentsDifference(base, other) {
+      var res = {};
+
+      res.months =
+        other.month() - base.month() + (other.year() - base.year()) * 12;
+      if (base.clone().add(res.months, "M").isAfter(other)) {
+        --res.months;
+      }
+
+      res.milliseconds = +other - +base.clone().add(res.months, "M");
+
+      return res;
+    }
+
+    function momentsDifference(base, other) {
+      var res;
+      if (!(base.isValid() && other.isValid())) {
+        return { milliseconds: 0, months: 0 };
+      }
+
+      other = cloneWithOffset(other, base);
+      if (base.isBefore(other)) {
+        res = positiveMomentsDifference(base, other);
+      } else {
+        res = positiveMomentsDifference(other, base);
+        res.milliseconds = -res.milliseconds;
+        res.months = -res.months;
+      }
+
+      return res;
+    }
+
+    // TODO: remove 'name' arg after deprecation is removed
+    function createAdder(direction, name) {
+      return function (val, period) {
+        var dur, tmp;
+        //invert the arguments, but complain about it
+        if (period !== null && !isNaN(+period)) {
+          deprecateSimple(
+            name,
+            "moment()." +
+              name +
+              "(period, number) is deprecated. Please use moment()." +
+              name +
+              "(number, period). " +
+              "See http://momentjs.com/guides/#/warnings/add-inverted-param/ for more info."
+          );
+          tmp = val;
+          val = period;
+          period = tmp;
+        }
+
+        dur = createDuration(val, period);
+        addSubtract(this, dur, direction);
+        return this;
+      };
+    }
+
+    function addSubtract(mom, duration, isAdding, updateOffset) {
+      var milliseconds = duration._milliseconds,
+        days = absRound(duration._days),
+        months = absRound(duration._months);
+
+      if (!mom.isValid()) {
+        // No op
+        return;
+      }
+
+      updateOffset = updateOffset == null ? true : updateOffset;
+
+      if (months) {
+        setMonth(mom, get(mom, "Month") + months * isAdding);
+      }
+      if (days) {
+        set$1(mom, "Date", get(mom, "Date") + days * isAdding);
+      }
+      if (milliseconds) {
+        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+      }
+      if (updateOffset) {
+        hooks.updateOffset(mom, days || months);
+      }
+    }
+
+    var add = createAdder(1, "add"),
+      subtract = createAdder(-1, "subtract");
+
+    function isString(input) {
+      return typeof input === "string" || input instanceof String;
+    }
+
+    // type MomentInput = Moment | Date | string | number | (number | string)[] | MomentInputObject | void; // null | undefined
+    function isMomentInput(input) {
+      return (
+        isMoment(input) ||
+        isDate(input) ||
+        isString(input) ||
+        isNumber(input) ||
+        isNumberOrStringArray(input) ||
+        isMomentInputObject(input) ||
+        input === null ||
+        input === undefined
+      );
+    }
+
+    function isMomentInputObject(input) {
+      var objectTest = isObject(input) && !isObjectEmpty(input),
+        propertyTest = false,
+        properties = [
+          "years",
+          "year",
+          "y",
+          "months",
+          "month",
+          "M",
+          "days",
+          "day",
+          "d",
+          "dates",
+          "date",
+          "D",
+          "hours",
+          "hour",
+          "h",
+          "minutes",
+          "minute",
+          "m",
+          "seconds",
+          "second",
+          "s",
+          "milliseconds",
+          "millisecond",
+          "ms",
+        ],
+        i,
+        property;
+
+      for (i = 0; i < properties.length; i += 1) {
+        property = properties[i];
+        propertyTest = propertyTest || hasOwnProp(input, property);
+      }
+
+      return objectTest && propertyTest;
+    }
+
+    function isNumberOrStringArray(input) {
+      var arrayTest = isArray(input),
+        dataTypeTest = false;
+      if (arrayTest) {
+        dataTypeTest =
+          input.filter(function (item) {
+            return !isNumber(item) && isString(input);
+          }).length === 0;
+      }
+      return arrayTest && dataTypeTest;
+    }
+
+    function isCalendarSpec(input) {
+      var objectTest = isObject(input) && !isObjectEmpty(input),
+        propertyTest = false,
+        properties = [
+          "sameDay",
+          "nextDay",
+          "lastDay",
+          "nextWeek",
+          "lastWeek",
+          "sameElse",
+        ],
+        i,
+        property;
+
+      for (i = 0; i < properties.length; i += 1) {
+        property = properties[i];
+        propertyTest = propertyTest || hasOwnProp(input, property);
+      }
+
+      return objectTest && propertyTest;
+    }
+
+    function getCalendarFormat(myMoment, now) {
+      var diff = myMoment.diff(now, "days", true);
+      return diff < -6
+        ? "sameElse"
+        : diff < -1
+        ? "lastWeek"
+        : diff < 0
+        ? "lastDay"
+        : diff < 1
+        ? "sameDay"
+        : diff < 2
+        ? "nextDay"
+        : diff < 7
+        ? "nextWeek"
+        : "sameElse";
+    }
+
+    function calendar$1(time, formats) {
+      // Support for single parameter, formats only overload to the calendar function
+      if (arguments.length === 1) {
+        if (!arguments[0]) {
+          time = undefined;
+          formats = undefined;
+        } else if (isMomentInput(arguments[0])) {
+          time = arguments[0];
+          formats = undefined;
+        } else if (isCalendarSpec(arguments[0])) {
+          formats = arguments[0];
+          time = undefined;
+        }
+      }
+      // We want to compare the start of today, vs this.
+      // Getting start-of-today depends on whether we're local/utc/offset or not.
+      var now = time || createLocal(),
+        sod = cloneWithOffset(now, this).startOf("day"),
+        format = hooks.calendarFormat(this, sod) || "sameElse",
+        output =
+          formats &&
+          (isFunction(formats[format])
+            ? formats[format].call(this, now)
+            : formats[format]);
+
+      return this.format(
+        output || this.localeData().calendar(format, this, createLocal(now))
+      );
+    }
+
+    function clone() {
+      return new Moment(this);
+    }
+
+    function isAfter(input, units) {
+      var localInput = isMoment(input) ? input : createLocal(input);
+      if (!(this.isValid() && localInput.isValid())) {
+        return false;
+      }
+      units = normalizeUnits(units) || "millisecond";
+      if (units === "millisecond") {
+        return this.valueOf() > localInput.valueOf();
+      } else {
+        return localInput.valueOf() < this.clone().startOf(units).valueOf();
+      }
+    }
+
+    function isBefore(input, units) {
+      var localInput = isMoment(input) ? input : createLocal(input);
+      if (!(this.isValid() && localInput.isValid())) {
+        return false;
+      }
+      units = normalizeUnits(units) || "millisecond";
+      if (units === "millisecond") {
+        return this.valueOf() < localInput.valueOf();
+      } else {
+        return this.clone().endOf(units).valueOf() < localInput.valueOf();
+      }
+    }
+
+    function isBetween(from, to, units, inclusivity) {
+      var localFrom = isMoment(from) ? from : createLocal(from),
+        localTo = isMoment(to) ? to : createLocal(to);
+      if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+        return false;
+      }
+      inclusivity = inclusivity || "()";
+      return (
+        (inclusivity[0] === "("
+          ? this.isAfter(localFrom, units)
+          : !this.isBefore(localFrom, units)) &&
+        (inclusivity[1] === ")"
+          ? this.isBefore(localTo, units)
+          : !this.isAfter(localTo, units))
+      );
+    }
+
+    function isSame(input, units) {
+      var localInput = isMoment(input) ? input : createLocal(input),
+        inputMs;
+      if (!(this.isValid() && localInput.isValid())) {
+        return false;
+      }
+      units = normalizeUnits(units) || "millisecond";
+      if (units === "millisecond") {
+        return this.valueOf() === localInput.valueOf();
+      } else {
+        inputMs = localInput.valueOf();
+        return (
+          this.clone().startOf(units).valueOf() <= inputMs &&
+          inputMs <= this.clone().endOf(units).valueOf()
+        );
+      }
+    }
+
+    function isSameOrAfter(input, units) {
+      return this.isSame(input, units) || this.isAfter(input, units);
+    }
+
+    function isSameOrBefore(input, units) {
+      return this.isSame(input, units) || this.isBefore(input, units);
+    }
+
+    function diff(input, units, asFloat) {
+      var that, zoneDelta, output;
+
+      if (!this.isValid()) {
+        return NaN;
+      }
+
+      that = cloneWithOffset(input, this);
+
+      if (!that.isValid()) {
+        return NaN;
+      }
+
+      zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
+
+      units = normalizeUnits(units);
+
+      switch (units) {
+        case "year":
+          output = monthDiff(this, that) / 12;
+          break;
+        case "month":
+          output = monthDiff(this, that);
+          break;
+        case "quarter":
+          output = monthDiff(this, that) / 3;
+          break;
+        case "second":
+          output = (this - that) / 1e3;
+          break; // 1000
+        case "minute":
+          output = (this - that) / 6e4;
+          break; // 1000 * 60
+        case "hour":
+          output = (this - that) / 36e5;
+          break; // 1000 * 60 * 60
+        case "day":
+          output = (this - that - zoneDelta) / 864e5;
+          break; // 1000 * 60 * 60 * 24, negate dst
+        case "week":
+          output = (this - that - zoneDelta) / 6048e5;
+          break; // 1000 * 60 * 60 * 24 * 7, negate dst
+        default:
+          output = this - that;
+      }
+
+      return asFloat ? output : absFloor(output);
+    }
+
+    function monthDiff(a, b) {
+      if (a.date() < b.date()) {
+        // end-of-month calculations work correct when the start month has more
+        // days than the end month.
+        return -monthDiff(b, a);
+      }
+      // difference in months
+      var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month()),
+        // b is in (anchor - 1 month, anchor + 1 month)
+        anchor = a.clone().add(wholeMonthDiff, "months"),
+        anchor2,
+        adjust;
+
+      if (b - anchor < 0) {
+        anchor2 = a.clone().add(wholeMonthDiff - 1, "months");
+        // linear across the month
+        adjust = (b - anchor) / (anchor - anchor2);
+      } else {
+        anchor2 = a.clone().add(wholeMonthDiff + 1, "months");
+        // linear across the month
+        adjust = (b - anchor) / (anchor2 - anchor);
+      }
+
+      //check for negative zero, return zero if negative zero
+      return -(wholeMonthDiff + adjust) || 0;
+    }
+
+    hooks.defaultFormat = "YYYY-MM-DDTHH:mm:ssZ";
+    hooks.defaultFormatUtc = "YYYY-MM-DDTHH:mm:ss[Z]";
+
+    function toString() {
+      return this.clone()
+        .locale("en")
+        .format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+    }
+
+    function toISOString(keepOffset) {
+      if (!this.isValid()) {
+        return null;
+      }
+      var utc = keepOffset !== true,
+        m = utc ? this.clone().utc() : this;
+      if (m.year() < 0 || m.year() > 9999) {
+        return formatMoment(
+          m,
+          utc
+            ? "YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]"
+            : "YYYYYY-MM-DD[T]HH:mm:ss.SSSZ"
+        );
+      }
+      if (isFunction(Date.prototype.toISOString)) {
+        // native implementation is ~50x faster, use it when we can
+        if (utc) {
+          return this.toDate().toISOString();
+        } else {
+          return new Date(this.valueOf() + this.utcOffset() * 60 * 1000)
+            .toISOString()
+            .replace("Z", formatMoment(m, "Z"));
+        }
+      }
+      return formatMoment(
+        m,
+        utc ? "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]" : "YYYY-MM-DD[T]HH:mm:ss.SSSZ"
+      );
+    }
+
+    /**
+     * Return a human readable representation of a moment that can
+     * also be evaluated to get a new moment which is the same
+     *
+     * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
+     */
+    function inspect() {
+      if (!this.isValid()) {
+        return "moment.invalid(/* " + this._i + " */)";
+      }
+      var func = "moment",
+        zone = "",
+        prefix,
+        year,
+        datetime,
+        suffix;
+      if (!this.isLocal()) {
+        func = this.utcOffset() === 0 ? "moment.utc" : "moment.parseZone";
+        zone = "Z";
+      }
+      prefix = "[" + func + '("]';
+      year = 0 <= this.year() && this.year() <= 9999 ? "YYYY" : "YYYYYY";
+      datetime = "-MM-DD[T]HH:mm:ss.SSS";
+      suffix = zone + '[")]';
+
+      return this.format(prefix + year + datetime + suffix);
+    }
+
+    function format(inputString) {
+      if (!inputString) {
+        inputString = this.isUtc()
+          ? hooks.defaultFormatUtc
+          : hooks.defaultFormat;
+      }
+      var output = formatMoment(this, inputString);
+      return this.localeData().postformat(output);
+    }
+
+    function from(time, withoutSuffix) {
+      if (
+        this.isValid() &&
+        ((isMoment(time) && time.isValid()) || createLocal(time).isValid())
+      ) {
+        return createDuration({ to: this, from: time })
+          .locale(this.locale())
+          .humanize(!withoutSuffix);
+      } else {
+        return this.localeData().invalidDate();
+      }
+    }
+
+    function fromNow(withoutSuffix) {
+      return this.from(createLocal(), withoutSuffix);
+    }
+
+    function to(time, withoutSuffix) {
+      if (
+        this.isValid() &&
+        ((isMoment(time) && time.isValid()) || createLocal(time).isValid())
+      ) {
+        return createDuration({ from: this, to: time })
+          .locale(this.locale())
+          .humanize(!withoutSuffix);
+      } else {
+        return this.localeData().invalidDate();
+      }
+    }
+
+    function toNow(withoutSuffix) {
+      return this.to(createLocal(), withoutSuffix);
+    }
+
+    // If passed a locale key, it will set the locale for this
+    // instance.  Otherwise, it will return the locale configuration
+    // variables for this instance.
+    function locale(key) {
+      var newLocaleData;
+
+      if (key === undefined) {
+        return this._locale._abbr;
+      } else {
+        newLocaleData = getLocale(key);
+        if (newLocaleData != null) {
+          this._locale = newLocaleData;
+        }
+        return this;
+      }
+    }
+
+    var lang = deprecate(
+      "moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.",
+      function (key) {
+        if (key === undefined) {
+          return this.localeData();
+        } else {
+          return this.locale(key);
+        }
+      }
+    );
+
+    function localeData() {
+      return this._locale;
+    }
+
+    var MS_PER_SECOND = 1000,
+      MS_PER_MINUTE = 60 * MS_PER_SECOND,
+      MS_PER_HOUR = 60 * MS_PER_MINUTE,
+      MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+      return ((dividend % divisor) + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+      // the date constructor remaps years 0-99 to 1900-1999
+      if (y < 100 && y >= 0) {
+        // preserve leap years using a full 400 year cycle, then reset
+        return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+      } else {
+        return new Date(y, m, d).valueOf();
+      }
+    }
+
+    function utcStartOfDate(y, m, d) {
+      // Date.UTC remaps years 0-99 to 1900-1999
+      if (y < 100 && y >= 0) {
+        // preserve leap years using a full 400 year cycle, then reset
+        return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+      } else {
+        return Date.UTC(y, m, d);
+      }
+    }
+
+    function startOf(units) {
+      var time, startOfDate;
+      units = normalizeUnits(units);
+      if (units === undefined || units === "millisecond" || !this.isValid()) {
+        return this;
+      }
+
+      startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+      switch (units) {
+        case "year":
+          time = startOfDate(this.year(), 0, 1);
+          break;
+        case "quarter":
+          time = startOfDate(this.year(), this.month() - (this.month() % 3), 1);
+          break;
+        case "month":
+          time = startOfDate(this.year(), this.month(), 1);
+          break;
+        case "week":
+          time = startOfDate(
+            this.year(),
+            this.month(),
+            this.date() - this.weekday()
+          );
+          break;
+        case "isoWeek":
+          time = startOfDate(
+            this.year(),
+            this.month(),
+            this.date() - (this.isoWeekday() - 1)
+          );
+          break;
+        case "day":
+        case "date":
+          time = startOfDate(this.year(), this.month(), this.date());
+          break;
+        case "hour":
+          time = this._d.valueOf();
+          time -= mod$1(
+            time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE),
+            MS_PER_HOUR
+          );
+          break;
+        case "minute":
+          time = this._d.valueOf();
+          time -= mod$1(time, MS_PER_MINUTE);
+          break;
+        case "second":
+          time = this._d.valueOf();
+          time -= mod$1(time, MS_PER_SECOND);
+          break;
+      }
+
+      this._d.setTime(time);
+      hooks.updateOffset(this, true);
+      return this;
+    }
+
+    function endOf(units) {
+      var time, startOfDate;
+      units = normalizeUnits(units);
+      if (units === undefined || units === "millisecond" || !this.isValid()) {
+        return this;
+      }
+
+      startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+      switch (units) {
+        case "year":
+          time = startOfDate(this.year() + 1, 0, 1) - 1;
+          break;
+        case "quarter":
+          time =
+            startOfDate(this.year(), this.month() - (this.month() % 3) + 3, 1) -
+            1;
+          break;
+        case "month":
+          time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+          break;
+        case "week":
+          time =
+            startOfDate(
+              this.year(),
+              this.month(),
+              this.date() - this.weekday() + 7
+            ) - 1;
+          break;
+        case "isoWeek":
+          time =
+            startOfDate(
+              this.year(),
+              this.month(),
+              this.date() - (this.isoWeekday() - 1) + 7
+            ) - 1;
+          break;
+        case "day":
+        case "date":
+          time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+          break;
+        case "hour":
+          time = this._d.valueOf();
+          time +=
+            MS_PER_HOUR -
+            mod$1(
+              time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE),
+              MS_PER_HOUR
+            ) -
+            1;
+          break;
+        case "minute":
+          time = this._d.valueOf();
+          time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+          break;
+        case "second":
+          time = this._d.valueOf();
+          time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+          break;
+      }
+
+      this._d.setTime(time);
+      hooks.updateOffset(this, true);
+      return this;
+    }
+
+    function valueOf() {
+      return this._d.valueOf() - (this._offset || 0) * 60000;
+    }
+
+    function unix() {
+      return Math.floor(this.valueOf() / 1000);
+    }
+
+    function toDate() {
+      return new Date(this.valueOf());
+    }
+
+    function toArray() {
+      var m = this;
+      return [
+        m.year(),
+        m.month(),
+        m.date(),
+        m.hour(),
+        m.minute(),
+        m.second(),
+        m.millisecond(),
+      ];
+    }
+
+    function toObject() {
+      var m = this;
+      return {
+        years: m.year(),
+        months: m.month(),
+        date: m.date(),
+        hours: m.hours(),
+        minutes: m.minutes(),
+        seconds: m.seconds(),
+        milliseconds: m.milliseconds(),
+      };
+    }
+
+    function toJSON() {
+      // new Date(NaN).toJSON() === null
+      return this.isValid() ? this.toISOString() : null;
+    }
+
+    function isValid$2() {
+      return isValid(this);
+    }
+
+    function parsingFlags() {
+      return extend({}, getParsingFlags(this));
+    }
+
+    function invalidAt() {
+      return getParsingFlags(this).overflow;
+    }
+
+    function creationData() {
+      return {
+        input: this._i,
+        format: this._f,
+        locale: this._locale,
+        isUTC: this._isUTC,
+        strict: this._strict,
+      };
+    }
+
+    addFormatToken("N", 0, 0, "eraAbbr");
+    addFormatToken("NN", 0, 0, "eraAbbr");
+    addFormatToken("NNN", 0, 0, "eraAbbr");
+    addFormatToken("NNNN", 0, 0, "eraName");
+    addFormatToken("NNNNN", 0, 0, "eraNarrow");
+
+    addFormatToken("y", ["y", 1], "yo", "eraYear");
+    addFormatToken("y", ["yy", 2], 0, "eraYear");
+    addFormatToken("y", ["yyy", 3], 0, "eraYear");
+    addFormatToken("y", ["yyyy", 4], 0, "eraYear");
+
+    addRegexToken("N", matchEraAbbr);
+    addRegexToken("NN", matchEraAbbr);
+    addRegexToken("NNN", matchEraAbbr);
+    addRegexToken("NNNN", matchEraName);
+    addRegexToken("NNNNN", matchEraNarrow);
+
+    addParseToken(["N", "NN", "NNN", "NNNN", "NNNNN"], function (
+      input,
+      array,
+      config,
+      token
+    ) {
+      var era = config._locale.erasParse(input, token, config._strict);
+      if (era) {
+        getParsingFlags(config).era = era;
+      } else {
+        getParsingFlags(config).invalidEra = input;
+      }
+    });
+
+    addRegexToken("y", matchUnsigned);
+    addRegexToken("yy", matchUnsigned);
+    addRegexToken("yyy", matchUnsigned);
+    addRegexToken("yyyy", matchUnsigned);
+    addRegexToken("yo", matchEraYearOrdinal);
+
+    addParseToken(["y", "yy", "yyy", "yyyy"], YEAR);
+    addParseToken(["yo"], function (input, array, config, token) {
+      var match;
+      if (config._locale._eraYearOrdinalRegex) {
+        match = input.match(config._locale._eraYearOrdinalRegex);
+      }
+
+      if (config._locale.eraYearOrdinalParse) {
+        array[YEAR] = config._locale.eraYearOrdinalParse(input, match);
+      } else {
+        array[YEAR] = parseInt(input, 10);
+      }
+    });
+
+    function localeEras(m, format) {
+      var i,
+        l,
+        date,
+        eras = this._eras || getLocale("en")._eras;
+      for (i = 0, l = eras.length; i < l; ++i) {
+        switch (typeof eras[i].since) {
+          case "string":
+            // truncate time
+            date = hooks(eras[i].since).startOf("day");
+            eras[i].since = date.valueOf();
+            break;
+        }
+
+        switch (typeof eras[i].until) {
+          case "undefined":
+            eras[i].until = +Infinity;
+            break;
+          case "string":
+            // truncate time
+            date = hooks(eras[i].until).startOf("day").valueOf();
+            eras[i].until = date.valueOf();
+            break;
+        }
+      }
+      return eras;
+    }
+
+    function localeErasParse(eraName, format, strict) {
+      var i,
+        l,
+        eras = this.eras(),
+        name,
+        abbr,
+        narrow;
+      eraName = eraName.toUpperCase();
+
+      for (i = 0, l = eras.length; i < l; ++i) {
+        name = eras[i].name.toUpperCase();
+        abbr = eras[i].abbr.toUpperCase();
+        narrow = eras[i].narrow.toUpperCase();
+
+        if (strict) {
+          switch (format) {
+            case "N":
+            case "NN":
+            case "NNN":
+              if (abbr === eraName) {
+                return eras[i];
+              }
+              break;
+
+            case "NNNN":
+              if (name === eraName) {
+                return eras[i];
+              }
+              break;
+
+            case "NNNNN":
+              if (narrow === eraName) {
+                return eras[i];
+              }
+              break;
+          }
+        } else if ([name, abbr, narrow].indexOf(eraName) >= 0) {
+          return eras[i];
+        }
+      }
+    }
+
+    function localeErasConvertYear(era, year) {
+      var dir = era.since <= era.until ? +1 : -1;
+      if (year === undefined) {
+        return hooks(era.since).year();
+      } else {
+        return hooks(era.since).year() + (year - era.offset) * dir;
+      }
+    }
+
+    function getEraName() {
+      var i,
+        l,
+        val,
+        eras = this.localeData().eras();
+      for (i = 0, l = eras.length; i < l; ++i) {
+        // truncate time
+        val = this.clone().startOf("day").valueOf();
+
+        if (eras[i].since <= val && val <= eras[i].until) {
+          return eras[i].name;
+        }
+        if (eras[i].until <= val && val <= eras[i].since) {
+          return eras[i].name;
+        }
+      }
+
+      return "";
+    }
+
+    function getEraNarrow() {
+      var i,
+        l,
+        val,
+        eras = this.localeData().eras();
+      for (i = 0, l = eras.length; i < l; ++i) {
+        // truncate time
+        val = this.clone().startOf("day").valueOf();
+
+        if (eras[i].since <= val && val <= eras[i].until) {
+          return eras[i].narrow;
+        }
+        if (eras[i].until <= val && val <= eras[i].since) {
+          return eras[i].narrow;
+        }
+      }
+
+      return "";
+    }
+
+    function getEraAbbr() {
+      var i,
+        l,
+        val,
+        eras = this.localeData().eras();
+      for (i = 0, l = eras.length; i < l; ++i) {
+        // truncate time
+        val = this.clone().startOf("day").valueOf();
+
+        if (eras[i].since <= val && val <= eras[i].until) {
+          return eras[i].abbr;
+        }
+        if (eras[i].until <= val && val <= eras[i].since) {
+          return eras[i].abbr;
+        }
+      }
+
+      return "";
+    }
+
+    function getEraYear() {
+      var i,
+        l,
+        dir,
+        val,
+        eras = this.localeData().eras();
+      for (i = 0, l = eras.length; i < l; ++i) {
+        dir = eras[i].since <= eras[i].until ? +1 : -1;
+
+        // truncate time
+        val = this.clone().startOf("day").valueOf();
+
+        if (
+          (eras[i].since <= val && val <= eras[i].until) ||
+          (eras[i].until <= val && val <= eras[i].since)
+        ) {
+          return (
+            (this.year() - hooks(eras[i].since).year()) * dir + eras[i].offset
+          );
+        }
+      }
+
+      return this.year();
+    }
+
+    function erasNameRegex(isStrict) {
+      if (!hasOwnProp(this, "_erasNameRegex")) {
+        computeErasParse.call(this);
+      }
+      return isStrict ? this._erasNameRegex : this._erasRegex;
+    }
+
+    function erasAbbrRegex(isStrict) {
+      if (!hasOwnProp(this, "_erasAbbrRegex")) {
+        computeErasParse.call(this);
+      }
+      return isStrict ? this._erasAbbrRegex : this._erasRegex;
+    }
+
+    function erasNarrowRegex(isStrict) {
+      if (!hasOwnProp(this, "_erasNarrowRegex")) {
+        computeErasParse.call(this);
+      }
+      return isStrict ? this._erasNarrowRegex : this._erasRegex;
+    }
+
+    function matchEraAbbr(isStrict, locale) {
+      return locale.erasAbbrRegex(isStrict);
+    }
+
+    function matchEraName(isStrict, locale) {
+      return locale.erasNameRegex(isStrict);
+    }
+
+    function matchEraNarrow(isStrict, locale) {
+      return locale.erasNarrowRegex(isStrict);
+    }
+
+    function matchEraYearOrdinal(isStrict, locale) {
+      return locale._eraYearOrdinalRegex || matchUnsigned;
+    }
+
+    function computeErasParse() {
+      var abbrPieces = [],
+        namePieces = [],
+        narrowPieces = [],
+        mixedPieces = [],
+        i,
+        l,
+        eras = this.eras();
+
+      for (i = 0, l = eras.length; i < l; ++i) {
+        namePieces.push(regexEscape(eras[i].name));
+        abbrPieces.push(regexEscape(eras[i].abbr));
+        narrowPieces.push(regexEscape(eras[i].narrow));
+
+        mixedPieces.push(regexEscape(eras[i].name));
+        mixedPieces.push(regexEscape(eras[i].abbr));
+        mixedPieces.push(regexEscape(eras[i].narrow));
+      }
+
+      this._erasRegex = new RegExp("^(" + mixedPieces.join("|") + ")", "i");
+      this._erasNameRegex = new RegExp("^(" + namePieces.join("|") + ")", "i");
+      this._erasAbbrRegex = new RegExp("^(" + abbrPieces.join("|") + ")", "i");
+      this._erasNarrowRegex = new RegExp(
+        "^(" + narrowPieces.join("|") + ")",
+        "i"
+      );
+    }
+
+    // FORMATTING
+
+    addFormatToken(0, ["gg", 2], 0, function () {
+      return this.weekYear() % 100;
+    });
+
+    addFormatToken(0, ["GG", 2], 0, function () {
+      return this.isoWeekYear() % 100;
+    });
+
+    function addWeekYearFormatToken(token, getter) {
+      addFormatToken(0, [token, token.length], 0, getter);
+    }
+
+    addWeekYearFormatToken("gggg", "weekYear");
+    addWeekYearFormatToken("ggggg", "weekYear");
+    addWeekYearFormatToken("GGGG", "isoWeekYear");
+    addWeekYearFormatToken("GGGGG", "isoWeekYear");
+
+    // ALIASES
+
+    addUnitAlias("weekYear", "gg");
+    addUnitAlias("isoWeekYear", "GG");
+
+    // PRIORITY
+
+    addUnitPriority("weekYear", 1);
+    addUnitPriority("isoWeekYear", 1);
+
+    // PARSING
+
+    addRegexToken("G", matchSigned);
+    addRegexToken("g", matchSigned);
+    addRegexToken("GG", match1to2, match2);
+    addRegexToken("gg", match1to2, match2);
+    addRegexToken("GGGG", match1to4, match4);
+    addRegexToken("gggg", match1to4, match4);
+    addRegexToken("GGGGG", match1to6, match6);
+    addRegexToken("ggggg", match1to6, match6);
+
+    addWeekParseToken(["gggg", "ggggg", "GGGG", "GGGGG"], function (
+      input,
+      week,
+      config,
+      token
+    ) {
+      week[token.substr(0, 2)] = toInt(input);
+    });
+
+    addWeekParseToken(["gg", "GG"], function (input, week, config, token) {
+      week[token] = hooks.parseTwoDigitYear(input);
+    });
+
+    // MOMENTS
+
+    function getSetWeekYear(input) {
+      return getSetWeekYearHelper.call(
+        this,
+        input,
+        this.week(),
+        this.weekday(),
+        this.localeData()._week.dow,
+        this.localeData()._week.doy
+      );
+    }
+
+    function getSetISOWeekYear(input) {
+      return getSetWeekYearHelper.call(
+        this,
+        input,
+        this.isoWeek(),
+        this.isoWeekday(),
+        1,
+        4
+      );
+    }
+
+    function getISOWeeksInYear() {
+      return weeksInYear(this.year(), 1, 4);
+    }
+
+    function getISOWeeksInISOWeekYear() {
+      return weeksInYear(this.isoWeekYear(), 1, 4);
+    }
+
+    function getWeeksInYear() {
+      var weekInfo = this.localeData()._week;
+      return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+    }
+
+    function getWeeksInWeekYear() {
+      var weekInfo = this.localeData()._week;
+      return weeksInYear(this.weekYear(), weekInfo.dow, weekInfo.doy);
+    }
+
+    function getSetWeekYearHelper(input, week, weekday, dow, doy) {
+      var weeksTarget;
+      if (input == null) {
+        return weekOfYear(this, dow, doy).year;
+      } else {
+        weeksTarget = weeksInYear(input, dow, doy);
+        if (week > weeksTarget) {
+          week = weeksTarget;
+        }
+        return setWeekAll.call(this, input, week, weekday, dow, doy);
+      }
+    }
+
+    function setWeekAll(weekYear, week, weekday, dow, doy) {
+      var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
+        date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
+
+      this.year(date.getUTCFullYear());
+      this.month(date.getUTCMonth());
+      this.date(date.getUTCDate());
+      return this;
+    }
+
+    // FORMATTING
+
+    addFormatToken("Q", 0, "Qo", "quarter");
+
+    // ALIASES
+
+    addUnitAlias("quarter", "Q");
+
+    // PRIORITY
+
+    addUnitPriority("quarter", 7);
+
+    // PARSING
+
+    addRegexToken("Q", match1);
+    addParseToken("Q", function (input, array) {
+      array[MONTH] = (toInt(input) - 1) * 3;
+    });
+
+    // MOMENTS
+
+    function getSetQuarter(input) {
+      return input == null
+        ? Math.ceil((this.month() + 1) / 3)
+        : this.month((input - 1) * 3 + (this.month() % 3));
+    }
+
+    // FORMATTING
+
+    addFormatToken("D", ["DD", 2], "Do", "date");
+
+    // ALIASES
+
+    addUnitAlias("date", "D");
+
+    // PRIORITY
+    addUnitPriority("date", 9);
+
+    // PARSING
+
+    addRegexToken("D", match1to2);
+    addRegexToken("DD", match1to2, match2);
+    addRegexToken("Do", function (isStrict, locale) {
+      // TODO: Remove "ordinalParse" fallback in next major release.
+      return isStrict
+        ? locale._dayOfMonthOrdinalParse || locale._ordinalParse
+        : locale._dayOfMonthOrdinalParseLenient;
+    });
+
+    addParseToken(["D", "DD"], DATE);
+    addParseToken("Do", function (input, array) {
+      array[DATE] = toInt(input.match(match1to2)[0]);
+    });
+
+    // MOMENTS
+
+    var getSetDayOfMonth = makeGetSet("Date", true);
+
+    // FORMATTING
+
+    addFormatToken("DDD", ["DDDD", 3], "DDDo", "dayOfYear");
+
+    // ALIASES
+
+    addUnitAlias("dayOfYear", "DDD");
+
+    // PRIORITY
+    addUnitPriority("dayOfYear", 4);
+
+    // PARSING
+
+    addRegexToken("DDD", match1to3);
+    addRegexToken("DDDD", match3);
+    addParseToken(["DDD", "DDDD"], function (input, array, config) {
+      config._dayOfYear = toInt(input);
+    });
+
+    // HELPERS
+
+    // MOMENTS
+
+    function getSetDayOfYear(input) {
+      var dayOfYear =
+        Math.round(
+          (this.clone().startOf("day") - this.clone().startOf("year")) / 864e5
+        ) + 1;
+      return input == null ? dayOfYear : this.add(input - dayOfYear, "d");
+    }
+
+    // FORMATTING
+
+    addFormatToken("m", ["mm", 2], 0, "minute");
+
+    // ALIASES
+
+    addUnitAlias("minute", "m");
+
+    // PRIORITY
+
+    addUnitPriority("minute", 14);
+
+    // PARSING
+
+    addRegexToken("m", match1to2);
+    addRegexToken("mm", match1to2, match2);
+    addParseToken(["m", "mm"], MINUTE);
+
+    // MOMENTS
+
+    var getSetMinute = makeGetSet("Minutes", false);
+
+    // FORMATTING
+
+    addFormatToken("s", ["ss", 2], 0, "second");
+
+    // ALIASES
+
+    addUnitAlias("second", "s");
+
+    // PRIORITY
+
+    addUnitPriority("second", 15);
+
+    // PARSING
+
+    addRegexToken("s", match1to2);
+    addRegexToken("ss", match1to2, match2);
+    addParseToken(["s", "ss"], SECOND);
+
+    // MOMENTS
+
+    var getSetSecond = makeGetSet("Seconds", false);
+
+    // FORMATTING
+
+    addFormatToken("S", 0, 0, function () {
+      return ~~(this.millisecond() / 100);
+    });
+
+    addFormatToken(0, ["SS", 2], 0, function () {
+      return ~~(this.millisecond() / 10);
+    });
+
+    addFormatToken(0, ["SSS", 3], 0, "millisecond");
+    addFormatToken(0, ["SSSS", 4], 0, function () {
+      return this.millisecond() * 10;
+    });
+    addFormatToken(0, ["SSSSS", 5], 0, function () {
+      return this.millisecond() * 100;
+    });
+    addFormatToken(0, ["SSSSSS", 6], 0, function () {
+      return this.millisecond() * 1000;
+    });
+    addFormatToken(0, ["SSSSSSS", 7], 0, function () {
+      return this.millisecond() * 10000;
+    });
+    addFormatToken(0, ["SSSSSSSS", 8], 0, function () {
+      return this.millisecond() * 100000;
+    });
+    addFormatToken(0, ["SSSSSSSSS", 9], 0, function () {
+      return this.millisecond() * 1000000;
+    });
+
+    // ALIASES
+
+    addUnitAlias("millisecond", "ms");
+
+    // PRIORITY
+
+    addUnitPriority("millisecond", 16);
+
+    // PARSING
+
+    addRegexToken("S", match1to3, match1);
+    addRegexToken("SS", match1to3, match2);
+    addRegexToken("SSS", match1to3, match3);
+
+    var token, getSetMillisecond;
+    for (token = "SSSS"; token.length <= 9; token += "S") {
+      addRegexToken(token, matchUnsigned);
+    }
+
+    function parseMs(input, array) {
+      array[MILLISECOND] = toInt(("0." + input) * 1000);
+    }
+
+    for (token = "S"; token.length <= 9; token += "S") {
+      addParseToken(token, parseMs);
+    }
+
+    getSetMillisecond = makeGetSet("Milliseconds", false);
+
+    // FORMATTING
+
+    addFormatToken("z", 0, 0, "zoneAbbr");
+    addFormatToken("zz", 0, 0, "zoneName");
+
+    // MOMENTS
+
+    function getZoneAbbr() {
+      return this._isUTC ? "UTC" : "";
+    }
+
+    function getZoneName() {
+      return this._isUTC ? "Coordinated Universal Time" : "";
+    }
+
+    var proto = Moment.prototype;
+
+    proto.add = add;
+    proto.calendar = calendar$1;
+    proto.clone = clone;
+    proto.diff = diff;
+    proto.endOf = endOf;
+    proto.format = format;
+    proto.from = from;
+    proto.fromNow = fromNow;
+    proto.to = to;
+    proto.toNow = toNow;
+    proto.get = stringGet;
+    proto.invalidAt = invalidAt;
+    proto.isAfter = isAfter;
+    proto.isBefore = isBefore;
+    proto.isBetween = isBetween;
+    proto.isSame = isSame;
+    proto.isSameOrAfter = isSameOrAfter;
+    proto.isSameOrBefore = isSameOrBefore;
+    proto.isValid = isValid$2;
+    proto.lang = lang;
+    proto.locale = locale;
+    proto.localeData = localeData;
+    proto.max = prototypeMax;
+    proto.min = prototypeMin;
+    proto.parsingFlags = parsingFlags;
+    proto.set = stringSet;
+    proto.startOf = startOf;
+    proto.subtract = subtract;
+    proto.toArray = toArray;
+    proto.toObject = toObject;
+    proto.toDate = toDate;
+    proto.toISOString = toISOString;
+    proto.inspect = inspect;
+    if (typeof Symbol !== "undefined" && Symbol.for != null) {
+      proto[Symbol.for("nodejs.util.inspect.custom")] = function () {
+        return "Moment<" + this.format() + ">";
+      };
+    }
+    proto.toJSON = toJSON;
+    proto.toString = toString;
+    proto.unix = unix;
+    proto.valueOf = valueOf;
+    proto.creationData = creationData;
+    proto.eraName = getEraName;
+    proto.eraNarrow = getEraNarrow;
+    proto.eraAbbr = getEraAbbr;
+    proto.eraYear = getEraYear;
+    proto.year = getSetYear;
+    proto.isLeapYear = getIsLeapYear;
+    proto.weekYear = getSetWeekYear;
+    proto.isoWeekYear = getSetISOWeekYear;
+    proto.quarter = proto.quarters = getSetQuarter;
+    proto.month = getSetMonth;
+    proto.daysInMonth = getDaysInMonth;
+    proto.week = proto.weeks = getSetWeek;
+    proto.isoWeek = proto.isoWeeks = getSetISOWeek;
+    proto.weeksInYear = getWeeksInYear;
+    proto.weeksInWeekYear = getWeeksInWeekYear;
+    proto.isoWeeksInYear = getISOWeeksInYear;
+    proto.isoWeeksInISOWeekYear = getISOWeeksInISOWeekYear;
+    proto.date = getSetDayOfMonth;
+    proto.day = proto.days = getSetDayOfWeek;
+    proto.weekday = getSetLocaleDayOfWeek;
+    proto.isoWeekday = getSetISODayOfWeek;
+    proto.dayOfYear = getSetDayOfYear;
+    proto.hour = proto.hours = getSetHour;
+    proto.minute = proto.minutes = getSetMinute;
+    proto.second = proto.seconds = getSetSecond;
+    proto.millisecond = proto.milliseconds = getSetMillisecond;
+    proto.utcOffset = getSetOffset;
+    proto.utc = setOffsetToUTC;
+    proto.local = setOffsetToLocal;
+    proto.parseZone = setOffsetToParsedOffset;
+    proto.hasAlignedHourOffset = hasAlignedHourOffset;
+    proto.isDST = isDaylightSavingTime;
+    proto.isLocal = isLocal;
+    proto.isUtcOffset = isUtcOffset;
+    proto.isUtc = isUtc;
+    proto.isUTC = isUtc;
+    proto.zoneAbbr = getZoneAbbr;
+    proto.zoneName = getZoneName;
+    proto.dates = deprecate(
+      "dates accessor is deprecated. Use date instead.",
+      getSetDayOfMonth
+    );
+    proto.months = deprecate(
+      "months accessor is deprecated. Use month instead",
+      getSetMonth
+    );
+    proto.years = deprecate(
+      "years accessor is deprecated. Use year instead",
+      getSetYear
+    );
+    proto.zone = deprecate(
+      "moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/",
+      getSetZone
+    );
+    proto.isDSTShifted = deprecate(
+      "isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information",
+      isDaylightSavingTimeShifted
+    );
+
+    function createUnix(input) {
+      return createLocal(input * 1000);
+    }
+
+    function createInZone() {
+      return createLocal.apply(null, arguments).parseZone();
+    }
+
+    function preParsePostFormat(string) {
+      return string;
+    }
+
+    var proto$1 = Locale.prototype;
+
+    proto$1.calendar = calendar;
+    proto$1.longDateFormat = longDateFormat;
+    proto$1.invalidDate = invalidDate;
+    proto$1.ordinal = ordinal;
+    proto$1.preparse = preParsePostFormat;
+    proto$1.postformat = preParsePostFormat;
+    proto$1.relativeTime = relativeTime;
+    proto$1.pastFuture = pastFuture;
+    proto$1.set = set;
+    proto$1.eras = localeEras;
+    proto$1.erasParse = localeErasParse;
+    proto$1.erasConvertYear = localeErasConvertYear;
+    proto$1.erasAbbrRegex = erasAbbrRegex;
+    proto$1.erasNameRegex = erasNameRegex;
+    proto$1.erasNarrowRegex = erasNarrowRegex;
+
+    proto$1.months = localeMonths;
+    proto$1.monthsShort = localeMonthsShort;
+    proto$1.monthsParse = localeMonthsParse;
+    proto$1.monthsRegex = monthsRegex;
+    proto$1.monthsShortRegex = monthsShortRegex;
+    proto$1.week = localeWeek;
+    proto$1.firstDayOfYear = localeFirstDayOfYear;
+    proto$1.firstDayOfWeek = localeFirstDayOfWeek;
+
+    proto$1.weekdays = localeWeekdays;
+    proto$1.weekdaysMin = localeWeekdaysMin;
+    proto$1.weekdaysShort = localeWeekdaysShort;
+    proto$1.weekdaysParse = localeWeekdaysParse;
+
+    proto$1.weekdaysRegex = weekdaysRegex;
+    proto$1.weekdaysShortRegex = weekdaysShortRegex;
+    proto$1.weekdaysMinRegex = weekdaysMinRegex;
+
+    proto$1.isPM = localeIsPM;
+    proto$1.meridiem = localeMeridiem;
+
+    function get$1(format, index, field, setter) {
+      var locale = getLocale(),
+        utc = createUTC().set(setter, index);
+      return locale[field](utc, format);
+    }
+
+    function listMonthsImpl(format, index, field) {
+      if (isNumber(format)) {
+        index = format;
+        format = undefined;
+      }
+
+      format = format || "";
+
+      if (index != null) {
+        return get$1(format, index, field, "month");
+      }
+
+      var i,
+        out = [];
+      for (i = 0; i < 12; i++) {
+        out[i] = get$1(format, i, field, "month");
+      }
+      return out;
+    }
+
+    // ()
+    // (5)
+    // (fmt, 5)
+    // (fmt)
+    // (true)
+    // (true, 5)
+    // (true, fmt, 5)
+    // (true, fmt)
+    function listWeekdaysImpl(localeSorted, format, index, field) {
+      if (typeof localeSorted === "boolean") {
+        if (isNumber(format)) {
+          index = format;
+          format = undefined;
+        }
+
+        format = format || "";
+      } else {
+        format = localeSorted;
+        index = format;
+        localeSorted = false;
+
+        if (isNumber(format)) {
+          index = format;
+          format = undefined;
+        }
+
+        format = format || "";
+      }
+
+      var locale = getLocale(),
+        shift = localeSorted ? locale._week.dow : 0,
+        i,
+        out = [];
+
+      if (index != null) {
+        return get$1(format, (index + shift) % 7, field, "day");
+      }
+
+      for (i = 0; i < 7; i++) {
+        out[i] = get$1(format, (i + shift) % 7, field, "day");
+      }
+      return out;
+    }
+
+    function listMonths(format, index) {
+      return listMonthsImpl(format, index, "months");
+    }
+
+    function listMonthsShort(format, index) {
+      return listMonthsImpl(format, index, "monthsShort");
+    }
+
+    function listWeekdays(localeSorted, format, index) {
+      return listWeekdaysImpl(localeSorted, format, index, "weekdays");
+    }
+
+    function listWeekdaysShort(localeSorted, format, index) {
+      return listWeekdaysImpl(localeSorted, format, index, "weekdaysShort");
+    }
+
+    function listWeekdaysMin(localeSorted, format, index) {
+      return listWeekdaysImpl(localeSorted, format, index, "weekdaysMin");
+    }
+
+    getSetGlobalLocale("en", {
+      eras: [
+        {
+          since: "0001-01-01",
+          until: +Infinity,
+          offset: 1,
+          name: "Anno Domini",
+          narrow: "AD",
+          abbr: "AD",
+        },
+        {
+          since: "0000-12-31",
+          until: -Infinity,
+          offset: 1,
+          name: "Before Christ",
+          narrow: "BC",
+          abbr: "BC",
+        },
+      ],
+      dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
+      ordinal: function (number) {
+        var b = number % 10,
+          output =
+            toInt((number % 100) / 10) === 1
+              ? "th"
+              : b === 1
+              ? "st"
+              : b === 2
+              ? "nd"
+              : b === 3
+              ? "rd"
+              : "th";
+        return number + output;
+      },
+    });
+
+    // Side effect imports
+
+    hooks.lang = deprecate(
+      "moment.lang is deprecated. Use moment.locale instead.",
+      getSetGlobalLocale
+    );
+    hooks.langData = deprecate(
+      "moment.langData is deprecated. Use moment.localeData instead.",
+      getLocale
+    );
+
+    var mathAbs = Math.abs;
+
+    function abs() {
+      var data = this._data;
+
+      this._milliseconds = mathAbs(this._milliseconds);
+      this._days = mathAbs(this._days);
+      this._months = mathAbs(this._months);
+
+      data.milliseconds = mathAbs(data.milliseconds);
+      data.seconds = mathAbs(data.seconds);
+      data.minutes = mathAbs(data.minutes);
+      data.hours = mathAbs(data.hours);
+      data.months = mathAbs(data.months);
+      data.years = mathAbs(data.years);
+
+      return this;
+    }
+
+    function addSubtract$1(duration, input, value, direction) {
+      var other = createDuration(input, value);
+
+      duration._milliseconds += direction * other._milliseconds;
+      duration._days += direction * other._days;
+      duration._months += direction * other._months;
+
+      return duration._bubble();
+    }
+
+    // supports only 2.0-style add(1, 's') or add(duration)
+    function add$1(input, value) {
+      return addSubtract$1(this, input, value, 1);
+    }
+
+    // supports only 2.0-style subtract(1, 's') or subtract(duration)
+    function subtract$1(input, value) {
+      return addSubtract$1(this, input, value, -1);
+    }
+
+    function absCeil(number) {
+      if (number < 0) {
+        return Math.floor(number);
+      } else {
+        return Math.ceil(number);
+      }
+    }
+
+    function bubble() {
+      var milliseconds = this._milliseconds,
+        days = this._days,
+        months = this._months,
+        data = this._data,
+        seconds,
+        minutes,
+        hours,
+        years,
+        monthsFromDays;
+
+      // if we have a mix of positive and negative values, bubble down first
+      // check: https://github.com/moment/moment/issues/2166
+      if (
+        !(
+          (milliseconds >= 0 && days >= 0 && months >= 0) ||
+          (milliseconds <= 0 && days <= 0 && months <= 0)
+        )
+      ) {
+        milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
+        days = 0;
+        months = 0;
+      }
+
+      // The following code bubbles up values, see the tests for
+      // examples of what that means.
+      data.milliseconds = milliseconds % 1000;
+
+      seconds = absFloor(milliseconds / 1000);
+      data.seconds = seconds % 60;
+
+      minutes = absFloor(seconds / 60);
+      data.minutes = minutes % 60;
+
+      hours = absFloor(minutes / 60);
+      data.hours = hours % 24;
+
+      days += absFloor(hours / 24);
+
+      // convert days to months
+      monthsFromDays = absFloor(daysToMonths(days));
+      months += monthsFromDays;
+      days -= absCeil(monthsToDays(monthsFromDays));
+
+      // 12 months -> 1 year
+      years = absFloor(months / 12);
+      months %= 12;
+
+      data.days = days;
+      data.months = months;
+      data.years = years;
+
+      return this;
+    }
+
+    function daysToMonths(days) {
+      // 400 years have 146097 days (taking into account leap year rules)
+      // 400 years have 12 months === 4800
+      return (days * 4800) / 146097;
+    }
+
+    function monthsToDays(months) {
+      // the reverse of daysToMonths
+      return (months * 146097) / 4800;
+    }
+
+    function as(units) {
+      if (!this.isValid()) {
+        return NaN;
+      }
+      var days,
+        months,
+        milliseconds = this._milliseconds;
+
+      units = normalizeUnits(units);
+
+      if (units === "month" || units === "quarter" || units === "year") {
+        days = this._days + milliseconds / 864e5;
+        months = this._months + daysToMonths(days);
+        switch (units) {
+          case "month":
+            return months;
+          case "quarter":
+            return months / 3;
+          case "year":
+            return months / 12;
+        }
+      } else {
+        // handle milliseconds separately because of floating point math errors (issue #1867)
+        days = this._days + Math.round(monthsToDays(this._months));
+        switch (units) {
+          case "week":
+            return days / 7 + milliseconds / 6048e5;
+          case "day":
+            return days + milliseconds / 864e5;
+          case "hour":
+            return days * 24 + milliseconds / 36e5;
+          case "minute":
+            return days * 1440 + milliseconds / 6e4;
+          case "second":
+            return days * 86400 + milliseconds / 1000;
+          // Math.floor prevents floating point math errors here
+          case "millisecond":
+            return Math.floor(days * 864e5) + milliseconds;
+          default:
+            throw new Error("Unknown unit " + units);
+        }
+      }
+    }
+
+    // TODO: Use this.as('ms')?
+    function valueOf$1() {
+      if (!this.isValid()) {
+        return NaN;
+      }
+      return (
+        this._milliseconds +
+        this._days * 864e5 +
+        (this._months % 12) * 2592e6 +
+        toInt(this._months / 12) * 31536e6
+      );
+    }
+
+    function makeAs(alias) {
+      return function () {
+        return this.as(alias);
+      };
+    }
+
+    var asMilliseconds = makeAs("ms"),
+      asSeconds = makeAs("s"),
+      asMinutes = makeAs("m"),
+      asHours = makeAs("h"),
+      asDays = makeAs("d"),
+      asWeeks = makeAs("w"),
+      asMonths = makeAs("M"),
+      asQuarters = makeAs("Q"),
+      asYears = makeAs("y");
+
+    function clone$1() {
+      return createDuration(this);
+    }
+
+    function get$2(units) {
+      units = normalizeUnits(units);
+      return this.isValid() ? this[units + "s"]() : NaN;
+    }
+
+    function makeGetter(name) {
+      return function () {
+        return this.isValid() ? this._data[name] : NaN;
+      };
+    }
+
+    var milliseconds = makeGetter("milliseconds"),
+      seconds = makeGetter("seconds"),
+      minutes = makeGetter("minutes"),
+      hours = makeGetter("hours"),
+      days = makeGetter("days"),
+      months = makeGetter("months"),
+      years = makeGetter("years");
+
+    function weeks() {
+      return absFloor(this.days() / 7);
+    }
+
+    var round = Math.round,
+      thresholds = {
+        ss: 44, // a few seconds to seconds
+        s: 45, // seconds to minute
+        m: 45, // minutes to hour
+        h: 22, // hours to day
+        d: 26, // days to month/week
+        w: null, // weeks to month
+        M: 11, // months to year
+      };
+
+    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+    function substituteTimeAgo(
+      string,
+      number,
+      withoutSuffix,
+      isFuture,
+      locale
+    ) {
+      return locale.relativeTime(
+        number || 1,
+        !!withoutSuffix,
+        string,
+        isFuture
+      );
+    }
+
+    function relativeTime$1(posNegDuration, withoutSuffix, thresholds, locale) {
+      var duration = createDuration(posNegDuration).abs(),
+        seconds = round(duration.as("s")),
+        minutes = round(duration.as("m")),
+        hours = round(duration.as("h")),
+        days = round(duration.as("d")),
+        months = round(duration.as("M")),
+        weeks = round(duration.as("w")),
+        years = round(duration.as("y")),
+        a =
+          (seconds <= thresholds.ss && ["s", seconds]) ||
+          (seconds < thresholds.s && ["ss", seconds]) ||
+          (minutes <= 1 && ["m"]) ||
+          (minutes < thresholds.m && ["mm", minutes]) ||
+          (hours <= 1 && ["h"]) ||
+          (hours < thresholds.h && ["hh", hours]) ||
+          (days <= 1 && ["d"]) ||
+          (days < thresholds.d && ["dd", days]);
+
+      if (thresholds.w != null) {
+        a =
+          a || (weeks <= 1 && ["w"]) || (weeks < thresholds.w && ["ww", weeks]);
+      }
+      a = a ||
+        (months <= 1 && ["M"]) ||
+        (months < thresholds.M && ["MM", months]) ||
+        (years <= 1 && ["y"]) || ["yy", years];
+
+      a[2] = withoutSuffix;
+      a[3] = +posNegDuration > 0;
+      a[4] = locale;
+      return substituteTimeAgo.apply(null, a);
+    }
+
+    // This function allows you to set the rounding function for relative time strings
+    function getSetRelativeTimeRounding(roundingFunction) {
+      if (roundingFunction === undefined) {
+        return round;
+      }
+      if (typeof roundingFunction === "function") {
+        round = roundingFunction;
+        return true;
+      }
+      return false;
+    }
+
+    // This function allows you to set a threshold for relative time strings
+    function getSetRelativeTimeThreshold(threshold, limit) {
+      if (thresholds[threshold] === undefined) {
+        return false;
+      }
+      if (limit === undefined) {
+        return thresholds[threshold];
+      }
+      thresholds[threshold] = limit;
+      if (threshold === "s") {
+        thresholds.ss = limit - 1;
+      }
+      return true;
+    }
+
+    function humanize(argWithSuffix, argThresholds) {
+      if (!this.isValid()) {
+        return this.localeData().invalidDate();
+      }
+
+      var withSuffix = false,
+        th = thresholds,
+        locale,
+        output;
+
+      if (typeof argWithSuffix === "object") {
+        argThresholds = argWithSuffix;
+        argWithSuffix = false;
+      }
+      if (typeof argWithSuffix === "boolean") {
+        withSuffix = argWithSuffix;
+      }
+      if (typeof argThresholds === "object") {
+        th = Object.assign({}, thresholds, argThresholds);
+        if (argThresholds.s != null && argThresholds.ss == null) {
+          th.ss = argThresholds.s - 1;
+        }
+      }
+
+      locale = this.localeData();
+      output = relativeTime$1(this, !withSuffix, th, locale);
+
+      if (withSuffix) {
+        output = locale.pastFuture(+this, output);
+      }
+
+      return locale.postformat(output);
+    }
+
+    var abs$1 = Math.abs;
+
+    function sign(x) {
+      return (x > 0) - (x < 0) || +x;
+    }
+
+    function toISOString$1() {
+      // for ISO strings we do not use the normal bubbling rules:
+      //  * milliseconds bubble up until they become hours
+      //  * days do not bubble at all
+      //  * months bubble up until they become years
+      // This is because there is no context-free conversion between hours and days
+      // (think of clock changes)
+      // and also not between days and months (28-31 days per month)
+      if (!this.isValid()) {
+        return this.localeData().invalidDate();
+      }
+
+      var seconds = abs$1(this._milliseconds) / 1000,
+        days = abs$1(this._days),
+        months = abs$1(this._months),
+        minutes,
+        hours,
+        years,
+        s,
+        total = this.asSeconds(),
+        totalSign,
+        ymSign,
+        daysSign,
+        hmsSign;
+
+      if (!total) {
+        // this is the same as C#'s (Noda) and python (isodate)...
+        // but not other JS (goog.date)
+        return "P0D";
+      }
+
+      // 3600 seconds -> 60 minutes -> 1 hour
+      minutes = absFloor(seconds / 60);
+      hours = absFloor(minutes / 60);
+      seconds %= 60;
+      minutes %= 60;
+
+      // 12 months -> 1 year
+      years = absFloor(months / 12);
+      months %= 12;
+
+      // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+      s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, "") : "";
+
+      totalSign = total < 0 ? "-" : "";
+      ymSign = sign(this._months) !== sign(total) ? "-" : "";
+      daysSign = sign(this._days) !== sign(total) ? "-" : "";
+      hmsSign = sign(this._milliseconds) !== sign(total) ? "-" : "";
+
+      return (
+        totalSign +
+        "P" +
+        (years ? ymSign + years + "Y" : "") +
+        (months ? ymSign + months + "M" : "") +
+        (days ? daysSign + days + "D" : "") +
+        (hours || minutes || seconds ? "T" : "") +
+        (hours ? hmsSign + hours + "H" : "") +
+        (minutes ? hmsSign + minutes + "M" : "") +
+        (seconds ? hmsSign + s + "S" : "")
+      );
+    }
+
+    var proto$2 = Duration.prototype;
+
+    proto$2.isValid = isValid$1;
+    proto$2.abs = abs;
+    proto$2.add = add$1;
+    proto$2.subtract = subtract$1;
+    proto$2.as = as;
+    proto$2.asMilliseconds = asMilliseconds;
+    proto$2.asSeconds = asSeconds;
+    proto$2.asMinutes = asMinutes;
+    proto$2.asHours = asHours;
+    proto$2.asDays = asDays;
+    proto$2.asWeeks = asWeeks;
+    proto$2.asMonths = asMonths;
+    proto$2.asQuarters = asQuarters;
+    proto$2.asYears = asYears;
+    proto$2.valueOf = valueOf$1;
+    proto$2._bubble = bubble;
+    proto$2.clone = clone$1;
+    proto$2.get = get$2;
+    proto$2.milliseconds = milliseconds;
+    proto$2.seconds = seconds;
+    proto$2.minutes = minutes;
+    proto$2.hours = hours;
+    proto$2.days = days;
+    proto$2.weeks = weeks;
+    proto$2.months = months;
+    proto$2.years = years;
+    proto$2.humanize = humanize;
+    proto$2.toISOString = toISOString$1;
+    proto$2.toString = toISOString$1;
+    proto$2.toJSON = toISOString$1;
+    proto$2.locale = locale;
+    proto$2.localeData = localeData;
+
+    proto$2.toIsoString = deprecate(
+      "toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)",
+      toISOString$1
+    );
+    proto$2.lang = lang;
+
+    // FORMATTING
+
+    addFormatToken("X", 0, 0, "unix");
+    addFormatToken("x", 0, 0, "valueOf");
+
+    // PARSING
+
+    addRegexToken("x", matchSigned);
+    addRegexToken("X", matchTimestamp);
+    addParseToken("X", function (input, array, config) {
+      config._d = new Date(parseFloat(input) * 1000);
+    });
+    addParseToken("x", function (input, array, config) {
+      config._d = new Date(toInt(input));
+    });
+
+    //! moment.js
+
+    hooks.version = "2.29.0";
+
+    setHookCallback(createLocal);
+
+    hooks.fn = proto;
+    hooks.min = min;
+    hooks.max = max;
+    hooks.now = now;
+    hooks.utc = createUTC;
+    hooks.unix = createUnix;
+    hooks.months = listMonths;
+    hooks.isDate = isDate;
+    hooks.locale = getSetGlobalLocale;
+    hooks.invalid = createInvalid;
+    hooks.duration = createDuration;
+    hooks.isMoment = isMoment;
+    hooks.weekdays = listWeekdays;
+    hooks.parseZone = createInZone;
+    hooks.localeData = getLocale;
+    hooks.isDuration = isDuration;
+    hooks.monthsShort = listMonthsShort;
+    hooks.weekdaysMin = listWeekdaysMin;
+    hooks.defineLocale = defineLocale;
+    hooks.updateLocale = updateLocale;
+    hooks.locales = listLocales;
+    hooks.weekdaysShort = listWeekdaysShort;
+    hooks.normalizeUnits = normalizeUnits;
+    hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+    hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
+    hooks.calendarFormat = getCalendarFormat;
+    hooks.prototype = proto;
+
+    // currently HTML5 input type only supports 24-hour formats
+    hooks.HTML5_FMT = {
+      DATETIME_LOCAL: "YYYY-MM-DDTHH:mm", // <input type="datetime-local" />
+      DATETIME_LOCAL_SECONDS: "YYYY-MM-DDTHH:mm:ss", // <input type="datetime-local" step="1" />
+      DATETIME_LOCAL_MS: "YYYY-MM-DDTHH:mm:ss.SSS", // <input type="datetime-local" step="0.001" />
+      DATE: "YYYY-MM-DD", // <input type="date" />
+      TIME: "HH:mm", // <input type="time" />
+      TIME_SECONDS: "HH:mm:ss", // <input type="time" step="1" />
+      TIME_MS: "HH:mm:ss.SSS", // <input type="time" step="0.001" />
+      WEEK: "GGGG-[W]WW", // <input type="week" />
+      MONTH: "YYYY-MM", // <input type="month" />
+    };
+
+    return hooks;
+  });
+});
+
+/*
+Government Purpose Rights (“GPR”)
+Contract No.  W911NF-14-D-0005
+Contractor Name:   University of Southern California
+Contractor Address:  3720 S. Flower Street, 3rd Floor, Los Angeles, CA 90089-0001
+Expiration Date:  Restrictions do not expire, GPR is perpetual
+Restrictions Notice/Marking: The Government's rights to use, modify, reproduce, release, perform, display, or disclose this software are restricted by paragraph (b)(2) of the Rights in Noncommercial Computer Software and Noncommercial Computer Software Documentation clause contained in the above identified contract.  No restrictions apply after the expiration date shown above. Any reproduction of the software or portions thereof marked with this legend must also reproduce the markings. (see: DFARS 252.227-7014(f)(2))
+No Commercial Use: This software shall be used for government purposes only and shall not, without the express written permission of the party whose name appears in the restrictive legend, be used, modified, reproduced, released, performed, or displayed for any commercial purpose or disclosed to a person other than subcontractors, suppliers, or prospective subcontractors or suppliers, who require the software to submit offers for, or perform, government contracts.  Prior to disclosing the software, the Contractor shall require the persons to whom disclosure will be made to complete and sign the non-disclosure agreement at 227.7103-7.  (see DFARS 252.227-7025(b)(2))
+*/
+var InvalidXapiFormatError = /** @class */ (function (_super) {
+  __extends(InvalidXapiFormatError, _super);
+  function InvalidXapiFormatError(message, status) {
+    if (message === void 0) {
+      message = "invalid xapi format";
+    }
+    if (status === void 0) {
+      status = 400;
+    }
+    var _this = _super.call(this, message) || this;
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(_this, InvalidXapiFormatError.prototype);
+    _this.status = status;
+    return _this;
+  }
+  return InvalidXapiFormatError;
+})(Error);
+var XapiObjectNotFound = /** @class */ (function (_super) {
+  __extends(XapiObjectNotFound, _super);
+  function XapiObjectNotFound(message, status) {
+    if (message === void 0) {
+      message = "invalid xapi format";
+    }
+    if (status === void 0) {
+      status = 404;
+    }
+    var _this = _super.call(this, message) || this;
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(_this, XapiObjectNotFound.prototype);
+    _this.status = status;
+    return _this;
+  }
+  return XapiObjectNotFound;
+})(Error);
+var XapiWrongUser = /** @class */ (function (_super) {
+  __extends(XapiWrongUser, _super);
+  function XapiWrongUser(message, status) {
+    if (message === void 0) {
+      message =
+        "attempt to save a record for a user different from the authorized user";
+    }
+    if (status === void 0) {
+      status = 403;
+    }
+    var _this = _super.call(this, message) || this;
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(_this, XapiWrongUser.prototype);
+    _this.status = status;
+    return _this;
+  }
+  return XapiWrongUser;
+})(Error);
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+var TinCan = require("tincanjs");
+var TinCanLRS = /** @class */ (function () {
+  function TinCanLRS(p) {
+    this._lrs = new TinCan.LRS(__assign(__assign({}, p), { allowFail: false }));
+  }
+  TinCanLRS.prototype.fetchActivityState = function (params) {
+    var _this = this;
+    return new Promise(function (resolve, reject) {
+      _this._lrs.retrieveState(params.stateId, {
+        activity: new TinCan.Activity({
+          id: params.activityId,
+        }),
+        agent: new TinCan.Agent(params.agent),
+        registration: params.registration,
+        // eslint-disable-next-line
+        callback: function (err, state) {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(
+            !state
+              ? {}
+              : typeof state.asVersion === "function"
+              ? state.asVersion()
+              : state
+          );
+        },
+      });
+    });
+  };
+  TinCanLRS.prototype.saveStatements = function (statements) {
+    var _this = this;
+    return new Promise(function (resolve, reject) {
+      var tcStatements = null;
+      try {
+        tcStatements = statements.map(function (s) {
+          return new TinCan.Statement(s);
+        });
+      } catch (err) {
+        return reject(new InvalidXapiFormatError(err.message));
+      }
+      _this._lrs.saveStatements(tcStatements, {
+        callback: function (err, xhr) {
+          if (err) {
+            return reject(err);
+          }
+          var ids =
+            typeof xhr.response === "string"
+              ? JSON.parse(xhr.response)
+              : xhr.response;
+          return resolve(ids);
+        },
+      });
+    });
+  };
+  return TinCanLRS;
+})();
+function newLrs(p) {
+  return new TinCanLRS(p);
+}
+
+var Cmi5ContextActivity = /** @class */ (function () {
+  function Cmi5ContextActivity() {}
+  Cmi5ContextActivity.MOVE_ON = {
+    id: "https://w3id.org/xapi/cmi5/context/categories/moveon",
+  };
+  Cmi5ContextActivity.CMI5 = {
+    id: "https://w3id.org/xapi/cmi5/context/categories/cmi5",
+  };
+  Cmi5ContextActivity.MASTERY = function (mastery) {
+    return {
+      "https://w3id.org/xapi/cmi5/context/extensions/masteryscore": mastery,
+    };
+  };
+  return Cmi5ContextActivity;
+})();
+var STATE_LMS_LAUNCHDATA = "LMS.LaunchData";
+var VERB_INITIALIZED = "http://adlnet.gov/expapi/verbs/initialized";
+var VERB_PASSED = "http://adlnet.gov/expapi/verbs/passed";
+var VERB_COMPLETED = "http://adlnet.gov/expapi/verbs/completed";
+var VERB_FAILED = "http://adlnet.gov/expapi/verbs/failed";
+var VERB_TERMINATED = "http://adlnet.gov/expapi/verbs/terminated";
+var AUTH_STATUS_NONE = "NONE";
+var AUTH_STATUS_IN_PROGRESS = "IN_PROGRESS";
+var AUTH_STATUS_SUCCESS = "SUCCESS";
+var AUTH_STATUS_FAILED = "FAILED";
+var ACTIVITY_STATUS_NONE = "NONE";
+var ACTIVITY_STATUS_IN_PROGRESS = "LOAD_IN_PROGRESS";
+var ACTIVITY_STATUS_SUCCESS = "LOADED";
+var ACTIVITY_STATUS_FAILED = "FAILED";
+
+var _url = "";
+var _cmi = null;
+function hasCmi5Params(p) {
+  return Boolean(
+    // true if has all required cmi5 query params
+    p.get("fetch") &&
+      p.get("endpoint") &&
+      p.get("actor") &&
+      p.get("registration") &&
+      p.get("activityId")
+  );
+}
+function toScore(s) {
+  return !isNaN(Number(s))
+    ? {
+        scaled: Number(s),
+      }
+    : s;
+}
+function getISODuration(init) {
+  return moment.duration(new Date().getTime() - init.getTime()).toISOString();
+}
+var _CmiService = /** @class */ (function () {
+  function _CmiService(params) {
+    this._lrs = null;
+    this._onStateUpdateObservers = [];
+    this.params = params;
+    this._state = {
+      statements: [],
+      start: undefined,
+      authStatus: AUTH_STATUS_NONE,
+      accessToken: "",
+      activityStatus: ACTIVITY_STATUS_NONE,
+      lmsLaunchData: {},
+    };
+  }
+  Object.defineProperty(_CmiService.prototype, "state", {
+    get: function () {
+      return this._state;
+    },
+    enumerable: false,
+    configurable: true,
+  });
+  _CmiService.prototype.onStateUpdate = function (cb) {
+    var rmIx = this._onStateUpdateObservers.indexOf(cb);
+    if (rmIx === -1) {
+      this._onStateUpdateObservers.push(cb);
+    } else {
+      this._onStateUpdateObservers.splice(rmIx, 1);
+    }
+    // eslint-disable-next-line
+    return function () {};
+  };
+  _CmiService.prototype.updateState = function (s) {
+    this._state = s;
+    this._onStateUpdateObservers.forEach(function (cb) {
+      cb();
+    });
+  };
+  _CmiService.prototype.prepareActivityStatement = function (p) {
+    return {
+      actor: this.params.actor,
+      context: __assign(__assign({}, p.context), {
+        registration: this.params.registration,
+      }),
+      object: {
+        id: this.params.activityId,
+      },
+      verb: {
+        id: p.verb,
+      },
+      result: p.result,
+    };
+  };
+  _CmiService.prototype.sendActivityStatement = function (p) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function () {
+      var statement;
+      return __generator(this, function (_b) {
+        statement = this.prepareActivityStatement(__assign({}, p));
+        (_a = this._lrs) === null || _a === void 0
+          ? void 0
+          : _a.saveStatements([statement]);
+        this.updateState(
+          __assign(__assign({}, this._state), {
+            statements: __spreadArrays(this.state.statements, [statement]),
+          })
+        );
+        return [2 /*return*/];
+      });
+    });
+  };
+  _CmiService.prototype.start = function () {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (
+              this.state.statements.find(function (s) {
+                return s.verb.id === VERB_INITIALIZED;
+              })
+            ) {
+              throw new Error(
+                "cannot issue multiple statements with Initialized"
+              );
+            }
+            return [4 /*yield*/, this._authenticate()];
+          case 1:
+            _a.sent();
+            return [4 /*yield*/, this._loadLMSLaunchData()];
+          case 2:
+            _a.sent();
+            return [
+              4 /*yield*/,
+              this.sendActivityStatement({ verb: VERB_INITIALIZED }),
+            ];
+          case 3:
+            _a.sent();
+            this.updateState(
+              __assign(__assign({}, this._state), { start: new Date() })
+            );
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  _CmiService.prototype.passed = function (p) {
+    return __awaiter(this, void 0, void 0, function () {
+      var lms;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (this.state.start == undefined) {
+              throw new Error("not initialized");
+            }
+            if (
+              this.state.statements.find(function (s) {
+                return s.verb.id === VERB_PASSED;
+              })
+            ) {
+              throw new Error(
+                "only one passed statement is allowed per registration"
+              );
+            }
+            lms = this.state.lmsLaunchData.contents || {};
+            return [
+              4 /*yield*/,
+              this.sendActivityStatement({
+                verb: VERB_PASSED,
+                context: {
+                  contextActivities: {
+                    category: [Cmi5ContextActivity.MOVE_ON],
+                  },
+                  extensions: __assign(
+                    __assign({}, p.contextExtensions),
+                    lms.masteryScore
+                      ? Cmi5ContextActivity.MASTERY(lms.masteryScore)
+                      : {}
+                  ),
+                },
+                result: {
+                  success: true,
+                  duration: getISODuration(this.state.start),
+                  score: toScore(p.score),
+                  extensions: p.resultExtensions,
+                },
+              }),
+            ];
+          case 1:
+            _a.sent();
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  _CmiService.prototype.failed = function (p) {
+    return __awaiter(this, void 0, void 0, function () {
+      var lms;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (!this.state.start) {
+              throw new Error("not initialized");
+            }
+            if (
+              this.state.statements.find(function (s) {
+                return s.verb.id === VERB_PASSED;
+              })
+            ) {
+              throw new Error(
+                "a failed statement must not follow a passed statement"
+              );
+            }
+            lms = this.state.lmsLaunchData.contents || {};
+            return [
+              4 /*yield*/,
+              this.sendActivityStatement({
+                verb: VERB_FAILED,
+                context: {
+                  contextActivities: {
+                    category: [Cmi5ContextActivity.MOVE_ON],
+                  },
+                  extensions: __assign(
+                    __assign({}, p.contextExtensions),
+                    lms.masteryScore
+                      ? Cmi5ContextActivity.MASTERY(lms.masteryScore)
+                      : {}
+                  ),
+                },
+                result: {
+                  success: false,
+                  duration: getISODuration(this.state.start),
+                  score: toScore(p.score),
+                  extensions: p.resultExtensions,
+                },
+              }),
+            ];
+          case 1:
+            _a.sent();
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  _CmiService.prototype.completed = function (extensions) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function () {
+      var s;
+      return __generator(this, function (_b) {
+        switch (_b.label) {
+          case 0:
+            if (!this.state.start) {
+              throw new Error("not initialized");
+            }
+            if (
+              this.state.statements.find(function (s) {
+                return s.verb.id === VERB_COMPLETED;
+              })
+            ) {
+              throw new Error(
+                "only one completed statement is allowed per registration"
+              );
+            }
+            s = this.state.statements.find(function (s) {
+              return s.verb.id === VERB_PASSED || s.verb.id === VERB_FAILED;
+            });
+            return [
+              4 /*yield*/,
+              this.sendActivityStatement(
+                __assign(__assign({}, extensions), {
+                  verb: VERB_COMPLETED,
+                  context: {
+                    contextActivities: {
+                      category: [Cmi5ContextActivity.MOVE_ON],
+                    },
+                    extensions: __assign({}, extensions),
+                  },
+                  result: {
+                    success: s ? s.verb.id === VERB_PASSED : undefined,
+                    duration: getISODuration(this.state.start),
+                    score: s
+                      ? (_a = s.result) === null || _a === void 0
+                        ? void 0
+                        : _a.score
+                      : undefined,
+                    completion: true,
+                  },
+                })
+              ),
+            ];
+          case 1:
+            _b.sent();
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  _CmiService.prototype.moveOn = function (p) {
+    return __awaiter(this, void 0, void 0, function () {
+      var lms, masteryScore, moveOn, passed, _a;
+      return __generator(this, function (_b) {
+        switch (_b.label) {
+          case 0:
+            if (!this.state.start) {
+              throw new Error("not initialized");
+            }
+            if (!this.state.lmsLaunchData) {
+              throw new Error("no LMS data");
+            }
+            lms = this.state.lmsLaunchData.contents || {};
+            masteryScore = lms.masteryScore || 0;
+            moveOn = lms.moveOn || "NotApplicable";
+            passed = p.score >= masteryScore;
+            if (!!passed) return [3 /*break*/, 2];
+            return [4 /*yield*/, this.failed(p)];
+          case 1:
+            _b.sent();
+            _b.label = 2;
+          case 2:
+            _a = moveOn;
+            switch (_a) {
+              case "Passed":
+                return [3 /*break*/, 3];
+              case "Completed":
+                return [3 /*break*/, 5];
+              case "CompletedAndPassed":
+                return [3 /*break*/, 7];
+              case "CompletedOrPassed":
+                return [3 /*break*/, 10];
+            }
+            return [3 /*break*/, 15];
+          case 3:
+            if (!passed) {
+              return [3 /*break*/, 17];
+            }
+            return [4 /*yield*/, this.passed(p)];
+          case 4:
+            _b.sent();
+            return [3 /*break*/, 17];
+          case 5:
+            return [4 /*yield*/, this.completed(p.contextExtensions)];
+          case 6:
+            _b.sent();
+            return [3 /*break*/, 17];
+          case 7:
+            if (!passed) {
+              return [3 /*break*/, 17];
+            }
+            return [4 /*yield*/, this.passed(p)];
+          case 8:
+            _b.sent();
+            return [4 /*yield*/, this.completed(p.contextExtensions)];
+          case 9:
+            _b.sent();
+            return [3 /*break*/, 17];
+          case 10:
+            if (!passed) return [3 /*break*/, 12];
+            return [4 /*yield*/, this.passed(p)];
+          case 11:
+            _b.sent();
+            return [3 /*break*/, 14];
+          case 12:
+            return [4 /*yield*/, this.completed(p.contextExtensions)];
+          case 13:
+            _b.sent();
+            _b.label = 14;
+          case 14:
+            return [3 /*break*/, 17];
+          case 15:
+            return [4 /*yield*/, this.completed(p.contextExtensions)];
+          case 16:
+            _b.sent();
+            _b.label = 17;
+          case 17:
+            return [4 /*yield*/, this.terminate()];
+          case 18:
+            _b.sent();
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  _CmiService.prototype.terminate = function () {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (!this.state.start) {
+              throw new Error("not initialized");
+            }
+            if (
+              this.state.statements.find(function (s) {
+                return s.verb.id === VERB_TERMINATED;
+              })
+            ) {
+              return [2 /*return*/];
+            }
+            return [
+              4 /*yield*/,
+              this.sendActivityStatement({
+                verb: VERB_TERMINATED,
+                result: { duration: getISODuration(this.state.start) },
+              }),
+            ];
+          case 1:
+            _a.sent();
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  _CmiService.prototype._authenticate = function () {
+    return __awaiter(this, void 0, void 0, function () {
+      var res, accessToken, _a, username, password;
+      return __generator(this, function (_b) {
+        switch (_b.label) {
+          case 0:
+            this.updateState(
+              __assign(__assign({}, this._state), {
+                authStatus: AUTH_STATUS_IN_PROGRESS,
+              })
+            );
+            return [4 /*yield*/, axios$1.post(this.params.fetch)];
+          case 1:
+            res = _b.sent();
+            accessToken = res.data["auth-token"];
+            if (!accessToken) {
+              this.updateState(
+                __assign(__assign({}, this._state), {
+                  authStatus: AUTH_STATUS_FAILED,
+                })
+              );
+              throw new Error(
+                "invalid response from fetch " +
+                  this.params.fetch +
+                  ": " +
+                  res.data
+              );
+            }
+            (_a = Buffer.from(accessToken, "base64")
+              .toString("ascii")
+              .split(":")),
+              (username = _a[0]),
+              (password = _a[1]);
+            this._lrs = newLrs({
+              endpoint: this.params.endpoint,
+              username: username,
+              password: password,
+            });
+            this.updateState(
+              __assign(__assign({}, this._state), {
+                authStatus: AUTH_STATUS_SUCCESS,
+                accessToken: accessToken,
+              })
+            );
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  _CmiService.prototype._loadLMSLaunchData = function () {
+    var _a;
+    return __awaiter(this, void 0, void 0, function () {
+      var res;
+      return __generator(this, function (_b) {
+        switch (_b.label) {
+          case 0:
+            if (!this.state.accessToken) {
+              throw new Error("fetch data LRS credential was not loaded");
+            }
+            this.updateState(
+              __assign(__assign({}, this._state), {
+                activityStatus: ACTIVITY_STATUS_IN_PROGRESS,
+              })
+            );
+            return [
+              4 /*yield*/,
+              (_a = this._lrs) === null || _a === void 0
+                ? void 0
+                : _a.fetchActivityState({
+                    stateId: STATE_LMS_LAUNCHDATA,
+                    activityId: this.params.activityId,
+                    agent: this.params.actor,
+                    registration: this.params.registration,
+                  }),
+            ];
+          case 1:
+            res = _b.sent();
+            if (!res) {
+              this.updateState(
+                __assign(__assign({}, this._state), {
+                  activityStatus: ACTIVITY_STATUS_FAILED,
+                })
+              );
+              throw new Error(
+                "invalid response from load LMS launch data: " + res
+              );
+            }
+            this.updateState(
+              __assign(__assign({}, this._state), {
+                activityStatus: ACTIVITY_STATUS_SUCCESS,
+                lmsLaunchData: res,
+              })
+            );
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  return _CmiService;
+})();
+var Cmi5 = /** @class */ (function () {
+  function Cmi5() {}
+  Cmi5.reset = function () {
+    _cmi = null;
+    _url = "";
+  };
+  Object.defineProperty(Cmi5, "isCmiAvailable", {
+    get: function () {
+      if (Cmi5.exists) {
+        return true;
+      }
+      if (!window || typeof window !== "object") {
+        return false;
+      }
+      if (!window.location || typeof window.location.search !== "string") {
+        return false;
+      }
+      return hasCmi5Params(new URLSearchParams(window.location.search));
+    },
+    enumerable: false,
+    configurable: true,
+  });
+  Object.defineProperty(Cmi5, "url", {
+    get: function () {
+      return _url || typeof window !== "undefined" ? window.location.href : "";
+    },
+    enumerable: false,
+    configurable: true,
+  });
+  Object.defineProperty(Cmi5, "exists", {
+    get: function () {
+      return _cmi ? true : false;
+    },
+    enumerable: false,
+    configurable: true,
+  });
+  Cmi5.get = function (url) {
+    if (url === void 0) {
+      url = "";
+    }
+    if (!_cmi) {
+      _url = url || Cmi5.url;
+      var p = new URLSearchParams(new URL(_url).search);
+      if (!hasCmi5Params(p)) {
+        throw new Error("url does not have all required cmi5 params: " + _url);
+      }
+      _cmi = new _CmiService({
+        actor: JSON.parse("" + p.get("actor")),
+        activityId: "" + p.get("activityId"),
+        endpoint: "" + p.get("endpoint"),
+        fetch: "" + p.get("fetch"),
+        registration: "" + p.get("registration"),
+      });
+    }
+    return _cmi;
+  };
+  return Cmi5;
+})();
+
+exports.Cmi5 = Cmi5;
+//# sourceMappingURL=index.js.map

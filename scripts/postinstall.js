@@ -12,7 +12,7 @@ const path = require("path");
 const fs = require("fs-extra");
 const appRoot = require("app-root-path").path;
 
-const installCmi5Lib = async () => {
+async function installCmi5Lib() {
   const libPath = path.join(
     appRoot,
     "node_modules",
@@ -45,6 +45,6 @@ const installCmi5Lib = async () => {
   } catch (err) {
     console.error(`failed to install cmi5.js lib with error ${err.message}`);
   }
-};
+}
 
 installCmi5Lib();

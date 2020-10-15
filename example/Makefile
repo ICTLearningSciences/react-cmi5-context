@@ -3,7 +3,7 @@ DOCKER_ACCOUNT?=uscictdocker
 DOCKER_IMAGE?=uscictdocker/react-cmi5-context
 
 clean:
-	rm -rf node_modules static .cache public
+	rm -rf node_modules static .cache public package-lock.json
 
 develop:
-	gatsby develop
+	npx gatsby develop

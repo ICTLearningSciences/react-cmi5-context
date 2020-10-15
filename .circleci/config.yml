@@ -2,25 +2,96 @@ version: 2.1
 executors:
   node:
     docker:
-      - image: circleci/node:13.2
+      - image: circleci/node:12.18
+commands:
+  cache-restore:
+    steps:
+      - restore_cache:
+          keys:
+            - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-v1-{{ .Branch }}-
+            - node-v1-
+  ensure-installed:
+    steps:
+      - checkout
+      - cache-restore
+      - run: 
+          name: npm ci
+          command: npm ci
 jobs:
-  test-format:
+  install-and-cache:
     executor: node
     steps:
       - checkout
+      - run: npm ci
+      - save_cache:
+          key: v1-{{ arch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+            - ./node_modules
+  test:
+    executor: node
+    steps:
+      - ensure-installed
+      - run:
+          name: Test
+          command: npm test
+  test-audit:  
+    executor: node
+    steps:
+      - ensure-installed
+      - run:
+          name: Test audit
+          command: npm run test:audit
+  test-format:
+    executor: node
+    steps:
+      - ensure-installed
       - run:
           name: Test format
-          command: make test-format
+          command: npm run test:format
   test-license:
     executor: node
     steps:
       - checkout
       - run:
           name: Test license
-          command: make test-license
+          command: npm run test:license
+  test-lint:
+    executor: node
+    steps:
+      - ensure-installed
+      - run:
+          name: Test lint
+          command: npm run test:lint
+  test-types:
+    executor: node
+    steps:
+      - ensure-installed
+      - run:
+          name: Test types
+          command: npm run test:types
+  
 workflows:
   version: 2
-  test-and-deploy-dev:
+  test-commit:
     jobs:
-      - test-format
-      - test-license
+      - install-and-cache
+      - test:
+          requires:
+            - install-and-cache
+      - test-audit:
+          requires:
+            - install-and-cache
+      - test-format:
+          requires:
+            - install-and-cache
+      - test-license:
+          requires:
+            - install-and-cache
+      - test-lint:
+          requires:
+            - install-and-cache
+      - test-types:
+          requires:
+            - install-and-cache
