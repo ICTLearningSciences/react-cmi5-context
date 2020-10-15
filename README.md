@@ -1,95 +1,38 @@
-# react-cmi5-context
-React wrapper component for an xapi/cmi5 assignable unit @see https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#au_requirements
+# react-cmi5-example
 
-## Integration in a React App
+An example CMI5 assignable unit that connects to an LMS (the XAPI backend of an LMS) and reads/writes an xapi statement
 
-To integrate this cmi5 implementation in a React app, you can use these steps:
+## USAGE
 
-#### Install react-cmi5-context
+For a quick test, run the following from the root of the react-cmi5 project:
+
+...the command below will install react-cmi5 and build latest version for use in example
 
 ```
-npm install --save react-cmi5-context
+make clean
+make build
 ```
 
-#### Include the cmi5.js lib
+...and then
 
-`npm install react-cmi5-context` will have copied `cmi5.js` to the `public` folder at the root of your React project.
-
-You must include ```cmi5.js``` in your ```index.html```, e.g.
-
-```html
-<head>
-  <script src="%PUBLIC_URL%/cmi5.js"></script>
-  <!--
-    Notice the use of %PUBLIC_URL% in the tags above.
-    It will be replaced with the URL of the `public` folder during the build.
-    Only files inside the `public` folder can be referenced from the HTML.
-
-    Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-    work correctly both with client-side routing and a non-root public URL.
-    Learn how to configure a non-root public URL by running `npm run build`.
-  -->
-</head>
+```
+cd example && npm install && gatsby develop
 ```
 
-NOTE: the reason this is included as a downloadable script instead of a normal node package dependency is because that is how the cmi5.js lib is currently distributed (already bundled code). In a future release it would be good to tease apart the cmi5.js contents into npm packages and remove the need for the script-tag include.
+The above starts React, but you need to adjust the example url to include valid cmi5 query params for an example user and activityId. The url below should be valid (unless the access_token for the user expired)
 
-#### Wrap a Question with Component Cmi5AssignableUnit
+To satisfy the cmi5 protocol, you will need the following params
 
-Include the ```Cmi5AU``` React component in your src and wrap use it to wrap a question, e.g.
+- `fetch`: a url to retrieve an access token for your XAPI server
+- `endpoint`: the root endpoint for your XAPI server
+- `activityId`: IRI/id for the XAPI object this assignable unit represents (callbacks to 'passed', 'failed' etc. will use this activity id)
+- `registration`: basically an XAPI session id
+- `actor`: account for which results will be applied (passed as a json XAPI actor object)
 
-```jsx
-import React, { Component } from 'react';
-import './App.css';
-import Cmi5AU from 'react-cmi5-context';
-import ExampleQuestion from './ExampleQuestion';
+Details for the above are here in the cmi5 spec [here](https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#81-launch-method)
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Cmi5AU>
-          <ExampleQuestion/>
-        </Cmi5AU>
-      </div>
-    )
-  }
-}
+For reference, the below is what an example url might look like
 
-export default App;
 ```
-
-...then in your question component when you're ready to submit a result, call one of the injected property functions `passed` or `failed`, e.g.
-
-```jsx
-import React, { Component } from 'react';
-
-export default class ExampleQuestion extends Component {
-  render()
-  {
-    // props includes special actions for passed({score:1.0}) and failed({score: 0.0 })
-    // These are wrappers for cmi.passed and cmi.failed
-    // that make sure cmi has initialized before score is actually sent
-    const {passed, failed} = this.props
-
-    const onSubmit = () => {
-      const score = this.state.score // score was set when user chose a radio-button answer
-      if(score > 0) {
-        this.props.passed(score)
-      }
-      else {
-        this.props.failed(score)
-      }
-      this.props.terminate() // MUST call terminate to end the session
-    }
-
-    return (
-      <div>
-        question form here
-        <button onClick={onSubmit}>submit</button>
-      </div>
-    )
-   }
- }
-
+http://localhost:8000/?fetch=http://qa-pal.ict.usc.edu/api/1.0/cmi5/accesstoken2basictoken?access_token=41c847e0-fccd-11e8-8b7f-cf001aed3365&endpoint=http://qa-pal.ict.usc.edu/api/1.0/cmi5/&activityId=http://pal.ict.usc.edu/lessons/cmi5-ex1&registration=957f56b7-1d34-4b01-9408-3ffeb2053b28&actor=%7B%22objectType%22:%20%22Agent%22,%22name%22:%20%22taflearner1%22,%22account%22:%20%7B%22homePage%22:%20%22http://pal.ict.usc.edu/xapi/users%22,%22name%22:%20%225c0eec7993c7cf001aed3365%22%7D%7D
 ```

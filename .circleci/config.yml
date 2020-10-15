@@ -1,5 +1,17 @@
 version: 2.1
+aliases:
+  - &only-tagged-releases
+    tags:
+      only: /^\d+\.\d+\.\d+(-[a-z\d\-.]+)?$/
+    branches:
+      ignore: /.*/
+  - &only-untagged
+    tags:
+      ignore: /.*/
 executors:
+  cypress:
+    docker:
+      - image: cypress/base:12
   node:
     docker:
       - image: circleci/node:12.18
@@ -8,14 +20,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - node-v1-{{ .Branch }}-
-            - node-v1-
+            - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-v2-{{ .Branch }}-
+            - node-v2-
   ensure-installed:
     steps:
       - checkout
       - cache-restore
-      - run: 
+      - run:
           name: npm ci
           command: npm ci
 jobs:
@@ -29,6 +41,7 @@ jobs:
           paths:
             - ~/.npm
             - ./node_modules
+            - /root/.cache
   test:
     executor: node
     steps:
@@ -36,62 +49,43 @@ jobs:
       - run:
           name: Test
           command: npm test
-  test-audit:  
-    executor: node
-    steps:
-      - ensure-installed
       - run:
           name: Test audit
           command: npm run test:audit
-  test-format:
-    executor: node
-    steps:
-      - ensure-installed
       - run:
           name: Test format
           command: npm run test:format
-  test-license:
-    executor: node
-    steps:
-      - checkout
       - run:
           name: Test license
           command: npm run test:license
-  test-lint:
-    executor: node
-    steps:
-      - ensure-installed
       - run:
           name: Test lint
           command: npm run test:lint
-  test-types:
-    executor: node
-    steps:
-      - ensure-installed
       - run:
           name: Test types
           command: npm run test:types
-  
+  test-cypress:
+    executor: cypress
+    steps:
+      - ensure-installed
+      - run:
+          name: Start gatsby
+          command: npm run develop
+          background: true
+      - run:
+          name: Wait for gatsby
+          command: bash ./bin/gatsby_wait_for_ready.sh
+      - run:
+          name: Run cypress
+          command: npx cypress run
 workflows:
   version: 2
-  test-commit:
+  test:
     jobs:
       - install-and-cache
       - test:
           requires:
             - install-and-cache
-      - test-audit:
-          requires:
-            - install-and-cache
-      - test-format:
-          requires:
-            - install-and-cache
-      - test-license:
-          requires:
-            - install-and-cache
-      - test-lint:
-          requires:
-            - install-and-cache
-      - test-types:
+      - test-cypress:
           requires:
             - install-and-cache
