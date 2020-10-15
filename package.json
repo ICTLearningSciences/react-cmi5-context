@@ -1,0 +1,111 @@
+{
+  "name": "react-cmi5-context",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "files": [
+    "dist",
+    "lib",
+    "scripts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf node_modules *.tgz",
+    "deps:update": "npx ncu -u",
+    "build": "rollup -c",
+    "format": "prettier --write '**/*.{js,jsx,json,ts,tsx}'",
+    "license:fix": "license-check-and-add remove -f license-config.json && license-check-and-add add -f license-config.json",
+    "pack:latest": "npm run build && npm pack && cp ${npm_package_name}-${npm_package_version}.tgz ${npm_package_name}-latest.tgz",
+    "postinstall": "node ./scripts/postinstall.js",
+    "postversion": "git push && git push --tags",
+    "test": "jest test/*",
+    "test:all": "npx run test:format && npx run test:lint && npx run test:audit && npx run test:types && npx run test:cypress && npx test",
+    "test:audit": "npm audit --level=moderate",
+    "test:format": "prettier --check '**/*.{js,jsx,json,ts,tsx}'",
+    "test:license": "npx license-check-and-add check -f license-config.json",
+    "test:lint": "eslint src --ext ts --ext tsx --ext js --ext jsx",
+    "test:types": "tsc --noEmit",
+    "test:watch": "jest test/* --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ICTLearningSciences/react-cmi5-context.git"
+  },
+  "keywords": [
+    "react",
+    "javascript",
+    "xapi",
+    "cmi5"
+  ],
+  "author": "larrykirschner@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ICTLearningSciences/react-cmi5-context/issues"
+  },
+  "homepage": "https://github.com/ICTLearningSciences/react-cmi5-context#readme",
+  "peerDependencies": {
+    "react": ">=16.13.1",
+    "react-dom": ">=16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.0.4",
+    "@types/jest": "^26.0.14",
+    "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "axios-mock-adapter": "^1.18.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^24.0.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "jest": "^26.4.2",
+    "license-check-and-add": "^3.0.4",
+    "npm-check-updates": "^9.0.1",
+    "prettier": "^2.1.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rollup": "^2.27.0",
+    "rollup-plugin-peer-deps-external": "^2.2.3",
+    "rollup-plugin-typescript2": "^0.27.2",
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "xhr-mock": "^2.5.1"
+  },
+  "dependencies": {
+    "@gradiant/xapi-dsl": "^1.10.0",
+    "app-root-path": "^3.0.0",
+    "axios": "^0.20.0",
+    "fs-extra": "^9.0.1",
+    "moment": "^2.29.0",
+    "tincanjs": "^0.50.0"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  }
+}

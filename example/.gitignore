@@ -1,0 +1,7 @@
+# ignore package-lock because we're installing 
+# our react-cmi5 lib from pack
+package-lock.json
+# normally you commit static for a gatsby project
+# but we want to make sure postinstall
+# for our react-cmi5 lib puts the cmi5.js lib in static for us
+static

@@ -1,19 +1,19 @@
-# react-cmi5
+# react-cmi5-context
 React wrapper component for an xapi/cmi5 assignable unit @see https://github.com/AICC/CMI-5_Spec_Current/blob/quartz/cmi5_spec.md#au_requirements
 
 ## Integration in a React App
 
 To integrate this cmi5 implementation in a React app, you can use these steps:
 
-#### Install react-cmi5
+#### Install react-cmi5-context
 
 ```
-npm install --save react-cmi5
+npm install --save react-cmi5-context
 ```
 
 #### Include the cmi5.js lib
 
-`npm install react-cmi5` will have copied `cmi5.js` to the `public` folder at the root of your React project.
+`npm install react-cmi5-context` will have copied `cmi5.js` to the `public` folder at the root of your React project.
 
 You must include ```cmi5.js``` in your ```index.html```, e.g.
 
@@ -41,7 +41,7 @@ Include the ```Cmi5AU``` React component in your src and wrap use it to wrap a q
 ```jsx
 import React, { Component } from 'react';
 import './App.css';
-import Cmi5AU from 'react-cmi5';
+import Cmi5AU from 'react-cmi5-context';
 import ExampleQuestion from './ExampleQuestion';
 
 class App extends Component {
