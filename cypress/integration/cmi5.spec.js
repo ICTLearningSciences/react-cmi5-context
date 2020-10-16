@@ -20,7 +20,7 @@ const DEFAULT_CMI5_PARAMS = {
     name: DEFAULT_ACCESS_TOKEN_USERNAME,
   },
   activityId: "http://example.com/activity-id",
-  endpoint: "/xapi",
+  endpoint: "/xapi/",
   fetch: "http://example.com/fetch",
   registration: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 };
@@ -43,7 +43,7 @@ describe("Cmi5 example", () => {
     cy.route("POST", `**/xapi/statements`, [
       "8caa7d88-afa9-4de9-a7fa-aa67002bd592",
     ]);
-    cy.route("GET", `**/xapi/activities/state/**`, {
+    cy.route("GET", `**/activities/state/**`, {
       contents: {
         contextTemplate: {
           registration: "28f5a669-31c5-4200-8e39-876c3a556de9",
@@ -80,31 +80,30 @@ describe("Cmi5 example", () => {
     );
   });
 
-  // it("shows auth status", () => {
-  //   cy.visit(url());
-  //   cy.get("#auth").contains("Status: IN_PROGRESS");
-  //   cy.wait("@fetch");
-  //   cy.get("#auth").contains("Status: SUCCESS");
-  //   cy.get("#auth").contains("Token: dGVzdHVzZXI6dGVzdHBhc3N3b3Jk");
-  // });
+  it("shows auth status", () => {
+    cy.visit(url());
+    // cy.get("#auth").contains("Status: Not Authorized");
+    cy.wait("@fetch");
+    cy.get("#auth").contains("Status: Authorized");
+  });
 
-  // it("shows activity state", () => {
-  //   cy.visit(url());
-  //   cy.get("#activity").contains("Status: NONE");
-  //   cy.get("#activity").contains("Status: LOAD_IN_PROGRESS");
-  //   cy.wait("@lms");
-  //   cy.get("#activity").contains("Status: LOADED");
-  // });
+  it("shows activity state", () => {
+    cy.visit(url());
+    cy.wait("@lms");
+    cy.get("#activity").contains("moveOn: CompletedOrPassed");
+    cy.get("#activity").contains("masteryScore: 0.85");
+    cy.get("#activity").contains("returnURL: edu.usc.ict.pal3://");
+  });
 
-  // it("sends passing score", () => {
-  //   cy.visit(url());
-  //   cy.get("#pass").should("be.disabled");
-  //   cy.get("#score").clear().type("1");
-  //   cy.get("#pass").click();
-  // });
+  it("sends passing score", () => {
+    cy.visit(url());
+    cy.get("#pass").should("be.disabled");
+    cy.get("#score").clear().type("1");
+    cy.get("#pass").click();
+  });
 
-  // it("sends failing score", () => {
-  //   cy.visit(url());
-  //   cy.get("#fail").click();
-  // });
+  it("sends failing score", () => {
+    cy.visit(url());
+    cy.get("#fail").click();
+  });
 });

@@ -9,7 +9,6 @@ Restrictions Notice/Marking: The Government's rights to use, modify, reproduce, 
 No Commercial Use: This software shall be used for government purposes only and shall not, without the express written permission of the party whose name appears in the restrictive legend, be used, modified, reproduced, released, performed, or displayed for any commercial purpose or disclosed to a person other than subcontractors, suppliers, or prospective subcontractors or suppliers, who require the software to submit offers for, or perform, government contracts.  Prior to disclosing the software, the Contractor shall require the persons to whom disclosure will be made to complete and sign the non-disclosure agreement at 227.7103-7.  (see DFARS 252.227-7025(b)(2))
 */
 import React, { useEffect, useState } from "react";
-import Helmet from "react-helmet";
 import {
   Button,
   // List,
@@ -25,6 +24,8 @@ let cmi5: Cmi5;
 
 export const Index: React.FC = () => {
   const [score, setScore] = useState(0);
+  const [initialized, setInitialized] = useState(false);
+  const [launchData, setLaunchData] = useState();
   // const [state, setState] = useState();
 
   useEffect(() => {
@@ -33,7 +34,9 @@ export const Index: React.FC = () => {
       //   setState(Cmi5.get().state);
       // });
       cmi5 = new Cmi5();
-      cmi5.initialize();
+      cmi5.initialize().then(() => {
+        setInitialized(true);
+      });
     } catch (e) {
       console.error(e);
     }
@@ -93,22 +96,31 @@ export const Index: React.FC = () => {
     );
   }
 
-  function authStatus() {
-    if (!cmi5) {
-      return;
-    }
+  function authStatus(): JSX.Element {
     return (
       <Typography id="auth" variant="h5" style={{ padding: 15 }}>
         Auth
-        <Typography>Status: {cmi5.isAuthenticated}</Typography>
+        <Typography>
+          Status:{" "}
+          {cmi5
+            ? cmi5.isAuthenticated
+              ? "Authorized"
+              : "Not Authorized"
+            : "initializing cmi5..."}
+        </Typography>
         {/* <Typography>Token: {state.accessToken}</Typography> */}
       </Typography>
     );
   }
 
-  function activityStatus() {
+  function activityStatus(): JSX.Element {
     if (!cmi5?.isAuthenticated) {
-      return;
+      return (
+        <Typography id="activity" variant="h5" style={{ padding: 15 }}>
+          Activity State:
+          <Typography>Status: initializing cmi5...</Typography>
+        </Typography>
+      );
     }
     const lms = cmi5.getLaunchData() || {};
     const moveOn = lms.moveOn || "NotApplicable";
@@ -125,9 +137,9 @@ export const Index: React.FC = () => {
     );
   }
 
-  function grade() {
+  function grade(): JSX.Element {
     if (!cmi5?.isAuthenticated) {
-      return;
+      return <div></div>;
     }
     // const started = cmi5.get.start.toISOString();
     const lms = cmi5.getLaunchData();
@@ -192,15 +204,8 @@ export const Index: React.FC = () => {
   //   );
   // }
 
-  if (!cmi5) {
-    return checkParams();
-  }
-
   return (
     <div>
-      <Helmet>
-        <script src={"cmi5.js"} type="text/javascript" />
-      </Helmet>
       {checkParams()}
       {authStatus()}
       {activityStatus()}
